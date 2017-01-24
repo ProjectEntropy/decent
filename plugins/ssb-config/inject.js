@@ -19,7 +19,7 @@ module.exports = function (name, override) {
     //https://github.com/ssbc/scuttlebot/pull/102
     party: true,
     host: nonPrivate.v4 || '',
-    port: 8008,
+    port: 3333,
     timeout: 0,
     pub: true,
     local: true,
@@ -28,7 +28,7 @@ module.exports = function (name, override) {
       hops: 3
     },
     ws: {
-      port: 8989
+      port: 3939
     },
     gossip: {
       connections: 3
