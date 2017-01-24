@@ -4,7 +4,6 @@ var SHS = require('multiserver/plugins/shs')
 var http = require('http')
 var muxrpc = require('muxrpc')
 var pull = require('pull-stream')
-var JSONApi = require('./json-api')
 
 var cap =
   new Buffer('EVRctE2Iv8GrO/BpQCF34e2FMPsDJot9x0j846LjVtc=', 'base64')
@@ -62,8 +61,6 @@ exports.init = function (sbot, config) {
   if(!port)
     port = 1024+(~~(Math.random()*(65536-1024)))
 
-  var server = http.createServer(JSONApi(sbot)).listen(port)
-
   //allow friends to 
   sbot.auth.hook(function (fn, args) {
     var id = args[0]
@@ -83,7 +80,7 @@ exports.init = function (sbot, config) {
 
   var ms = MultiServer([
     [
-      WS({server: server, port: port, host: config.host || 'localhost'}),
+      WS({port: port, host: config.host || 'localhost'}),
       SHS({
         keys: toSodiumKeys(config.keys),
         appKey: (config.caps && config.caps.shs) || cap,
