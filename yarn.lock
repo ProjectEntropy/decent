@@ -506,6 +506,16 @@ elegant-spinner@^1.0.0:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/elegant-spinner/-/elegant-spinner-1.0.1.tgz#db043521c95d7e303fd8f345bedc3349cfb0729e"
 
+emoji-named-characters@~1.0.2:
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/emoji-named-characters/-/emoji-named-characters-1.0.2.tgz#cdeb36d0e66002c4b9d7bf1dfbc3a199fb7d409b"
+
+emoji-server@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/emoji-server/-/emoji-server-1.0.0.tgz#d063cfee9af118cc5aeefbc2e9b3dd5085815c63"
+  dependencies:
+    emoji-named-characters "~1.0.2"
+
 end-of-stream@^1.0.0, end-of-stream@^1.1.0:
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/end-of-stream/-/end-of-stream-1.1.0.tgz#e9353258baa9108965efc41cb0ef8ade2f3cfb07"

@@ -14,6 +14,7 @@
     "cont": "~1.0.3",
     "deep-equal": "^1.0.1",
     "ecstatic": "^2.1.0",
+    "emoji-server": "^1.0.0",
     "explain-error": "~1.0.1",
     "graphmitter": "^1.6.3",
     "has-network": "0.0.0",
