@@ -10,9 +10,9 @@ var SEC = 1e3
 var MIN = 60*SEC
 
 module.exports = function (name, override) {
-  name = name || 'ssb'
+  name = name || 'decent'
   var HOME = home() || 'browser' //most probably browser
-  return RC(name || 'ssb', merge({
+  return RC(name || 'decent', merge({
     //just use an ipv4 address by default.
     //there have been some reports of seemingly non-private
     //ipv6 addresses being returned and not working.
