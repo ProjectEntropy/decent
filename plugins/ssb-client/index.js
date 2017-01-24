@@ -27,7 +27,7 @@ function toSodiumKeys(keys) {
 //load cap from config instead!
 var cap = 'EVRctE2Iv8GrO/BpQCF34e2FMPsDJot9x0j846LjVtc='
 
-var createConfig = require('ssb-config/inject')
+var createConfig = require('../ssb-config/inject')
 
 module.exports = function (keys, opts, cb) {
   var config
