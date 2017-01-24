@@ -1,7 +1,6 @@
-
 # Decent
 
-A decent(ralized) alternative to FB, TWTR, Github, and Slack.
+A decent(ralized) alternative to FB, TWTR, Github, Email, Google Email, and Slack.
 
 In the beginning the web was distributed. Then companies in the valley centralized it for their own profit, impoverishing the creative class of the Internet. We're creating a decent alternative.
 
