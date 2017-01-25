@@ -1,0 +1,79 @@
+body { 
+  font-family: 'Source Sans Pro', sans-serif;
+  color: #333;
+  width: 100%;
+  margin-right: auto;
+  margin-left: auto;
+}
+
+p, pre, code {
+  margin-top: .35ex;
+  word-wrap: break-word;
+  white-space: pre-wrap;
+}
+
+.msg {
+  border-bottom: 1px solid #eee;
+  padding: .5em;
+  margin-bottom: .5em;
+}
+
+.ad {
+  float: right;
+  width: 35%;
+  margin-left: 1em;
+  border: 1px solid #eee;
+  margin-bottom: 1em;
+  padding: .5em;
+  font-size: .8em;
+}
+
+.avatar {
+  width: 2em;
+  float: left;
+  margin-right: .5em;
+  padding: 2px;
+  border: 1px solid #eee;
+}
+
+.profile {
+  width: 6em;
+  float: left;
+  padding: 4px;
+  border: 1px solid #eee;
+  margin-right: 1em;
+  margin-bottom: 1em;
+}
+
+hr {
+  border: solid #eee;
+  clear: both;
+  border-width: 1px 0 0;
+  height: 0;
+  margin-bottom: .9em;
+}
+
+.small {
+  font-size: .8em;
+  font-weight: bold;
+}
+
+.ri {
+  float: right;
+}
+
+.date {
+  font-size: .8em;
+  color: #666;
+}
+
+a:link, a:visited, a:active {
+        color: #0088cc;
+        text-decoration: underline;
+}
+
+a:hover,
+a:focus {
+        color: #005580;
+}
+

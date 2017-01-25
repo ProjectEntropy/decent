@@ -228,6 +228,10 @@ broadcast-stream@~0.0.0:
   version "0.0.0"
   resolved "https://registry.yarnpkg.com/broadcast-stream/-/broadcast-stream-0.0.0.tgz#dcb3f0612296fe72096e25fe8665aec99865e1bf"
 
+browser-split@0.0.0:
+  version "0.0.0"
+  resolved "https://registry.yarnpkg.com/browser-split/-/browser-split-0.0.0.tgz#41419caef769755929dd518967d3eec0a6262771"
+
 buffer-shims@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/buffer-shims/-/buffer-shims-1.0.0.tgz#9978ce317388c649ad8793028c3477ef044a8b51"
@@ -313,6 +317,12 @@ chokidar@^1.0.5:
     readdirp "^2.0.0"
   optionalDependencies:
     fsevents "^1.0.0"
+
+class-list@~0.1.0, class-list@~0.1.1:
+  version "0.1.1"
+  resolved "https://registry.yarnpkg.com/class-list/-/class-list-0.1.1.tgz#9b9745192c4179b5da0a0d7633658e3c70d796cb"
+  dependencies:
+    indexof "0.0.1"
 
 cli-cursor@^1.0.2:
   version "1.0.2"
@@ -506,7 +516,7 @@ elegant-spinner@^1.0.0:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/elegant-spinner/-/elegant-spinner-1.0.1.tgz#db043521c95d7e303fd8f345bedc3349cfb0729e"
 
-emoji-named-characters@~1.0.2:
+emoji-named-characters@^1.0.2, emoji-named-characters@~1.0.2:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/emoji-named-characters/-/emoji-named-characters-1.0.2.tgz#cdeb36d0e66002c4b9d7bf1dfbc3a199fb7d409b"
 
@@ -849,6 +859,12 @@ hoox@0.0.1:
   version "0.0.1"
   resolved "https://registry.yarnpkg.com/hoox/-/hoox-0.0.1.tgz#08a74d9272a9cc83ae8e6bbe0303f0ee76432094"
 
+html-element@^2.0.0:
+  version "2.2.0"
+  resolved "https://registry.yarnpkg.com/html-element/-/html-element-2.2.0.tgz#c3c1ff88c261db74d0af6391eef90c346f900730"
+  dependencies:
+    class-list "~0.1.1"
+
 http-signature@~1.1.0:
   version "1.1.1"
   resolved "https://registry.yarnpkg.com/http-signature/-/http-signature-1.1.1.tgz#df72e267066cd0ac67fb76adf8e134a8fbcf91bf"
@@ -864,9 +880,21 @@ hyperquest@~1.2.0:
     duplexer2 "~0.0.2"
     through2 "~0.6.3"
 
+hyperscript@^2.0.2:
+  version "2.0.2"
+  resolved "https://registry.yarnpkg.com/hyperscript/-/hyperscript-2.0.2.tgz#3839cba45554bdfe27bb81c2142d1684f8135af5"
+  dependencies:
+    browser-split "0.0.0"
+    class-list "~0.1.0"
+    html-element "^2.0.0"
+
 increment-buffer@~1.0.0:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/increment-buffer/-/increment-buffer-1.0.1.tgz#65076d75189d808b39ad13ab5b958e05216f9e0d"
+
+indexof@0.0.1:
+  version "0.0.1"
+  resolved "https://registry.yarnpkg.com/indexof/-/indexof-0.0.1.tgz#82dc336d232b9062179d05ab3293a66059fd435d"
 
 inflight@^1.0.4:
   version "1.0.6"
@@ -2337,9 +2365,28 @@ ssb-keys@^7.0.0:
     mkdirp "~0.5.0"
     private-box "^0.2.1"
 
+ssb-markdown@^3.1.1:
+  version "3.1.1"
+  resolved "https://registry.yarnpkg.com/ssb-markdown/-/ssb-markdown-3.1.1.tgz#8709c05ea80932af08a2fd8cc5b8bf3d0db5d542"
+  dependencies:
+    emoji-named-characters "^1.0.2"
+    ssb-marked "^0.5.4"
+    ssb-msgs "^5.2.0"
+    ssb-ref "^2.3.0"
+
+ssb-marked@^0.5.4:
+  version "0.5.4"
+  resolved "https://registry.yarnpkg.com/ssb-marked/-/ssb-marked-0.5.4.tgz#e2f0a17854d968a41e707dee6161c783f907330f"
+
 ssb-msgs@^5.0.0, ssb-msgs@~5.0.0:
   version "5.0.0"
   resolved "https://registry.yarnpkg.com/ssb-msgs/-/ssb-msgs-5.0.0.tgz#394829a67f2aa1b1232ff3aef89999cfacde1165"
+  dependencies:
+    ssb-ref "^2.0.0"
+
+ssb-msgs@^5.2.0:
+  version "5.2.0"
+  resolved "https://registry.yarnpkg.com/ssb-msgs/-/ssb-msgs-5.2.0.tgz#c681da5cd70c574c922dca4f03c521538135c243"
   dependencies:
     ssb-ref "^2.0.0"
 
