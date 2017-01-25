@@ -5,7 +5,7 @@ var client = require('./plugins/ssb-client')
 exports.serve = function() {
   http.createServer(
     serve({ root: __dirname + '/build/'})
-  ).listen(3000);
+  ).listen(3001);
   
   opts = {"modern": true}
   
