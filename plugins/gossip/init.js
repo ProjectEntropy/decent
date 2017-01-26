@@ -11,6 +11,11 @@ module.exports = function (gossip, config, server) {
   ;(isArray(seeds)  ? seeds : [seeds]).filter(Boolean)
   .forEach(function (addr) { gossip.add(addr, 'seed') })
 
+  // populate peertable with announcements on the LAN multicast
+  server.on('local', function (_peer) {
+    gossip.add(_peer, 'local')
+  })
+
   // populate peertable with pub announcements on the feed
   pull(
     server.messagesByType({
@@ -24,9 +29,5 @@ module.exports = function (gossip, config, server) {
     })
   )
 
-  // populate peertable with announcements on the LAN multicast
-  server.on('local', function (_peer) {
-    gossip.add(_peer, 'local')
-  })
 
 }

@@ -141,10 +141,10 @@ module.exports = {
           peers.push(addr)
           notify({ type: 'discover', peer: addr, source: source || 'manual' })
           return addr
-        } else if (source === 'friends' || source === 'local') {
+        } //else if (source === 'friends' || source === 'local') {
           // this peer is a friend or local, override old source to prioritize gossip
-          f.source = source
-        }
+          //f.source = source
+        //}
         //don't count local over and over
         else if(f.source != 'local')
           f.announcers ++
