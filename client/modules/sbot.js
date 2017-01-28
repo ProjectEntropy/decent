@@ -20,9 +20,7 @@ function Hash (onHash) {
     onHash && onHash(err, h)
   })
 }
-//uncomment this to use from browser...
-//also depends on having ssb-ws installed.
-//var createClient = require('ssb-lite')
+
 var createClient = require('../../plugins/ssb-client')
 
 var createConfig = require('../../plugins/ssb-config/inject')

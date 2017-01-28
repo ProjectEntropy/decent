@@ -21,7 +21,6 @@ exports.create = function (api) {
     
     getAvatar({links: api.sbot_links}, id, id, function (err, avatar) {
       if (err) return console.error(err)
-      //name = avatar.name
       if(ref.isBlob(avatar.image))
         img.src = api.blob_url(avatar.image)
     })

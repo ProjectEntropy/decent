@@ -2,7 +2,6 @@ var lightbox = require('hyperlightbox')
 var h = require('hyperscript')
 var u = require('../util')
 var self_id = require('../keys').id
-//publish or add
 
 var plugs = require('../plugs')
 
@@ -13,11 +12,6 @@ exports.needs = {
 
 exports.gives = 'message_confirm'
 
-//var publish = plugs.first(exports.sbot_publish = [])
-//var message_content = plugs.first(exports.message_content = [])
-//var avatar = plugs.first(exports.avatar = [])
-//var message_meta = plugs.map(exports.message_meta = [])
-//
 exports.create = function (api) {
   return function (content, cb) {
 

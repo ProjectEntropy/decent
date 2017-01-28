@@ -9,8 +9,6 @@ function asLink (ln) {
   return 'string' === typeof ln ? ln : ln.link
 }
 
-//var blob_url = require('../plugs').first(exports.blob_url = [])
-
 exports.needs = {
   blob_url: 'first'
 }

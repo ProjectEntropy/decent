@@ -9,9 +9,6 @@ exports.gives = {
 
 exports.create = function (api) {
   return {
-    //menu_items: function () {
-    //  return h('a', {href: '#Key'}, 'Your Key')
-    //},
     screen_view: function (path, sbot) {
       if(path === 'Your Key') {
         if(process.title === 'browser') {

@@ -17,7 +17,6 @@ function crop (d, cb) {
 
   return h('div.column.avatar_pic',
     canvas,
-    //canvas.selection,
     h('div.row.avatar_pic__controls',
       h('button', 'Select', {onclick: function () {
         cb(null, canvas.selection.toDataURL())

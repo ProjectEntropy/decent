@@ -6,10 +6,6 @@ function all(stream, cb) {
   pull(stream, pull.collect(cb))
 }
 
-//var plugs = require('../plugs')
-//var sbot_links2 = plugs.first(exports.sbot_links2 = [])
-//var sbot_query = plugs.first(exports.sbot_query = [])
-//
 exports.needs = {
   sbot_links2: 'first',
   sbot_query: 'first'
@@ -20,10 +16,6 @@ exports.gives = {
   signifier: true,
   signified: true,
 }
-
-/*
-  filter(rel: ['mentions', prefix('@')]) | reduce(name: rel[1], value: count())
-*/
 
 var filter = {
   $filter: {

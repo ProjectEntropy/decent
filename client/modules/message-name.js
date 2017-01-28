@@ -7,8 +7,6 @@ function title (s) {
 exports.needs = { sbot_get: 'first' }
 exports.gives = 'message_name'
 
-//TODO: rewrite as observable?
-
 exports.create = function (api) {
   return function (id, cb) {
     api.sbot_get(id, function (err, value) {
