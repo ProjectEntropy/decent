@@ -58,9 +58,9 @@ function isLongterm (e) {
   return e.ping && e.ping.rtt.mean > 0
 }
 
-function isLegacy (peer) {
-  return peer.duration.mean > 0 && !exports.isLongterm(peer)
-}
+//function isLegacy (peer) {
+//  return peer.duration.mean > 0 && !exports.isLongterm(peer)
+//}
 
 function isConnect (e) {
   return 'connected' === e.state || 'connecting' === e.state
@@ -137,10 +137,10 @@ function (gossip, config, server) {
         quota: 3, factor: 5*60e3, max: 3*60*60e3, groupMin: 5*50e3
       })
 
-    connect(peers, ts, 'legacy', exports.isLegacy, {
-        quota: 3, factor: 5*min, max: 3*hour, groupMin: 5*min,
-        disable: !conf('global', true)
-      })
+    //connect(peers, ts, 'legacy', exports.isLegacy, {
+    //    quota: 3, factor: 5*min, max: 3*hour, groupMin: 5*min,
+    //    disable: !conf('global', true)
+    //  })
 
     connect(peers, ts, 'longterm', exports.isLongterm, {
       quota: 3, factor: 10e3, max: 10*min, groupMin: 5e3,
@@ -170,7 +170,7 @@ function (gossip, config, server) {
 exports.isUnattempted = isUnattempted
 exports.isInactive = isInactive
 exports.isLongterm = isLongterm
-exports.isLegacy = isLegacy
+//exports.isLegacy = isLegacy
 exports.isLocal = isLocal
 exports.isConnectedOrConnecting = isConnect
 exports.select = select
