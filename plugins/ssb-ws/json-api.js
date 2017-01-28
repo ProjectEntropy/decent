@@ -9,7 +9,7 @@ var Emoji = require('emoji-server')
 
 function msgHandler(path, handler) {
   return function (req, res, next) {
-    console.log(req.method, req.url)
+    //console.log(req.method, req.url)
     if(req.method !== 'GET') return next()
     if(req.url.indexOf(path) === 0) {
       var id = req.url.substring(path.length)
