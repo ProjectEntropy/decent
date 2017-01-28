@@ -1,18 +1,17 @@
 'use strict'
 var pull = require('pull-stream')
 var Notify = require('pull-notify')
+//var toAddress = require('../../lib/util').toAddress
+var ref = require('ssb-ref')
 var mdm = require('mdmanifest')
 var valid = require('../../lib/validators')
 var apidoc = require('../../lib/apidocs').gossip
 var u = require('../../lib/util')
-var ref = require('ssb-ref')
 var ping = require('pull-ping')
-var stats = require('statistics')
+var Stats = require('statistics')
+var isArray = Array.isArray
 var Schedule = require('./schedule')
 var Init = require('./init')
-var AtomicFile = require('atomic-file')
-var path = require('path')
-var deepEqual = require('deep-equal')
 
 function isFunction (f) {
   return 'function' === typeof f
@@ -33,7 +32,6 @@ Peers : [{
 }]
 */
 
-
 module.exports = {
   name: 'gossip',
   version: '1.0.0',
@@ -45,8 +43,6 @@ module.exports = {
     var notify = Notify()
     var conf = config.gossip || {}
     var home = ref.parseAddress(server.getAddress())
-
-    var stateFile = AtomicFile(path.join(config.path, 'gossip.json'))
 
     //Known Peers
     var peers = []
@@ -94,7 +90,7 @@ module.exports = {
             p.stateChange = Date.now()
             notify({ type: 'connect-failure', peer: p })
             server.emit('log:info', ['SBOT', p.host+':'+p.port+p.key, 'connection failed', err.message || err])
-            p.duration = stats(p.duration, 0)
+            p.duration.value(0) 
             return (cb && cb(err))
           }
           else {
@@ -137,14 +133,11 @@ module.exports = {
           // new peer
           addr.source = source
           addr.announcers = 1
-          addr.duration = addr.duration || null
+          addr.duration = Stats() 
           peers.push(addr)
           notify({ type: 'discover', peer: addr, source: source || 'manual' })
           return addr
-        } //else if (source === 'friends' || source === 'local') {
-          // this peer is a friend or local, override old source to prioritize gossip
-          //f.source = source
-        //}
+        }
         //don't count local over and over
         else if(f.source != 'local')
           f.announcers ++
@@ -205,9 +198,8 @@ module.exports = {
         //or how many failures there have been.
         var since = peer.stateChange
         peer.stateChange = Date.now()
-//        if(peer.state === 'connected') //may be "disconnecting"
-        peer.duration = stats(peer.duration, peer.stateChange - since)
-//        console.log(peer.duration)
+        if(peer.state === 'connected') //may be "disconnecting"
+          peer.duration.value(peer.stateChange - since)
         peer.state = undefined
         notify({ type: 'disconnect', peer: peer })
         server.emit('log:info', ['SBOT', rpc.id, 'disconnect'])
@@ -216,36 +208,24 @@ module.exports = {
       notify({ type: 'connect', peer: peer })
     })
 
-    var last
-    stateFile.get(function (err, ary) {
-      last = ary || []
-      if(Array.isArray(ary))
-        ary.forEach(function (v) {
-          delete v.state
-          // don't add local peers (wait to rediscover)
-          if(v.source !== 'local') {
-            gossip.add(v, 'stored')
-          }
-        })
-    })
-
-    var int = setInterval(function () {
-      var copy = JSON.parse(JSON.stringify(peers))
-      copy.filter(function (e) {
-        return e.source !== 'local'
-      }).forEach(function (e) {
-        delete e.state
-      })
-      if(deepEqual(copy, last)) return
-      last = copy
-      stateFile.set(copy, function(err) {
-        if (err) console.log(err)
-      })
-    }, 10*1000)
-
-    if(int.unref) int.unref()
-
     return gossip
   }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
