@@ -33,8 +33,7 @@ exports.needs = {
   message_confirm: 'first',
   sbot_blobs_add: 'first',
   blob_url: 'first',
-  sbot_links: 'first',
-  avatar_name: 'first'
+  sbot_links: 'first'
 }
 
 exports.gives = 'avatar_edit'
@@ -46,8 +45,6 @@ exports.create = function (api) {
     img.classList.add('avatar--profile')
 
     var lb = hyperlightbox()
-    //var name_input = h('input', {placeholder: 'rename'})
-    //var name = api.avatar_name(id)
     var selected = null, selected_data = null
 
     getAvatar({links: api.sbot_links}, self_id, id, function (err, avatar) {
@@ -58,38 +55,10 @@ exports.create = function (api) {
         img.src = api.blob_url(avatar.image)
     })
 
-    //var also_pictured = h('div.profile__alsopicturedas.wrap')
-    /*
-    pull(
-      api.sbot_links({dest: id, rel: 'about', values: true}),
-      pull.map(function (e) {
-        return e.value.content.image
-      }),
-      pull.filter(function (e) {
-        return e && 'string' == typeof e.link
-      }),
-      pull.unique('link'),
-      pull.drain(function (image) {
-        also_pictured.appendChild(
-          h('a', {href:'#', onclick: function (ev) {
-              ev.stopPropagation()
-              ev.preventDefault()
-              selected = image
-              img.src = api.blob_url(image.link || image)
-            }},
-            h('img.avatar--thumbnail', {src: api.blob_url(image)})
-          )
-        )
-      })
-    )*/
-
     return h('div.row.profile',
       lb,
       img,
       h('div.column.profile__info',
-        //h('strong', name),
-        //name_input,
-
         hyperfile.asDataURL(function (data) {
           var el = crop(data, function (err, data) {
             if(data) {
@@ -109,7 +78,6 @@ exports.create = function (api) {
                     width: 512,
                     height: 512
                   }
-
                 })
               )
             }
@@ -117,29 +85,19 @@ exports.create = function (api) {
           })
           lb.show(el)
         }),
-        h('button', 'Publish Photo', {onclick: function () {
-          //if(name_input.value)
-            //name.textContent = name_input.value
-
-          if(selected) {
-            api.message_confirm({
-              type: 'about',
-              about: id,
-              // name: name_input.value || undefined,
-              image: selected
-            })
+        h('button', 'Publish Photo', {
+          onclick: function () {
+            if(selected) {
+              api.message_confirm({
+                type: 'about',
+                about: id,
+                image: selected
+              })
+            }
+            else
+              alert('If you\'ve just uploaded an image, give it a second to reach the server. If you haven\'t selected an image or name, please do that first.')
           }
-          //else if(name_input.value) //name only
-            //api.message_confirm({
-            //  type: 'about',
-            //  about: id,
-            //  name: name_input.value || undefined,
-            //})
-          else
-            //another moment of weakness
-            alert('If you\'ve just uploaded an image, give it a second to reach the server. If you haven\'t selected an image or name, please do that first.')
-        }})
-      //also_pictured
+        })
       )
     )
   }
