@@ -1,15 +1,13 @@
 'use strict'
 var pull = require('pull-stream')
 var Notify = require('pull-notify')
-//var toAddress = require('../../lib/util').toAddress
 var ref = require('ssb-ref')
 var mdm = require('mdmanifest')
 var valid = require('../../lib/validators')
 var apidoc = require('../../lib/apidocs').gossip
 var u = require('../../lib/util')
 var ping = require('pull-ping')
-var Stats = require('statistics')
-var isArray = Array.isArray
+var stats = require('statistics')
 var Schedule = require('./schedule')
 var Init = require('./init')
 
@@ -133,7 +131,7 @@ module.exports = {
           // new peer
           addr.source = source
           addr.announcers = 1
-          addr.duration = Stats() 
+          addr.duration = addr.duration || null 
           peers.push(addr)
           notify({ type: 'discover', peer: addr, source: source || 'manual' })
           return addr
@@ -198,8 +196,9 @@ module.exports = {
         //or how many failures there have been.
         var since = peer.stateChange
         peer.stateChange = Date.now()
-        if(peer.state === 'connected') //may be "disconnecting"
-          peer.duration.value(peer.stateChange - since)
+       // if(peer.state === 'connected') //may be "disconnecting"
+       // peer.duration.value(peer.stateChange - since)
+        peer.duration = stats(peer.duration, peer.stateChange - since)
         peer.state = undefined
         notify({ type: 'disconnect', peer: peer })
         server.emit('log:info', ['SBOT', rpc.id, 'disconnect'])
