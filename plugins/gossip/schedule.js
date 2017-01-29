@@ -128,14 +128,14 @@ function (gossip, config, server) {
     //quota, groupMin, min, factor, max
 
     connect(peers, ts, 'attempt', exports.isUnattempted, {
-        min: 0, quota: 10, factor: 0, max: 0, groupMin: 0,
-        disable: !conf('global', true)
+      min: 0, quota: 10, factor: 0, max: 0, groupMin: 0,
+      disable: !conf('global', true)
     })
 
     connect(peers, ts, 'retry', exports.isInactive, {
-        min: 0,
-        quota: 3, factor: 5*60e3, max: 3*60*60e3, groupMin: 5*50e3
-      })
+      min: 0,
+      quota: 3, factor: 5*60e3, max: 3*60*60e3, groupMin: 5*50e3
+    })
 
     //connect(peers, ts, 'legacy', exports.isLegacy, {
     //    quota: 3, factor: 5*min, max: 3*hour, groupMin: 5*min,
