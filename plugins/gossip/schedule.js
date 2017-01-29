@@ -39,7 +39,8 @@ function isOffline (e) {
 var isOnline = not(isOffline)
 
 function isLocal (e) {
-  return ip.isPrivate(e.host) && e.type === 'local'
+  //return ip.isPrivate(e.host) && e.type === 'local'
+  return ip.isPrivate(e.host) && e.source === 'local'
 }
 
 function isUnattempted (e) {
@@ -101,9 +102,9 @@ function (gossip, config, server) {
 
   function connect (peers, ts, name, filter, opts) {
     var connected = peers.filter(isConnect).filter(filter)
-      .filter(function (peer) {
-        return peer.stateChange + 10e3 < ts
-      })
+      //.filter(function (peer) {
+      //  return peer.stateChange + 10e3 < ts
+      //})
 
     if(connected.length > opts.quota) {
       return earliest(connected, connected.length - opts.quota)
@@ -119,37 +120,42 @@ function (gossip, config, server) {
         gossip.connect(peer)
       })
   }
-
+  //var connecting = false
   function connections () {
-    var ts = Date.now()
-    var peers = gossip.peers()
+    //if(connecting) return
+    //connecting = true
+    //setTimeout(function () {
+      var ts = Date.now()
+      var peers = gossip.peers()
 
-    //quota, groupMin, min, factor, max
+      //quota, groupMin, min, factor, max
 
-    connect(peers, ts, 'attempt', exports.isUnattempted, {
-      min: 0, quota: 10, factor: 0, max: 0, groupMin: 0,
-      disable: !conf('global', true)
-    })
-
-    connect(peers, ts, 'retry', exports.isInactive, {
-      min: 0,
-      quota: 3, factor: 5*60e3, max: 3*60*60e3, groupMin: 5*50e3
-    })
-
-    connect(peers, ts, 'legacy', exports.isLegacy, {
-        quota: 3, factor: 5*min, max: 3*hour, groupMin: 5*min,
+      connect(peers, ts, 'attempt', exports.isUnattempted, {
+        min: 0, quota: 10, factor: 0, max: 0, groupMin: 0,
         disable: !conf('global', true)
       })
 
-    connect(peers, ts, 'longterm', exports.isLongterm, {
-      quota: 3, factor: 10e3, max: 10*min, groupMin: 5e3,
-      disable: !conf('global', true)
-    })
+      connect(peers, ts, 'retry', exports.isInactive, {
+        min: 0,
+        quota: 3, factor: 5*60e3, max: 3*60*60e3, groupMin: 5*50e3
+      })
 
-    connect(peers, ts, 'local', exports.isLocal, {
-      quota: 3, factor: 2e3, max: 10*min, groupMin: 1e3,
-      disable: !conf('local', true)
-    })
+      connect(peers, ts, 'legacy', exports.isLegacy, {
+          quota: 3, factor: 5*min, max: 3*hour, groupMin: 5*min,
+          disable: !conf('global', true)
+        })
+
+      connect(peers, ts, 'longterm', exports.isLongterm, {
+        quota: 3, factor: 10e3, max: 10*min, groupMin: 5e3,
+        disable: !conf('global', true)
+      })
+
+      connect(peers, ts, 'local', exports.isLocal, {
+        quota: 3, factor: 2e3, max: 10*min, groupMin: 1e3,
+        disable: !conf('local', true)
+
+      })
+    //}, 100*Math.random())
   }
 
   pull(

@@ -1,14 +1,14 @@
-var isArray = Array.isArray
+//var isArray = Array.isArray
 var pull = require('pull-stream')
 var ref = require('ssb-ref')
 
 module.exports = function (gossip, config, server) {
 
   // populate peertable with configured seeds (mainly used in testing)
-  var seeds = config.seeds
-
-  ;(isArray(seeds)  ? seeds : [seeds]).filter(Boolean)
-  .forEach(function (addr) { gossip.add(addr, 'seed') })
+  //var seeds = config.seeds
+  //
+  //;(isArray(seeds)  ? seeds : [seeds]).filter(Boolean)
+  //.forEach(function (addr) { gossip.add(addr, 'seed') })
 
   // populate peertable with pub announcements on the feed
   pull(
