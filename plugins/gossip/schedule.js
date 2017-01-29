@@ -8,10 +8,6 @@ function stringify(peer) {
   return [peer.host, peer.port, peer.key].join(':')
 }
 
-function rand(array) {
-  return array[~~(Math.random()*array.length)]
-}
-
 function not (fn) {
   return function (e) { return !fn(e) }
 }
@@ -51,11 +47,13 @@ function isUnattempted (e) {
 }
 
 function isInactive (e) {
-  return e.stateChange && e.duration.mean == 0
+  //return e.stateChange && e.duration.mean == 0
+  return e.stateChange && (!e.duration || e.duration.mean == 0)
 }
 
 function isLongterm (e) {
-  return e.ping && e.ping.rtt.mean > 0
+  //return e.ping && e.ping.rtt.mean > 0
+  return e.ping && e.ping.rtt && e.ping.rtt.mean > 0
 }
 
 //function isLegacy (peer) {

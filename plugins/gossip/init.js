@@ -1,5 +1,6 @@
 var isArray = Array.isArray
 var pull = require('pull-stream')
+var ref = require('ssb-ref')
 
 module.exports = function (gossip, config, server) {
 
@@ -14,9 +15,15 @@ module.exports = function (gossip, config, server) {
     server.messagesByType({
       type: 'pub', live: true, keys: false
     }),
+    //pull.drain(function (msg) {
+    //  if(!msg.content.address) return
+    //  gossip.add(msg.content.address, 'pub')
+    //})
     pull.drain(function (msg) {
+      if(msg.sync) return
       if(!msg.content.address) return
-      gossip.add(msg.content.address, 'pub')
+      if(ref.isAddress(msg.content.address))
+        gossip.add(msg.content.address, 'pub')
     })
   )
 
