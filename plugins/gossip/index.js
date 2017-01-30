@@ -88,7 +88,7 @@ module.exports = {
             p.stateChange = Date.now()
             notify({ type: 'connect-failure', peer: p })
             server.emit('log:info', ['SBOT', p.host+':'+p.port+p.key, 'connection failed', err.message || err])
-            p.duration.value = stats(p.duration, 0) 
+            p.duration = stats(p.duration, 0)
             return (cb && cb(err))
           }
           else {

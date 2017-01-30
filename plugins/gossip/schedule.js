@@ -133,7 +133,7 @@ function (gossip, config, server) {
 
     connect(peers, ts, 'retry', exports.isInactive, {
       min: 0,
-      quota: 1, factor: 5*60e3, max: 3*60*60e3, groupMin: 5*50e3
+      quota: 3, factor: 5*60e3, max: 3*60*60e3, groupMin: 5*50e3
     })
 
     connect(peers, ts, 'legacy', exports.isLegacy, {
