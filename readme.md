@@ -4,6 +4,10 @@
 
 In the beginning the web was distributed. Then companies in the valley centralized it for their own profit, impoverishing the creative class of the Internet. We're creating a decent alternative.
 
+![Decent on Nexus](decent-nexus.jpg)
+
+![Decent screenshot](decent-screenshot.png)
+
 Decent is based on [Scuttlebot](http://scuttlebot.io), but uses an alternative network key: `EVRctE2Iv8GrO/BpQCF34e2FMPsDJot9x0j846LjVtc=`.
 
 Decent combines all of the necessary parts of Scuttlebot for a simpler install process
