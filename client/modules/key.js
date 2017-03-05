@@ -10,7 +10,7 @@ exports.gives = {
 exports.create = function (api) {
   return {
     screen_view: function (path, sbot) {
-      if(path === 'Your Key') {
+      if(path === 'Key') {
         if(process.title === 'browser') {
           var importKey = h('textarea.import', {placeholder: 'import an existing public/private key', name: 'textarea'})
           var importRemote = h('input.import', {placeholder: 'import an existing remote', name: 'textarea'})

@@ -83,7 +83,7 @@ exports.create = function (api) {
         h('a', {href: '#' + id}, img)
       ),
       h('p.edit', 
-        h('a', {innerHTML: '<a href="#Edit Profile">Edit your profile</a> <a href="#Your Key"><img src="' + api.emoji_url('key') + '" class="emoji" /></a>'})
+        h('a', {innerHTML: '<a href="#Edit">Edit your profile</a> <a href="#Key"><img src="' + api.emoji_url('key') + '" class="emoji" /></a>'})
       ),
       h('div.header__tabs', tabs.firstChild), //tabs
       h('div.header__search', h('div', search), api.menu())

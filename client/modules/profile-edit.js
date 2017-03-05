@@ -16,7 +16,7 @@ exports.gives = {
 exports.create = function (api) {
   return {
     screen_view: function (path, sbot) {
-      if(path === 'Edit Profile') {
+      if(path === 'Edit') {
         var identify = h('input.identify', {placeholder: 'Your Name', name: 'namespace'})
         var div = h('div.scroller__wrapper',
           h('div.column.scroller__content', {style: 'margin-top: 25%;'},
