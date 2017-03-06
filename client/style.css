@@ -128,7 +128,7 @@ code {
 /* compose */
 
 .compose {
-  width: 100%;
+  width: 98%;
   margin-top: 1em;
 }
 
@@ -142,7 +142,7 @@ code {
   margin-top: -1px;
   border-radius: 2px;
   background: #fff;
-  width: 100%;
+  width: 95%;
 }
 
 .message:focus, .message:hover {
