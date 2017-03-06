@@ -142,6 +142,7 @@ code {
   margin-top: -1px;
   border-radius: 2px;
   background: #fff;
+  width: 100%;
 }
 
 .message:focus, .message:hover {
