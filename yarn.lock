@@ -943,7 +943,7 @@ hypercombo@0.1.0:
     hyperscript "^2.0.2"
     pull-stream "^3.4.3"
 
-hypercrop@^1.0.1:
+hypercrop@1.0.1:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/hypercrop/-/hypercrop-1.0.1.tgz#3abe3c616d739d671f0b3522b8cd43f0c105aeae"
   dependencies:
@@ -961,7 +961,7 @@ hyperfile@^2.0.0:
   dependencies:
     hscrpt "0.0.1"
 
-hyperlightbox@^0.1.3:
+hyperlightbox@0.1.3:
   version "0.1.3"
   resolved "https://registry.yarnpkg.com/hyperlightbox/-/hyperlightbox-0.1.3.tgz#818da3a8b6e6f4cf73cab659beafca7abe5a0c0c"
   dependencies:
