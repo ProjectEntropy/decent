@@ -11,11 +11,21 @@ var ref = require('ssb-ref')
 var visualize = require('visualize-buffer')
 var self_id = require('../keys').id
 
+exports.needs = {
+  message_confirm: 'first',
+  sbot_blobs_add: 'first',
+  blob_url: 'first',
+  sbot_links: 'first'
+}
+
+exports.gives = 'avatar_edit'
+
 function crop (d, cb) {
   var data
   var canvas = hypercrop(h('img', {src: d}))
 
   return h('div.column.avatar_pic',
+    h('header', 'Click and drag to crop your avatar.'),
     canvas,
     h('div.row.avatar_pic__controls',
       h('button', 'Select', {onclick: function () {
@@ -27,15 +37,6 @@ function crop (d, cb) {
     )
   )
 }
-
-exports.needs = {
-  message_confirm: 'first',
-  sbot_blobs_add: 'first',
-  blob_url: 'first',
-  sbot_links: 'first'
-}
-
-exports.gives = 'avatar_edit'
 
 exports.create = function (api) {
   return function (id) {
@@ -66,9 +67,6 @@ exports.create = function (api) {
               pull(
                 pull.once(_data.data),
                 api.sbot_blobs_add(function (err, hash) {
-                  //TODO. Alerts are EVIL.
-                  //I use them only in a moment of weakness.
-
                   if(err) return alert(err.stack)
                   selected = {
                     link: hash,
@@ -84,7 +82,7 @@ exports.create = function (api) {
           })
           lb.show(el)
         }),
-        h('button', 'Publish Photo', {
+        h('button', 'Publish', {
           onclick: function () {
             if(selected) {
               api.message_confirm({
@@ -93,8 +91,8 @@ exports.create = function (api) {
                 image: selected
               })
             }
-            else
-              alert('If you\'ve just uploaded an image, give it a second to reach the server. If you haven\'t selected an image or name, please do that first.')
+            //else
+            //  alert('If you\'ve just uploaded an image, give it a second to reach the server. If you haven\'t selected an image or name, please do that first.')
           }
         })
       )
