@@ -21,9 +21,6 @@ argv = ~i ? argv.slice(0, i) : argv
 var config = require('./plugins/ssb-config/inject')(process.env.ssb_appname, minimist(conf))
 
 var keys = ssbKeys.loadOrCreateSync(path.join(config.path, 'secret'))
-if(keys.curve === 'k256')
-  throw new Error('k256 curves are no longer supported,'+
-                  'please delete' + path.join(config.path, 'secret'))
 
 var manifestFile = path.join(config.path, 'manifest.json')
 
