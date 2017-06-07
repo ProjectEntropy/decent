@@ -10,7 +10,8 @@ var viewerUrl = 'http://localhost:3535/'
 
 var liteURL = 'http://decent.evbogue.com/'
 var opts = {"modern":true,}
-var lite;
+var lite
+var port = 1333
 
 var style = fs.readFileSync(__dirname + '/style.css', 'utf8')
 
@@ -74,6 +75,6 @@ exports.init = function (sbot, config) {
         ).outerHTML)
       }
     }
-  }).listen(1337)
-  
+  }).listen(port)
+  console.log('sdash is running at http://localhost:' + port + '/') 
 }
