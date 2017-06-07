@@ -9,6 +9,7 @@
   "author": "Ev Bogue",
   "license": "MIT",
   "dependencies": {
+    "asyncmemo": "^1.0.0",
     "atomic-file": "0.0.1",
     "bash-color": "~0.0.3",
     "broadcast-stream": "~0.0.0",
@@ -35,6 +36,7 @@
     "is-visible": "^2.1.1",
     "kvgraph": "^0.1.0",
     "level-memview": "~0.0.0",
+    "lrucache": "^1.0.2",
     "map-filter-reduce": "^3.0.1",
     "mdmanifest": "^1.0.4",
     "mime-types": "^2.1.11",

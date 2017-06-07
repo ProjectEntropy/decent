@@ -6,8 +6,7 @@ var client = require('../ssb-client')
 var md = require('ssb-markdown')
 
 var title = 'sdash'
-var me = '@EVoxY2Hu75dWZxnTMaqxJS8cjeNVpTKjgSlh3lDVjvw=.ed25519'
-var viewerUrl = 'http://evbogue.com:3535/'
+var viewerUrl = 'http://localhost:3535/'
 
 var liteURL = 'http://decent.evbogue.com/'
 var opts = {"modern":true,}
@@ -19,13 +18,16 @@ exports.name = 'sdash'
 exports.manifest = {}
 // exports.version = require('./package').version
 
-exports.init = function (sbot, config) {
+exports.init = function (sbot, config) {  
+
+  var id = require ('../../client/keys').id
+  console.log(id)
 
   http.createServer(function (req, res){
     if (req.url === '/') {
       client(function (err, sbot) {
         pull(
-          sbot.query.read({query: [{$filter: { value: { author: me, content: {type: 'post'}}}}], limit: 1, reverse: true}),
+          sbot.query.read({query: [{$filter: { value: { author: id, content: {type: 'post'}}}}], limit: 1, reverse: true}),
             pull.drain(function (data) {
             post = data
             gotPost()
