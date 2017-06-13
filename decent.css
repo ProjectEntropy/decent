@@ -1,0 +1,393 @@
+body {
+  font-family: 'Source Sans Pro', sans-serif;
+}
+
+hr {
+  border: solid #eee;
+  clear: both;
+  border-width: 1px 0 0;
+  height: 0;
+  margin-bottom: .9em;
+}
+
+a:link, a:visited, a:active {
+  color: #08c;
+  text-decoration: none;
+}
+
+a:hover,
+a:focus {
+  color: #005580;
+  text-decoration: underline;
+}
+
+.screen {
+  background: #f9f9f9;
+}
+
+pre {
+  background: #eee;
+  border: 1px solid #ddd;
+  border-radius: 2px;
+}
+
+code {
+  background: #eee;
+}
+
+.message {
+  position: relative;
+  flex-basis: 0;
+  padding: .5em;
+  border: 1px solid #ddd;
+  margin-top: -1px;
+  margin-bottom: 0;
+  border-radius: 2px;
+  background: #fff;
+  width: 95%;
+}
+
+.message:focus, .message:hover {
+  background: #f5f5f5;
+}
+
+.message_content--mini div > span {
+  display: inline-block;
+}
+
+.message_meta {
+  margin-left: auto;
+}
+
+.message_meta > * {
+  margin-left: .5ex;
+}
+
+.message_actions {
+  float: right;
+}
+
+.message img {
+  max-width: 100%;
+}
+
+.message > .title > .avatar {
+  margin-left: 0;
+}
+
+.message:first-child {
+  margin-top: 1em;
+}
+
+.message_content {
+  padding: .5ex;
+}
+
+.actions > :not(:last-child) {
+  border-right: 2px solid #eee;
+  padding-right: 5px;
+}
+
+.emoji {
+  height: 1em;
+  width: 1em;
+  vertical-align: top;
+}
+
+
+/* -- suggest box */
+
+.suggest-box > * {
+  display: block;
+  font-weight: normal;
+}
+
+
+.suggest-box ul {
+  padding: 0;
+  list-style-type: none;
+  padding-left: 0;
+  margin: 0;
+}
+
+.suggest-box .selected {
+  background: #ddd;
+}
+
+.suggest-box {
+  width: max-content;
+  background: white;
+  border: 1px solid #eee;
+  border-radius: 2px;
+}
+
+/* emoji */
+.suggest-box img {
+  height: 20px;
+  width: 20px;
+}
+
+/* avatar */
+
+.avatar--profile {
+  width: 7em;
+  height: 7em;
+  float: left;
+  border-radius: 5px;
+  margin-right: .5em;
+}
+
+.avatar--full {
+  margin: .5em;
+  width: 100%;
+  border-radius: 5px;
+}
+
+.avatar--large {
+  width: 10em;
+  height: 10em;
+  border-radius: 5px;
+}
+
+.avatar--thumbnail {
+  width: 2.5em;
+  height: 2.5em;
+  float: left;
+  margin-right: .5ex;
+  border-radius: 5px;
+}
+
+.avatar--fullsize {
+  width: 50%;
+  border-radius: 5px;
+}
+
+.profile {
+  padding: .5ex;
+  overflow: auto;
+}
+
+.profile input {
+  width: 100%;
+}
+
+.profile__info {
+  margin-left: .5em;
+}
+
+input, textarea {
+ border: 1px solid #ddd;
+ border-radius: 2px;
+ font-family: sans-serif;
+ font-size: .9em;
+ padding: .5em;
+}
+
+textarea {
+  padding: .5em;
+}
+
+.import {
+  width: 97%
+}
+
+
+/* lightbox - used in message-confirm */
+
+.lightbox {
+  overflow: auto;
+  margin-top: 3em;
+  margin-bottom: 3em;
+  width: 512px;
+  // background: white;
+  z-index: 5;
+}
+
+/* searchprompt */
+
+.searchprompt {
+  margin-top: 1px;
+  margin-bottom: 1px;
+  float: left;
+  padding: .5em;
+  width: 100%;
+}
+
+.header__search {
+  position: absolute;
+  bottom: .5em;
+  left: .5em;
+}
+
+.logo {
+  font-size: .8em;
+  padding: .2em;
+}
+
+/* TextNodeSearcher highlights */
+
+.highlight {
+  background: yellow;
+}
+
+/* avatar editor */
+
+.hypercrop__canvas {
+  width: 100%;
+}
+
+/* gitssb */
+
+.git-table-wrapper {
+  max-height: 12em;
+  overflow: auto;
+  word-break: break-all;
+  margin: 1em 0;
+}
+
+.git-table-wrapper table {
+  width: 100%;
+}
+
+/* --- network status --- */
+
+.status {
+  width: 1em;
+  height: 1em;
+  margin: .5em;
+  background: #08c;
+}
+
+.error {
+  background: red;
+}
+
+/* tabs */
+
+.header {
+  border-bottom: 1px inset #ddd;
+  width: 100%;
+  // flex-shrink: 0;
+  z-index: 1;
+}
+
+.left {
+  position: fixed;
+  left: 0;
+  width: 17%;
+  max-width: 200px;
+  height: 100%;
+}
+
+.hypertabs__content {
+  margin-left: auto;
+  width: 79%;
+}
+
+/*.header__tabs {
+  width: 100%; 
+  min-width: 0px;
+}*/
+
+/* --- hypertabs ------- */
+
+.hypertabs__tabs {
+  min-width: 0px;
+  width: 95%;
+  border-radius 2px;
+}
+
+.hypertabs__tab {
+  overflow-x: hidden;
+  min-width: 0px;
+  border: 1px solid #ddd;
+  border-radius: 2px;
+  margin-top: -1px;
+  background: linear-gradient(#fff, #eee);
+}
+
+.hypertabs__tab:hover {
+  background: linear-gradient(#eee, #ddd);
+  color: #fff;
+}
+
+.hypertabs__button {
+  overflow-x: hidden;
+  min-width: 0px;
+  width: 100%;
+}
+
+.hypertabs__tab {
+  color: black;
+  // margin-left: -3px;
+  padding-top: .5em;
+  padding-left: 1em;
+  // border-left: 1px solid #ccc;
+  width: 100%; 
+  height: 1.5em;
+}
+
+.hypertabs__tab > a {
+  color: #666;
+  text-decoration: none;
+  white-space: nowrap;
+  font-size: .9em;
+}
+
+.hypertabs--selected {
+  background: linear-gradient(#eee, #ddd);
+  font-weight: bold;
+  z-index: 3;
+}
+
+.hypertabs__x  {
+  display: none; 
+  transform: translate(-4px, -2px);
+}
+
+.hypertabs--selected .hypertabs__x {
+  display: block;
+}
+
+/* progress bar */
+
+.hyperprogress__bar {
+  background: darkgrey;
+}
+.hyperprogress__liquid {
+  background: lightblue;
+}
+
+button {
+  font-size: .9em;
+  background: #eee;
+  background: #eee linear-gradient(#eee, #ccc);
+  border: 1px solid #aaa;
+  border-top: 1px solid #ccc;
+  border-left: 1px solid #ccc;
+  border-radius: 5px;
+  color: #444;
+  display: inline-block;
+  text-decoration: none;
+  font-weight: bold;
+  cursor: pointer;
+  margin: .1em;
+  padding-top: .4em;
+  padding-left: .6em;
+  padding-right: .6em;
+  padding-bottom: .4em; 
+}
+
+button:hover, button:focus {
+  background: #ddd;
+  background: #ddd linear-gradient(#ddd, #aaa);
+  border: 1px solid #888;
+  border-top: 1px solid #aaa;
+  border-left: 1px solid #aaa;
+  color: #222;
+}
+
+.edit {
+  margin-left: .6em;
+  font-size: .8em;
+}
