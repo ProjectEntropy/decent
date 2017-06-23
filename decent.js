@@ -48,7 +48,13 @@ if (argv[0] == 'server') {
     .use(require('ssb-links'))
     .use(require('ssb-query'))
     .use(require('ssb-ebt'))
-    // .use(require('ssb-fulltext'))
+    .use(require('./serve'))
+    .use(require('./sdash'))
+    .use(require('ssb-viewer-ev'))
+    // .use(require('sdash'))
+    //.use(require('ssb-fulltext'))
+  //var lite = require('./serve')
+  //lite.serve()
 
   // add third-party plugins
   //require('scuttlebot/plugins/plugins').loadUserPlugins(createSbot, config)
@@ -61,8 +67,6 @@ if (argv[0] == 'server') {
   // write RPC manifest to ~/.ssb/manifest.json
   fs.writeFileSync(manifestFile, JSON.stringify(server.getManifest(), null, 2))
 
-  var lite = require('./serve')
-  lite.serve()
 
 } else {
 

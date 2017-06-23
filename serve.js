@@ -2,7 +2,7 @@ var http = require('http');
 var serve = require('ecstatic');
 var client = require('ssb-client')
 
-exports.serve = function() {
+exports.init = function() {
   http.createServer(
     serve({ root: __dirname + '/build/'})
   ).listen(3013);
