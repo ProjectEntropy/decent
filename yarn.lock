@@ -493,7 +493,7 @@ define-properties@^1.1.2:
     foreach "^2.0.5"
     object-keys "^1.0.8"
 
-defined@~1.0.0:
+defined@^1.0.0, defined@~1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/defined/-/defined-1.0.0.tgz#c98d9bcef75674188e110969151199e39b1fa693"
 
@@ -566,8 +566,8 @@ epidemic-broadcast-trees@^1.0.1:
     pull-stream "^3.5.0"
 
 epidemic-broadcast-trees@^2.0.2:
-  version "2.0.2"
-  resolved "https://registry.yarnpkg.com/epidemic-broadcast-trees/-/epidemic-broadcast-trees-2.0.2.tgz#d8b7dcf46527e92c2414ce251a55781230d11820"
+  version "2.1.0"
+  resolved "https://registry.yarnpkg.com/epidemic-broadcast-trees/-/epidemic-broadcast-trees-2.1.0.tgz#d8b85b3f77624b1da50333a6f6a2af70dc3b4257"
   dependencies:
     explain-error "^1.0.3"
     pull-stream "^3.5.0"
@@ -1505,14 +1505,16 @@ mime@^1.2.11:
   resolved "https://registry.yarnpkg.com/mime/-/mime-1.3.6.tgz#591d84d3653a6b0b4a3b9df8de5aa8108e72e5e0"
 
 minbase@^1.3.0:
-  version "1.3.3"
-  resolved "https://registry.yarnpkg.com/minbase/-/minbase-1.3.3.tgz#92e586d1362e802de9a30eb628c6b1c6f9964478"
+  version "1.3.8"
+  resolved "https://registry.yarnpkg.com/minbase/-/minbase-1.3.8.tgz#0079b2c387eedfc2b37ea98665cb6758eacf3060"
   dependencies:
     cont "^1.0.3"
     dataurl- "^0.1.0"
     depject "^3.0.0"
     ecstatic "^2.1.0"
+    emoji-named-characters "^1.0.2"
     epidemic-broadcast-trees "^2.0.2"
+    explain-error "^1.0.4"
     human-time "0.0.1"
     hypercombo "0.1.0"
     hypercrop "^1.0.1"
@@ -1524,14 +1526,19 @@ minbase@^1.3.0:
     is-visible "^2.1.1"
     kvgraph "^0.1.0"
     map-filter-reduce "^3.0.1"
+    minimist "^1.2.0"
+    multiblob "^1.11.0"
+    muxrpcli "^1.1.0"
     open-external "^0.1.1"
     pull-cat "^1.1.9"
+    pull-file "^1.0.0"
     pull-many "^1.0.7"
-    pull-next "^1.0.0"
+    pull-next "^1.0.1"
     pull-paramap "^1.1.6"
     pull-pause "^0.0.1"
     pull-reconnect "^0.0.3"
     pull-stream "^3.4.5"
+    pull-stringify "^2.0.0"
     scuttlebot "^10.0.7"
     simple-mime "^0.1.0"
     split-buffer "^1.0.0"
@@ -1539,8 +1546,9 @@ minbase@^1.3.0:
     ssb-blobs "^1.0.1"
     ssb-client "^4.4.1"
     ssb-config "^2.1.1"
-    ssb-ebt "1.1.1"
+    ssb-ebt "1.1.2"
     ssb-feed "^2.2.1"
+    ssb-friends "^2.0.3"
     ssb-git "^0.4.1"
     ssb-keys "^7.0.0"
     ssb-links "^3.0.0"
@@ -1549,6 +1557,7 @@ minbase@^1.3.0:
     ssb-query "^1.0.0"
     ssb-ref "^2.7.1"
     ssb-ws "^1.0.3"
+    stream-to-pull-stream "^1.7.2"
     suggest-box "^2.2.1"
     text-node-searcher "^1.1.0"
     visualize-buffer "0.0.1"
@@ -1645,7 +1654,7 @@ muxrpc@^6.1.1, muxrpc@^6.2.2, muxrpc@^6.3.3:
     pull-goodbye "~0.0.1"
     pull-stream "^3.2.3"
 
-muxrpcli@^1.0.0:
+muxrpcli@^1.0.0, muxrpcli@^1.1.0:
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/muxrpcli/-/muxrpcli-1.1.0.tgz#4ae9ba986ab825c4a5c12fcb71c6daa81eab5158"
   dependencies:
@@ -2088,9 +2097,9 @@ pull-many@^1.0.7, pull-many@~1.0.6:
   dependencies:
     pull-stream "^3.4.5"
 
-pull-next@^1.0.0:
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/pull-next/-/pull-next-1.0.0.tgz#af46a51f0c5f05539db305f798d5d3389afcbaff"
+pull-next@^1.0.0, pull-next@^1.0.1:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/pull-next/-/pull-next-1.0.1.tgz#03f4d7d19872fc1114161e88db6ecf4c65e61e56"
 
 pull-notify@0.0.2:
   version "0.0.2"
@@ -2185,6 +2194,12 @@ pull-stream@~2.26.0:
 pull-stream@~3.5.0:
   version "3.5.0"
   resolved "https://registry.yarnpkg.com/pull-stream/-/pull-stream-3.5.0.tgz#1ee5b6f76fd3b3a49a5afb6ded5c0320acb3cfc7"
+
+pull-stringify@^2.0.0:
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/pull-stringify/-/pull-stringify-2.0.0.tgz#22ba31da95af0888e0fb559238b1fa915a6a5b64"
+  dependencies:
+    defined "^1.0.0"
 
 pull-stringify@~1.2.2:
   version "1.2.2"
@@ -2435,8 +2450,8 @@ safe-buffer@^5.0.1, safe-buffer@~5.1.0:
   resolved "https://registry.yarnpkg.com/safe-buffer/-/safe-buffer-5.1.1.tgz#893312af69b2123def71f57889001671eeb2c853"
 
 scuttlebot@^10.0.7:
-  version "10.0.7"
-  resolved "https://registry.yarnpkg.com/scuttlebot/-/scuttlebot-10.0.7.tgz#e2181e27b52c4c6bb7b3fd516c83ace3199b0497"
+  version "10.2.1"
+  resolved "https://registry.yarnpkg.com/scuttlebot/-/scuttlebot-10.2.1.tgz#e8ce3735febacf6226bf866ea9d7ba5fe3a9add6"
   dependencies:
     atomic-file "0.0.1"
     bash-color "~0.0.3"
@@ -2729,9 +2744,9 @@ ssb-ebt@0.0.7:
     pull-cont "^0.1.1"
     pull-stream "^3.5.0"
 
-ssb-ebt@1.1.1:
-  version "1.1.1"
-  resolved "https://registry.yarnpkg.com/ssb-ebt/-/ssb-ebt-1.1.1.tgz#5d1b68a2ecc907f10d38404e59c03387e60c824d"
+ssb-ebt@1.1.2:
+  version "1.1.2"
+  resolved "https://registry.yarnpkg.com/ssb-ebt/-/ssb-ebt-1.1.2.tgz#32d823609284d1997440ee80f5a79982b312e02c"
   dependencies:
     base64-url "^1.3.3"
     cont "^1.0.3"
@@ -2751,7 +2766,7 @@ ssb-feed@^2.2.1:
     ssb-keys "^7.0.0"
     ssb-ref "^2.0.0"
 
-ssb-friends@^2.0.1:
+ssb-friends@^2.0.1, ssb-friends@^2.0.3:
   version "2.0.3"
   resolved "https://registry.yarnpkg.com/ssb-friends/-/ssb-friends-2.0.3.tgz#3d1836fc6e101b6b2c5e421cfca33341e8d29fd9"
   dependencies:
@@ -2843,8 +2858,8 @@ ssb-sort@^1.0.0:
     ssb-ref "^2.3.0"
 
 ssb-viewer-ev@^1.0.0:
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/ssb-viewer-ev/-/ssb-viewer-ev-1.0.0.tgz#722874960d7f06ca1e83f075615d95b1750e51fc"
+  version "1.0.3"
+  resolved "https://registry.yarnpkg.com/ssb-viewer-ev/-/ssb-viewer-ev-1.0.3.tgz#b066831cf4dcaf91c9f2ac4756dfbc6ac8c43445"
   dependencies:
     asyncmemo "^1.0.0"
     emoji-named-characters "^1.0.2"
