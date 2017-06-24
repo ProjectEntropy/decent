@@ -9,7 +9,7 @@ var config = require('ssb-config/inject')(process.env.ssb_appname)
 var ssbKeys = require('ssb-keys')
 var path = require('path')
 
-var title = 'sdash'
+var title = 'Decent'
 var opts = {"modern":true,}
 var lite;
 

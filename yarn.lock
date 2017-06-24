@@ -2858,8 +2858,8 @@ ssb-sort@^1.0.0:
     ssb-ref "^2.3.0"
 
 ssb-viewer-ev@^1.0.0:
-  version "1.0.3"
-  resolved "https://registry.yarnpkg.com/ssb-viewer-ev/-/ssb-viewer-ev-1.0.3.tgz#b066831cf4dcaf91c9f2ac4756dfbc6ac8c43445"
+  version "1.0.4"
+  resolved "https://registry.yarnpkg.com/ssb-viewer-ev/-/ssb-viewer-ev-1.0.4.tgz#1c891b3317af7e12d3603d9debc7e109c8e2b637"
   dependencies:
     asyncmemo "^1.0.0"
     emoji-named-characters "^1.0.2"
