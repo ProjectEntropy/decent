@@ -354,8 +354,8 @@ code-point-at@^1.0.0:
   resolved "https://registry.yarnpkg.com/code-point-at/-/code-point-at-1.1.0.tgz#0d070b4d043a5bea33a2f1a40e2edb3d9a4ccf77"
 
 collapse-white-space@^1.0.0:
-  version "1.0.2"
-  resolved "https://registry.yarnpkg.com/collapse-white-space/-/collapse-white-space-1.0.2.tgz#9c463fb9c6d190d2dcae21a356a01bcae9eeef6d"
+  version "1.0.3"
+  resolved "https://registry.yarnpkg.com/collapse-white-space/-/collapse-white-space-1.0.3.tgz#4b906f670e5a963a87b76b0e1689643341b6023c"
 
 combined-stream@^1.0.5, combined-stream@~1.0.5:
   version "1.0.5"
@@ -1052,7 +1052,7 @@ ip@^0.3.3, ip@~0.3.2:
   version "0.3.3"
   resolved "https://registry.yarnpkg.com/ip/-/ip-0.3.3.tgz#8ee8309e92f0b040d287f72efaca1a21702d3fb4"
 
-ip@^1.1.2, ip@^1.1.3:
+ip@^1.1.2, ip@^1.1.3, ip@^1.1.5:
   version "1.1.5"
   resolved "https://registry.yarnpkg.com/ip/-/ip-1.1.5.tgz#bdded70114290828c0a039e72ef25f5aaec4354a"
 
@@ -1625,9 +1625,9 @@ multicb@^1.0.0, multicb@^1.2.1:
   version "1.2.1"
   resolved "https://registry.yarnpkg.com/multicb/-/multicb-1.2.1.tgz#e2499df476a7f8f8d52ded265d13b2c1a69d9827"
 
-multiserver@^1.2.0, multiserver@^1.7.0, multiserver@^1.8.1:
-  version "1.9.1"
-  resolved "https://registry.yarnpkg.com/multiserver/-/multiserver-1.9.1.tgz#f7dfa757aaaf6de2d64aa6853adbdb1ca884ab67"
+multiserver@^1.10.0, multiserver@^1.2.0, multiserver@^1.7.0:
+  version "1.10.0"
+  resolved "https://registry.yarnpkg.com/multiserver/-/multiserver-1.10.0.tgz#d298a0d0028e0a586f90bb9fc944684d42390f88"
   dependencies:
     pull-cat "~1.1.5"
     pull-stream "^3.4.3"
@@ -2145,6 +2145,12 @@ pull-pushable@^2.0.0, pull-pushable@^2.0.1:
   version "2.1.1"
   resolved "https://registry.yarnpkg.com/pull-pushable/-/pull-pushable-2.1.1.tgz#86666abbe3f5402f1f7ead03eefd69b785eca5b8"
 
+pull-rate@^1.0.2:
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/pull-rate/-/pull-rate-1.0.2.tgz#17b231ad5f359f675826670172b0e590c8964e8d"
+  dependencies:
+    pull-stream "^3.6.0"
+
 pull-reader@^1.2.3, pull-reader@^1.2.4, pull-reader@^1.2.5:
   version "1.2.9"
   resolved "https://registry.yarnpkg.com/pull-reader/-/pull-reader-1.2.9.tgz#d2e9ad00bcfb54e62aa66d42c2dbbcb5eb6843b0"
@@ -2284,9 +2290,9 @@ rc@~0.5.4:
     minimist "~0.0.7"
     strip-json-comments "0.1.x"
 
-readable-stream@^1.0.33, readable-stream@~1.0.26:
-  version "1.0.34"
-  resolved "https://registry.yarnpkg.com/readable-stream/-/readable-stream-1.0.34.tgz#125820e34bc842d2f2aaafafe4c2916ee32c157c"
+readable-stream@^1.0.33:
+  version "1.1.14"
+  resolved "https://registry.yarnpkg.com/readable-stream/-/readable-stream-1.1.14.tgz#7cf4c54ef648e3813084c636dd2079e166c081d9"
   dependencies:
     core-util-is "~1.0.0"
     inherits "~2.0.1"
@@ -2304,6 +2310,15 @@ readable-stream@^2.0.0, readable-stream@^2.0.2, readable-stream@^2.0.5, readable
     safe-buffer "~5.1.0"
     string_decoder "~1.0.0"
     util-deprecate "~1.0.1"
+
+readable-stream@~1.0.26:
+  version "1.0.34"
+  resolved "https://registry.yarnpkg.com/readable-stream/-/readable-stream-1.0.34.tgz#125820e34bc842d2f2aaafafe4c2916ee32c157c"
+  dependencies:
+    core-util-is "~1.0.0"
+    inherits "~2.0.1"
+    isarray "0.0.1"
+    string_decoder "~0.10.x"
 
 readdirp@^2.0.0:
   version "2.1.0"
@@ -2534,21 +2549,23 @@ secret-handshake@^1.1.5:
     pull-stream "^3.4.5"
 
 secret-stack@^3.2.0:
-  version "3.2.2"
-  resolved "https://registry.yarnpkg.com/secret-stack/-/secret-stack-3.2.2.tgz#0c41e7a60b9d19f404ea76f2b18e0c320c455a1a"
+  version "3.3.2"
+  resolved "https://registry.yarnpkg.com/secret-stack/-/secret-stack-3.3.2.tgz#0be68b11abf2e702197c918d6303d1512a13abe4"
   dependencies:
     hoox "0.0.1"
+    ip "^1.1.5"
     map-merge "^1.1.0"
-    multiserver "^1.8.1"
+    multiserver "^1.10.0"
     muxrpc "^6.2.2"
     non-private-ip "^1.3.0"
     pull-inactivity "~2.1.1"
+    pull-rate "^1.0.2"
     pull-stream "^3.4.5"
     stream-to-pull-stream "^1.6.1"
 
 secure-scuttlebutt@^16.3.2:
-  version "16.3.4"
-  resolved "https://registry.yarnpkg.com/secure-scuttlebutt/-/secure-scuttlebutt-16.3.4.tgz#0504c4d6c453a87449d2d992b2f1527130d01f0b"
+  version "16.3.5"
+  resolved "https://registry.yarnpkg.com/secure-scuttlebutt/-/secure-scuttlebutt-16.3.5.tgz#483cc371f34ec296dc0740eec280fc1b29ab1ffa"
   dependencies:
     bytewise "^1.1.0"
     cont "~1.0.0"
