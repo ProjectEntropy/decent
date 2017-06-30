@@ -28,6 +28,3 @@ Once you're on Decent, be sure to obey the first rule:
 1. Be decent
 
 Decent is maintained by [Ev Bogue](http://evbogue.com), based on the work of [Dominic Tarr](http://dominictarr.com).
-
-
-
