@@ -1,6 +1,6 @@
 # Decent
 
-### A decent(ralized) client for secure scuttlebutt.
+### A decent(ralized) alternative to your website.
 
 In the beginning the web was distributed. Then companies in the valley centralized it for their own profit, impoverishing the creative class of the Internet. We're creating a decent alternative.
 
