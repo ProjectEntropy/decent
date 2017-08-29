@@ -1,6 +1,6 @@
 {
   "name": "decent",
-  "version": "1.1.0",
+  "version": "3.0.0",
   "description": "A decent(tralized) network for communication and development",
   "scripts": {
     "start": "node decent server --allowPrivate",
@@ -78,6 +78,7 @@
     "simple-mime": "^0.1.0",
     "split-buffer": "^1.0.0",
     "ssb-avatar": "^0.2.0",
+    "ssb-blobs": "^1.1.3",
     "ssb-feed": "^2.2.1",
     "ssb-git": "^0.4.1",
     "ssb-keys": "^7.0.0",
