@@ -1,7 +1,7 @@
 var h = require('hyperscript')
 var u = require('../util')
 var pull = require('pull-stream')
-var Scroller = require('../pull-scroll')
+var Scroller = require('pull-scroll')
 
 exports.gives = {
   screen_view: true
@@ -41,7 +41,7 @@ exports.create = function (api) {
                     }}, 'Delete Pub')
                   ),
                   h('hr'),
-                  h('form',
+                  h('form.column',
                     importKey,
                     importRemote,
                     h('button', {onclick: function (e){

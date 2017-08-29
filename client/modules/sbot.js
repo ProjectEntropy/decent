@@ -3,7 +3,7 @@ var ssbKeys = require('ssb-keys')
 var ref = require('ssb-ref')
 var Reconnect = require('pull-reconnect')
 var path = require('path')
-var config = require('../../plugins/ssb-config/inject')(process.env.ssb_appname)
+var config = require('ssb-config/inject')(process.env.ssb_appname)
 config.keys = ssbKeys.loadOrCreateSync(path.join(config.path, 'secret'))
 
 function Hash (onHash) {
@@ -21,9 +21,9 @@ function Hash (onHash) {
   })
 }
 
-var createClient = require('../../plugins/ssb-client')
+var createClient = require('ssb-client')
 
-var createConfig = require('../../plugins/ssb-config/inject')
+var createConfig = require('ssb-config/inject')
 
 var createFeed   = require('ssb-feed')
 var keys = require('../keys')
@@ -36,7 +36,6 @@ module.exports = {
     connection_status: 'map'
   },
   gives: {
-//    connection_status: true,
     sbot_blobs_add: true,
     sbot_links: true,
     sbot_links2: true,
@@ -48,10 +47,12 @@ module.exports = {
     sbot_gossip_connect: true,
     sbot_progress: true,
     sbot_publish: true,
-    sbot_whoami: true
+    sbot_whoami: true,
+    sbot_stream: true,
+    sbot_friends_get: true,
+    sbot_signs_get: true
   },
 
-//module.exports = {
   create: function (api) {
 
     var opts = createConfig()
@@ -94,24 +95,8 @@ module.exports = {
 
     return {
       connection_status: connection_status,
-      sbot_blobs_add: rec.sink(function (cb) {
-        return pull(
-          Hash(function (err, id) {
-            if(err) return cb(err)
-            //completely UGLY hack to tell when the blob has been sucessfully written...
-            var start = Date.now(), n = 5
-            ;(function next () {
-              setTimeout(function () {
-                sbot.blobs.has(id, function (err, has) {
-                  if(has) return cb(null, id)
-                  if(n--) next()
-                  else cb(new Error('write failed'))
-                })
-              }, Date.now() - start)
-            })()
-          }),
-          sbot.blobs.add()
-        )
+      sbot_blobs_add: rec.sink(function (cb)  { 
+        return sbot.blobs.add(cb) 
       }),
       sbot_links: rec.source(function (query) {
         return sbot.links(query)
@@ -165,7 +150,6 @@ module.exports = {
               })
             }
           })
-
         feed.add(content, function (err, msg) {
           if(err) console.error(err)
           else if(!cb) console.log(msg)
@@ -174,15 +158,17 @@ module.exports = {
       }),
       sbot_whoami: rec.async(function (cb) {
         sbot.whoami(cb)
-      })
+      }),
+      sbot_stream: rec.source(function (opts) {
+        return sbot.stream(opts)
+      }),
+      sbot_friends_get: rec.async(function (opts, cb) {
+        return sbot.friends.get(opts, cb)
+      }),
+      sbot_signs_get: rec.async(function (opts, cb) {
+        return sbot.signs.get(opts, cb)
+      }),
     }
   }
 }
-
-
-
-
-
-
-
 

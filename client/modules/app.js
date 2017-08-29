@@ -1,4 +1,3 @@
-var plugs = require('../plugs')
 var h = require('hyperscript')
 
 module.exports = {
@@ -26,9 +25,8 @@ module.exports = {
       window.onhashchange = function (ev) {
         var _view = view
         view = api.screen_view(hash() || 'tabs')
-
         if(_view) screen.replaceChild(view, _view)
-        else      document.body.appendChild(view)
+        else document.body.appendChild(view)
       }
 
       document.body.appendChild(screen)

@@ -2,8 +2,6 @@ var h = require('hyperscript')
 var u = require('../util')
 var pull = require('pull-stream')
 
-var plugs = require('../plugs')
-
 exports.needs = {
   message_confirm: 'first',
   message_link: 'first',
@@ -35,11 +33,13 @@ exports.create = function (api) {
 
     var votes = []
     for(var k in CACHE) {
-      if(CACHE[k].content.type == 'vote' &&
+      if (CACHE[k].content.vote != null) {
+        if(CACHE[k].content.type == 'vote' &&
         (CACHE[k].content.vote == msg.key ||
         CACHE[k].content.vote.link == msg.key
         ))
         votes.push({source: CACHE[k].author, dest: k, rel: 'vote'})
+      }
     }
 
     if(votes.length === 1)
@@ -65,6 +65,7 @@ exports.create = function (api) {
         }
         api.message_confirm(dig)
       }}, 'Dig')
+
   }
   return exports
 }

@@ -1,4 +1,5 @@
 var pull = require('pull-stream')
+
 function isImage (filename) {
   return /\.(gif|jpg|png|svg)$/i.test(filename)
 }

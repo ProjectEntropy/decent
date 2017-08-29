@@ -1,36 +1,76 @@
 var h = require('hyperscript')
 var pull = require('pull-stream')
-var getAvatar = require('ssb-avatar')
-var visualize = require('visualize-buffer')
-var ref = require('ssb-ref')
 
 exports.needs = {
+  avatar_image_link: 'first',
   avatar_action: 'map',
-  avatar_name: 'first',
-  sbot_links: 'first',
-  blob_url: 'first'
+  avatar_edit: 'first',
+  follows: 'first',
+  followers: 'first'
 }
 
 exports.gives = 'avatar_profile'
 
-exports.create = function (api) {
-  return function (id) {
-    var img = visualize(new Buffer(id.substring(1), 'base64'), 256)
-    img.classList.add('avatar--profile')
-    var name = api.avatar_name(id)
-    
-    getAvatar({links: api.sbot_links}, id, id, function (err, avatar) {
-      if (err) return console.error(err)
-      if(ref.isBlob(avatar.image))
-        img.src = api.blob_url(avatar.image)
+function streamToList(stream, el) {
+  pull(
+    stream,
+    pull.drain(function (item) {
+      if(item) el.appendChild(item)
     })
+  )
+  return el
+}
+
+exports.create = function (api) {
+
+  function image_link (id) {
+    return api.avatar_image_link(id, 'thumbnail')
+  }
+
+  return function (id) {
+
+    var follows_el = h('div.profile__follows.wrap')
+    var friends_el = h('div.profile__friends.wrap')
+    var followers_el = h('div.profile__followers.wrap')
+    var a, b
+
+    pull(api.follows(id), pull.unique(), pull.collect(function (err, ary) {
+      a = ary || []; next()
+    }))
+    pull(api.followers(id), pull.unique(), pull.collect(function (err, ary) {
+      b = ary || {}; next()
+    }))
+
+    function next () {
+      if(!(a && b)) return
+      var _c = [], _a = [], _b = []
+
+      a.forEach(function (id) {
+        if(!~b.indexOf(id)) _a.push(id)
+        else               _c.push(id)
+      })
+      b.forEach(function (id) {
+        if(!~_c.indexOf(id)) _b.push(id)
+      })
+      function add (ary, el) {
+        ary.forEach(function (id) { el.appendChild(image_link(id)) })
+      }
+
+      add(_a, follows_el)
+      add(_c, friends_el)
+      add(_b, followers_el)
+    }
 
     return h('div.column.profile',
-      h('div.message',
-        h('a', {href: '#' + id}, img, 
-          h('h1', name)
-        ),
-        api.avatar_action(id)
+      api.avatar_edit(id),
+      api.avatar_action(id),
+      h('div.profile__relationships.column',
+        h('strong', 'follows'),
+        follows_el,
+        h('strong', 'friends'),
+        friends_el,
+        h('strong', 'followers'),
+        followers_el
       )
     )
   }

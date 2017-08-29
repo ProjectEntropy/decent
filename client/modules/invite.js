@@ -1,6 +1,6 @@
 'use strict'
 var ref = require('ssb-ref')
-var ssbClient = require('../../plugins/ssb-client')
+var ssbClient = require('ssb-client')
 var id = require('../keys').id
 var h = require('hyperscript')
 
@@ -83,18 +83,19 @@ exports.create = function (api) {
       //request follow
       //post pub announce
       //post follow pub
-      var div = h('div.column.scroller__wrapper',
-        h('div.column.scroller__content', {style: 'margin-top: 25%;'},
-          h('h1', {innerHTML: 'Your Decent Invite'}),
-          h('p', "You've been invited to join:"),
-          h('p', h('code', data.invite))
-        ),
-        h('p', h('button', 'Accept', {onclick: attempt})),
-        progress,
-        h('p', "Give this step a moment to finish, once we're done you can pick a name."),
-        h('p', {innerHTML: 'If you have a saved key and remote, <a href="/#Your Key">import them here</a>.'})
+      var div = h('div.column.scroller', {style: 'overflow: auto;'},
+        h('div.column.scroller__wrapper',
+          h('div.column.scroller__content', {style: 'margin-top: 25%;'},
+            h('h1', {innerHTML: 'The <a href="https://scuttlebot.io">Secure Scuttlebutt</a> Lite Client'}),
+            h('p', "You've been invited to join:"),
+            h('p', h('code', data.invite))
+          ),
+          h('p', h('button', 'Accept', {onclick: attempt})),
+          progress,
+          h('p', "Give this step a moment to finish, once we're done you can pick a name."),
+          h('p', {innerHTML: 'If you have a saved key and remote, <a href="/#Key">import them here</a>.'})
+        )
       )
-
       function attempt () {
         self.invite_accept(invite, function (message) {
           progress.next(message)
@@ -112,11 +113,6 @@ exports.create = function (api) {
             console.log("NO REDIRECT")
         })
       }
-
-      // If we are in the browser,
-      // and do not already have a remote set, automatically trigger the invite.
-      // if(process.title == 'browser' && !localStorage.remote) attempt()
-
       return div
     }
   }

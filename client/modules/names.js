@@ -17,6 +17,10 @@ exports.gives = {
   signified: true,
 }
 
+/*
+  filter(rel: ['mentions', prefix('@')]) | reduce(name: rel[1], value: count())
+*/
+
 var filter = {
   $filter: {
     rel: ["mentions", {$prefix: "@"}]

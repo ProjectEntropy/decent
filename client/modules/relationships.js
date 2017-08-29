@@ -1,5 +1,7 @@
 var pull = require('pull-stream')
 
+//this is a bit crude, and doesn't actually show unfollows yet.
+
 function makeQuery (a, b) {
   return {"$filter": {
       value: {

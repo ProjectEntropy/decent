@@ -1,4 +1,5 @@
 var isVisible = require('is-visible').isVisible
+var human = require('human-time')
 var h = require('hyperscript')
 
 exports.needs = {
@@ -8,49 +9,30 @@ exports.needs = {
 }
 
 exports.gives = {
-  menu_items: true,
   builtin_tabs: true,
   screen_view: true
 }
-
-//sbot_gossip_connect
-//sbot_gossip_add
-
-var human = require('human-time')
 
 function legacyToMultiServer(addr) {
   return 'net:'+addr.host + ':'+addr.port + '~shs:'+addr.key.substring(1).replace('.ed25519','')
 }
 
-//types of peers
-
-
-//on the same wifi network
 function isLocal (e) {
-  // don't rely on private ip address, because
-  // cjdns creates fake private ip addresses.
   return ip.isPrivate(e.host) && e.type === 'local'
 }
 
-
-//pub is running scuttlebot >=8
-//have connected successfully.
 function isLongterm (e) {
   return e.ping && e.ping.rtt && e.ping.rtt.mean > 0
 }
 
-//pub is running scuttlebot < 8
-//have connected sucessfully
 function isLegacy (peer) {
   return /connect/.test(peer.state) || (peer.duration && peer.duration.mean) > 0 && !isLongterm(peer)
 }
 
-//tried to connect, but failed.
 function isInactive (e) {
   return e.stateChange && (e.duration && e.duration.mean == 0)
 }
 
-//havn't tried to connect peer yet.
 function isUnattempted (e) {
   return !e.stateChange
 }
@@ -96,15 +78,9 @@ function duration (s) {
     return round(s)+'ms'
 }
 
-
-
 exports.create = function (api) {
 
   return {
-    menu_items: function () {
-      return h('a', {href: '#Network'}, 'Network')
-    },
-
     builtin_tabs: function () {
       return ['Network']
     },
@@ -117,8 +93,6 @@ exports.create = function (api) {
 
       ;(function poll () {
 
-        //if this tab isn't open, don't update.
-        //todo: make a better way to do this...
         if(!isVisible(ol))
           return setTimeout(poll, 1000)
 
@@ -139,7 +113,6 @@ exports.create = function (api) {
                 ' ',
                 getType(peer),
                 ' ',
-                //TODO: show nicer details, with labels. etc.
                 (peer.ping && peer.ping.rtt) ? duration(peer.ping.rtt.mean) : '',
                 ' ',
                 (peer.ping && peer.ping.skew) ? duration(peer.ping.skew.mean) : '',

@@ -14,30 +14,11 @@ exports.needs = {
   message_confirm: 'first',
   sbot_blobs_add: 'first',
   blob_url: 'first',
-  sbot_links: 'first'
+  sbot_links: 'first',
+  avatar_name: 'first'
 }
 
 exports.gives = 'avatar_edit'
-
-function crop (d, cb) {
-  var canvas = hypercrop(h('img', {src: d}))
-  return h('div.column.avatar_pic',
-    h('header', 'Click and drag to crop your avatar.'),
-    canvas,
-    h('div.row.avatar_pic__controls',
-      h('button', 'Select', {
-        onclick: function () {
-          cb(null, canvas.selection.toDataURL())
-        }
-      }),
-      h('button', 'Cancel', {
-        onclick: function () {
-          cb(new Error('canceled'))
-        }
-      })
-    )
-  )
-}
 
 exports.create = function (api) {
   return function (id) {
@@ -45,53 +26,44 @@ exports.create = function (api) {
     img.classList.add('avatar--profile')
 
     var lb = hyperlightbox()
-    var selected = null
+    var name_input = h('input', {placeholder: 'New name'})
+    var name = api.avatar_name(id)
+
+    var img_input = h('input', {placeholder: 'New profile pic blob url'})
 
     getAvatar({links: api.sbot_links}, self_id, id, function (err, avatar) {
       if (err) return console.error(err)
-      if (ref.isBlob(avatar.image)) {
+      if(ref.isBlob(avatar.image))
         img.src = api.blob_url(avatar.image)
-      }
     })
 
     return h('div.row.profile',
       lb,
       img,
       h('div.column.profile__info',
-        hyperfile.asDataURL(function (data) {
-          var el = crop(data, function (err, data) {
-            if (data) {
-              img.src = data
-              var _data = dataurl.parse(data)
-              pull(
-                pull.once(_data.data),
-                api.sbot_blobs_add(function (err, hash) {
-                  if (err) return alert(err.stack)
-                  selected = {
-                    link: hash,
-                    size: _data.data.length,
-                    type: _data.mimetype,
-                    width: 512,
-                    height: 512
-                  }
-                })
-              )
-            }
-            lb.close()
-          })
-          lb.show(el)
-        }),
-        h('button', 'Publish', {
-          onclick: function () {
-            if (selected) {
+        h('strong', name),
+        name_input,
+        h('button', 'Preview', {onclick: function () {
+          if(name_input.value) {
+            api.message_confirm({
+              type: 'about',
+              about: id,
+              name: name_input.value || undefined
+            })
+          }
+        }}),
+        img_input,
+        h('button', 'Preview', {onclick: function () {
+          if(img_input.value) {
+            if (ref.isBlobId(img_input.value)) {
               api.message_confirm({
                 type: 'about',
                 about: id,
-                image: selected
+                image: img_input.value || undefined
               })
-            }
+            } else { alert('The link you uploaded is not a blob, please use a valid blob id. - Example: &G7v7pgTXYfr4bTF7FB/qLiScmFIIOccsTV3Pp6bURB0=.sha256. - To upload a blob: write a normal message, upload a file, and publish. Square photos are best for avatar images.')}
           }
-        })
+        }})
       )
     )
   }

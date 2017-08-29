@@ -3,8 +3,6 @@ var h = require('hyperscript')
 var u = require('../util')
 var self_id = require('../keys').id
 
-var plugs = require('../plugs')
-
 exports.needs = {
   publish: 'first', message_content: 'first', avatar: 'first',
   message_meta: 'map'

@@ -1,5 +1,5 @@
 var ref = require('ssb-ref')
-var Scroller = require('../pull-scroll')
+var Scroller = require('pull-scroll')
 var h = require('hyperscript')
 var pull = require('pull-stream')
 var u = require('../util')
@@ -13,8 +13,8 @@ exports.needs = {
 
 exports.gives = 'screen_view'
 
-
 exports.create = function (api) {
+
   return function (id) {
     if(ref.isFeed(id)) {
 

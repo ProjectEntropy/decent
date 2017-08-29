@@ -25,7 +25,6 @@ module.exports = {
                   size: reader.result.length || reader.result.byteLength,
                   type: mime(file.name)
                 })
-
               })
             )
           }

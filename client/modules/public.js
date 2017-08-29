@@ -1,7 +1,7 @@
 var h = require('hyperscript')
 var u = require('../util')
 var pull = require('pull-stream')
-var Scroller = require('../pull-scroll')
+var Scroller = require('pull-scroll')
 
 exports.needs = {
   message_render: 'first',
@@ -27,7 +27,7 @@ exports.create = function (api) {
         var div = h('div.column.scroller',
           {style: {'overflow':'auto'}},
           h('div.scroller__wrapper',
-            api.message_compose({type: 'post'}, {placeholder: 'What are you doing right now?'}),
+            api.message_compose({type: 'post'}, {placeholder: 'What\'s the scuttle?'}),
             content
           )
         )

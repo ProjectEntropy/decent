@@ -4,7 +4,7 @@ var sort = require('ssb-sort')
 var ref = require('ssb-ref')
 var h = require('hyperscript')
 var u = require('../util')
-var Scroller = require('../pull-scroll')
+var Scroller = require('pull-scroll')
 var self_id = require('../keys').id
 
 function once (cont) {
@@ -42,7 +42,6 @@ exports.create = function (api) {
     api.sbot_get(root, function (err, value) {
       if (err) return cb(err)
       var msg = {key: root, value: value}
-  //    if(value.content.root) return getThread(value.content.root, cb)
 
       pull(
         api.sbot_links({rel: 'root', dest: root, values: true, keys: true}),

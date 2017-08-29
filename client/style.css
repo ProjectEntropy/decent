@@ -1,21 +1,28 @@
-/*@font-face {
-  font-family: "Source Sans Pro";
-  font-weight: 400;
-  font-style: normal;
-  src: url("http://evbogue.com/ssp/fonts/source-sans-pro-regular.ttf") format("truetype"); 
-}*/
-
 body {
-  font-family: 'Source Sans Pro', sans-serif;
+  font-family: monospace;
 }
 
 * {
   word-wrap: break-word;
-  
+}
+
+
+pre {
+    height: auto;
+    max-height: 200px;
+    overflow: auto;
+    background-color: #eeeeee;
+    word-break: normal !important;
+    word-wrap: normal !important;
+    white-space: pre !important;
 }
 
 h1, h2, h3, h4, h5, h6 {
   font-size: 1.2em;
+  margin-top: .35ex;
+}
+
+p {
   margin-top: .35ex;
 }
 
@@ -27,28 +34,12 @@ hr {
   margin-bottom: .9em;
 }
 
-p {
-  margin-top: .35ex;
-}
-
-a:link, a:visited, a:active {
-  color: #08c;
-  text-decoration: none;
-}
-
-a:hover,
-a:focus {
-  color: #005580;
-  text-decoration: underline;
-}
-
 .screen {
   width: 100%;
   position: absolute;
   top: 0; bottom: 0;
-  left: 0;right: 0;
+  left: 0; right: 0;
   overflow-y: hidden;
-  background: #f9f9f9;
 }
 
 .column {
@@ -92,44 +83,35 @@ a:focus {
 }
 
 pre {
-  white-space: pre-line;
-  word-wrap: break-all;
-  background: #eee;
-  border: 1px solid #ddd;
-  border-radius: 2px;
-}
-
-code {
-  background: #eee;
+  white-space: pre-wrap;
+  word-wrap: break-word;
 }
 
 .wide {
   width: 100%;
 }
 
-.menu {
-  display: none;
-  z-index: 5;
-}
-
 /* scrolling feeds, threads */
 
 .scroller {
   width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+  flex: 1;
 }
 
 .scroller__wrapper {
-  flex: 1;
-  max-width: 600px;
-  margin-left: auto;
-  margin-right: auto;
 }
 
 /* compose */
 
 .compose {
-  width: 98%;
-  margin-top: 1em;
+  width: 100%;
+  margin-bottom: .5em;
+}
+
+.compose__button {
+  float: right;
 }
 
 /* messages */
@@ -138,15 +120,9 @@ code {
   position: relative;
   flex-basis: 0;
   padding: .5em;
-  border: 1px solid #ddd;
+  border: 1px solid #ccc;
   margin-top: -1px;
-  border-radius: 2px;
-  background: #fff;
-  width: 95%;
-}
-
-.message:focus, .message:hover {
-  background: #f5f5f5;
+  background: white;
 }
 
 .message_content--mini div > span {
@@ -154,7 +130,7 @@ code {
 }
 
 .message_meta {
-  margin-left: auto;
+  float: right;
 }
 
 .message_meta > * {
@@ -171,10 +147,6 @@ code {
 
 .message > .title > .avatar {
   margin-left: 0;
-}
-
-.message:first-child {
-  margin-top: 1em;
 }
 
 .message_content {
@@ -197,9 +169,7 @@ code {
 
 .suggest-box > * {
   display: block;
-  font-weight: normal;
 }
-
 
 .suggest-box ul {
   padding: 0;
@@ -215,8 +185,6 @@ code {
 .suggest-box {
   width: max-content;
   background: white;
-  border: 1px solid #eee;
-  border-radius: 2px;
 }
 
 /* emoji */
@@ -228,22 +196,18 @@ code {
 /* avatar */
 
 .avatar--profile {
-  width: 7em;
-  height: 7em;
+  width: 5em;
+  height: 5em;
   float: left;
-  border-radius: 5px;
-  margin-right: .5em;
 }
 
 .avatar--full {
-  margin: .5em;
   width: 100%;
-  border-radius: 5px;
 }
 
 .avatar--large {
-  width: 10em;
-  height: 10em;
+  width: 3.5em;
+  height: 3.5em;
   border-radius: 5px;
 }
 
@@ -262,33 +226,11 @@ code {
 
 .profile {
   padding: .5ex;
-  overflow: auto;
-}
-
-.profile input {
-  width: 100%;
 }
 
 .profile__info {
   margin-left: .5em;
 }
-
-input, textarea {
- border: 1px solid #ddd;
- border-radius: 2px;
- font-family: sans-serif;
- font-size: .9em;
- padding: .5em;
-}
-
-textarea {
-  padding: .5em;
-}
-
-.import {
-  width: 97%
-}
-
 
 /* lightbox - used in message-confirm */
 
@@ -296,8 +238,8 @@ textarea {
   overflow: auto;
   margin-top: 3em;
   margin-bottom: 3em;
-  width: 512px;
-  // background: white;
+  width: 90%;
+  max-width: 600px;
   z-index: 5;
 }
 
@@ -315,11 +257,6 @@ textarea {
   position: absolute;
   bottom: .5em;
   left: .5em;
-}
-
-.logo {
-  font-size: .8em;
-  padding: .2em;
 }
 
 /* TextNodeSearcher highlights */
@@ -362,66 +299,55 @@ textarea {
 
 /* tabs */
 
-.header {
-  border-bottom: 1px inset #ddd;
-  width: 100%;
-  // flex-shrink: 0;
-  z-index: 1;
-}
-
 .left {
   position: fixed;
   left: 0;
-  width: 17%;
-  max-width: 200px;
+  width: 25%;
   height: 100%;
 }
 
 .hypertabs__content {
   margin-left: auto;
-  width: 79%;
+  width: 75%;
 }
-
-/*.header__tabs {
-  width: 100%; 
-  min-width: 0px;
-}*/
 
 /* --- hypertabs ------- */
 
 .hypertabs__tabs {
   min-width: 0px;
-  width: 95%;
+  width: 100%;
   border-radius 2px;
 }
 
 .hypertabs__tab {
   overflow-x: hidden;
   min-width: 0px;
-  border: 1px solid #ddd;
-  border-radius: 2px;
+  border: 1px solid #ccc;
   margin-top: -1px;
-  background: linear-gradient(#fff, #eee);
+  background: #f5f5f5;
 }
 
 .hypertabs__tab:hover {
-  background: linear-gradient(#eee, #ddd);
-  color: #fff;
+  background: #ccc;
+  color: black;
 }
 
 .hypertabs__button {
   overflow-x: hidden;
   min-width: 0px;
   width: 100%;
+  padding-left: 1em;
 }
 
 .hypertabs__tab {
   color: black;
-  // margin-left: -3px;
+  border-top-left-radius: 5px;
+  margin-left: -3px;
+  border-bottom: none;
   padding-top: .5em;
-  padding-left: 1em;
-  // border-left: 1px solid #ccc;
-  width: 100%; 
+  // padding-left: 1em;
+  border-left: 1px solid #ccc;
+  width: 100%;
   height: 1.5em;
 }
 
@@ -433,8 +359,9 @@ textarea {
 }
 
 .hypertabs--selected {
-  background: linear-gradient(#eee, #ddd);
   font-weight: bold;
+  background: #ccc;
+  border-top-right-radius: 5px;
   z-index: 3;
 }
 
@@ -456,36 +383,4 @@ textarea {
   background: lightblue;
 }
 
-button {
-  font-size: .9em;
-  background: #eee;
-  background: #eee linear-gradient(#eee, #ccc);
-  border: 1px solid #aaa;
-  border-top: 1px solid #ccc;
-  border-left: 1px solid #ccc;
-  border-radius: 5px;
-  color: #444;
-  display: inline-block;
-  text-decoration: none;
-  font-weight: bold;
-  cursor: pointer;
-  margin: .1em;
-  padding-top: .4em;
-  padding-left: .6em;
-  padding-right: .6em;
-  padding-bottom: .4em; 
-}
 
-button:hover, button:focus {
-  background: #ddd;
-  background: #ddd linear-gradient(#ddd, #aaa);
-  border: 1px solid #888;
-  border-top: 1px solid #aaa;
-  border-left: 1px solid #aaa;
-  color: #222;
-}
-
-.edit {
-  margin-left: .6em;
-  font-size: .8em;
-}

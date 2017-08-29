@@ -1,12 +1,11 @@
 'use strict'
+
 var getAvatar = require('ssb-avatar')
 var h = require('hyperscript')
 var ref = require('ssb-ref')
 var path = require('path')
 var visualize = require('visualize-buffer')
-
 var pull = require('pull-stream')
-
 var self_id = require('../keys').id
 
 exports.needs = {
@@ -18,11 +17,9 @@ exports.gives = {
   connection_status: true, avatar_image: true
 }
 
-
 function isFunction (f) {
   return 'function' === typeof f
 }
-
 
 var ready = false
 var waiting = []
@@ -33,8 +30,6 @@ var cache = {}
 
 exports.create = function (api) {
   var avatars  = {}
-
-  //blah blah
   return {
     connection_status: function (err) {
       if (err) return
@@ -46,13 +41,13 @@ exports.create = function (api) {
               value: { content: {
                 type: "about",
                 about: {$prefix: "@"},
-                image: {link: {$prefix: "&"}}
+                image: {$truthy: true}
             }}
           }},
           {
             $map: {
               id: ["value", "content", "about"],
-              image: ["value", "content", "image", "link"],
+              image: ["value", "content", "image"],
               by: ["value", "author"],
               ts: 'timestamp'
           }}],
@@ -65,6 +60,7 @@ exports.create = function (api) {
             return
           }
           last = a.ts
+          if (a.image && typeof a.image === 'object') a.image = a.image.link
           //set image for avatar.
           //overwrite another avatar
           //you picked.
@@ -82,7 +78,6 @@ exports.create = function (api) {
         })
       )
     },
-
     avatar_image: function (author, classes) {
       classes = classes || ''
       if(classes && 'string' === typeof classes) classes = '.avatar--'+classes

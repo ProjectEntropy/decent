@@ -2,9 +2,8 @@
 var h = require('hyperscript')
 var u = require('../util')
 var pull = require('pull-stream')
-var Scroller = require('../pull-scroll')
+var Scroller = require('pull-scroll')
 var paramap = require('pull-paramap')
-var plugs = require('../plugs')
 var cont = require('cont')
 var ref = require('ssb-ref')
 

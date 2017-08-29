@@ -16,7 +16,6 @@ function ancestor (el) {
 }
 
 exports.needs = {
-  emoji_url: 'first',
   screen_view: 'first', 
   search_box: 'first', 
   blob_url: 'first',
@@ -25,7 +24,6 @@ exports.needs = {
 }
 
 exports.gives = 'screen_view'
-
 
 exports.create = function (api) {
 
@@ -60,7 +58,6 @@ exports.create = function (api) {
         if(!el.title) el.title = path
         el.scroll = keyscroll(el.querySelector('.scroller__content'))
         tabs.add(el, change)
-  //      localStorage.openTabs = JSON.stringify(tabs.tabs)
         return change
       }
     })
@@ -82,20 +79,11 @@ exports.create = function (api) {
       h('div', 
         h('a', {href: '#' + id}, img)
       ),
-      h('p.edit', 
-        h('a', {innerHTML: '<a href="#Edit">Edit your profile</a> <a href="#Key"><img src="' + api.emoji_url('key') + '" class="emoji" /></a>'})
-      ),
       h('div.header__tabs', tabs.firstChild), //tabs
       h('div.header__search', h('div', search), api.menu())
     ), tabs.firstChild)
-  //  tabs.insertBefore(search, tabs.firstChild.nextSibling)
 
-    var saved = []
-  //  try { saved = JSON.parse(localStorage.openTabs) }
-  //  catch (_) { }
-
-    if(!saved || saved.length < 3)
-      saved = ['Public', 'Mentions', 'Direct']
+    var saved = ['Public', 'Direct', 'Mentions', 'Key']
 
     saved.forEach(function (path) {
       var el = api.screen_view(path)
@@ -132,7 +120,6 @@ exports.create = function (api) {
         el.id = el.id || path
         el.scroll = keyscroll(el.querySelector('.scroller__content'))
         tabs.add(el, !ev.ctrlKey, !!ev.shiftKey)
-  //      localStorage.openTabs = JSON.stringify(tabs.tabs)
       }
 
       return false
