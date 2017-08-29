@@ -29,7 +29,7 @@ if (argv[0] == 'server') {
   // special server command:
   // import sbot and start the server
 
-  var createSbot = require('./lib/')
+  var createSbot = require('./lib')
     .use(require('./plugins/plugins'))
     .use(require('./plugins/master'))
     .use(require('./plugins/gossip'))
@@ -42,8 +42,8 @@ if (argv[0] == 'server') {
     .use(require('./plugins/logging'))
     .use(require('./plugins/private'))
     .use(require('./plugins/ssb-ws'))
-    .use(require('./plugins/ssb-links'))
-    .use(require('./plugins/ssb-query'))
+    .use(require('ssb-links'))
+    .use(require('ssb-query'))
     .use(require('./plugins/sdash'))
 
   // add third-party plugins
