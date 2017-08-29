@@ -1,6 +1,8 @@
 # Decent
 
-### A decent(ralized) network for business and development.
+### A decent(ralized) network for business and development
+
+#### A learning fork and altnet that combines [Scuttlebot](http://github.com/ssbc/scuttlebot) and [Minbase](http://github.com/evbogue/minbase)
 
 In the beginning the web was distributed. Then companies in the valley centralized it for their own profit, impoverishing the creative class of the Internet. We're creating a decent alternative.
 
