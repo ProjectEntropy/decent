@@ -35,7 +35,7 @@ if (argv[0] == 'server') {
     .use(require('./plugins/gossip'))
     .use(require('./plugins/friends'))
     .use(require('./plugins/replicate'))
-    .use(require('./plugins/ssb-blobs'))
+    .use(require('ssb-blobs'))
     .use(require('./plugins/invite'))
     .use(require('./plugins/block'))
     .use(require('./plugins/local'))
