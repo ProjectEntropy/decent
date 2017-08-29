@@ -1,15 +1,19 @@
 'use strict'
 var pull = require('pull-stream')
 var Notify = require('pull-notify')
-var ref = require('ssb-ref')
 var mdm = require('mdmanifest')
 var valid = require('../../lib/validators')
 var apidoc = require('../../lib/apidocs').gossip
 var u = require('../../lib/util')
+var ref = require('ssb-ref')
 var ping = require('pull-ping')
 var stats = require('statistics')
 var Schedule = require('./schedule')
 var Init = require('./init')
+var AtomicFile = require('atomic-file')
+var fs = require('fs')
+var path = require('path')
+var deepEqual = require('deep-equal')
 
 function isFunction (f) {
   return 'function' === typeof f
@@ -17,6 +21,29 @@ function isFunction (f) {
 
 function stringify(peer) {
   return [peer.host, peer.port, peer.key].join(':')
+}
+
+function isObject (o) {
+  return o && 'object' == typeof o
+}
+
+function toBase64 (s) {
+  if(isString(s)) return s
+  else s.toString('base64') //assume a buffer
+}
+
+function isString (s) {
+  return 'string' == typeof s
+}
+
+function coearseAddress (address) {
+  if(isObject(address)) {
+    var protocol = 'net'
+    if (address.host.endsWith(".onion"))
+        protocol = 'onion'
+    return [protocol, address.host, address.port].join(':') +'~'+['shs', toBase64(address.key)].join(':')
+  }
+  return address
 }
 
 /*
@@ -30,6 +57,7 @@ Peers : [{
 }]
 */
 
+
 module.exports = {
   name: 'gossip',
   version: '1.0.0',
@@ -39,8 +67,13 @@ module.exports = {
   },
   init: function (server, config) {
     var notify = Notify()
+    var closed = false, closeScheduler
     var conf = config.gossip || {}
     var home = ref.parseAddress(server.getAddress())
+
+    var stateFile = AtomicFile(path.join(config.path, 'gossip.json'))
+
+    var status = {}
 
     //Known Peers
     var peers = []
@@ -51,7 +84,62 @@ module.exports = {
       })
     }
 
+    function simplify (peer) {
+      return {
+        address: coearseAddress(peer),
+        source: peer.source,
+        state: peer.state, stateChange: peer.stateChange,
+        failure: peer.failure,
+        client: peer.client,
+        stats: {
+          duration: peer.duration || undefined,
+          rtt: peer.ping ? peer.ping.rtt : undefined,
+          skew: peer.ping ? peer.ping.skew : undefined,
+        }
+      }
+    }
+
+    server.status.hook(function (fn) {
+      var _status = fn()
+      _status.gossip = status
+      peers.forEach(function (peer) {
+        if(peer.stateChange + 3e3 > Date.now() || peer.state === 'connected')
+          status[peer.key] = simplify(peer)
+      })
+      return _status
+
+    })
+
+    server.close.hook(function (fn, args) {
+      closed = true
+      closeScheduler()
+      for(var id in server.peers)
+        server.peers[id].forEach(function (peer) {
+          peer.close(true)
+        })
+      return fn.apply(this, args)
+    })
+
     var timer_ping = 5*6e4
+
+    function setConfig(name, value) {
+      config.gossip = config.gossip || {}
+      config.gossip[name] = value
+
+      var cfgPath = path.join(config.path, 'config')
+      var existingConfig = {}
+
+      // load ~/.ssb/config
+      try { existingConfig = JSON.parse(fs.readFileSync(cfgPath, 'utf-8')) }
+      catch (e) {}
+
+      // update the plugins config
+      existingConfig.gossip = existingConfig.gossip || {}
+      existingConfig.gossip[name] = value
+
+      // write to disc
+      fs.writeFileSync(cfgPath, JSON.stringify(existingConfig, null, 2), 'utf-8')
+    }
 
     var gossip = {
       wakeup: 0,
@@ -69,6 +157,7 @@ module.exports = {
         })
       },
       connect: valid.async(function (addr, cb) {
+        console.log("CONNECT", addr)
         addr = ref.parseAddress(addr)
         if (!addr || typeof addr != 'object')
           return cb(new Error('first param must be an address'))
@@ -81,8 +170,9 @@ module.exports = {
 
         p.stateChange = Date.now()
         p.state = 'connecting'
-        server.connect(p, function (err, rpc) {
+        server.connect(coearseAddress(p), function (err, rpc) {
           if (err) {
+            p.error = err.stack
             p.state = undefined
             p.failure = (p.failure || 0) + 1
             p.stateChange = Date.now()
@@ -92,6 +182,7 @@ module.exports = {
             return (cb && cb(err))
           }
           else {
+            delete p.error
             p.state = 'connected'
             p.failure = 0
           }
@@ -106,7 +197,7 @@ module.exports = {
         peer.state = 'disconnecting'
         peer.stateChange = Date.now()
         if(!peer || !peer.disconnect) cb && cb()
-        else peer.disconnect(null, function (err) {
+        else peer.disconnect(true, function (err) {
           peer.stateChange = Date.now()
         })
 
@@ -131,10 +222,13 @@ module.exports = {
           // new peer
           addr.source = source
           addr.announcers = 1
-          addr.duration = addr.duration || null 
+          addr.duration = addr.duration || null
           peers.push(addr)
           notify({ type: 'discover', peer: addr, source: source || 'manual' })
           return addr
+        } else if (source === 'friends' || source === 'local') {
+          // this peer is a friend or local, override old source to prioritize gossip
+          f.source = source
         }
         //don't count local over and over
         else if(f.source != 'local')
@@ -142,6 +236,14 @@ module.exports = {
 
         return f
       }, 'string|object', 'string?'),
+      remove: function (addr) {
+        var peer = gossip.get(addr)
+        var index = peers.indexOf(peer)
+        if (~index) {
+          peers.splice(index, 1)
+          notify({ type: 'remove', peer: peer })
+        }
+      },
       ping: function (opts) {
         var timeout = config.timers && config.timers.ping || 5*60e3
         //between 10 seconds and 30 minutes, default 5 min
@@ -155,18 +257,45 @@ module.exports = {
               peer.close(true)
             })
         return gossip.wakeup = Date.now()
-      }
+      },
+      enable: valid.sync(function (type) {
+        type = type || 'global'
+        setConfig(type, true)
+        if(type === 'local' && server.local && server.local.init)
+          server.local.init()
+        return 'enabled gossip type ' + type
+      }, 'string?'),
+      disable: valid.sync(function (type) {
+        type = type || 'global'
+        setConfig(type, false)
+        return 'disabled gossip type ' + type
+      }, 'string?')
     }
 
-    Schedule (gossip, config, server)
+    closeScheduler = Schedule (gossip, config, server)
     Init (gossip, config, server)
     //get current state
 
     server.on('rpc:connect', function (rpc, isClient) {
+
+      // if we're not ready, close this connection immediately
+      if (!server.ready() && rpc.id !== server.id) return rpc.close()
+
       var peer = getPeer(rpc.id)
       //don't track clients that connect, but arn't considered peers.
       //maybe we should though?
-      if(!peer) return
+      if(!peer) {
+        if(rpc.id !== server.id) {
+          console.log('Connected', rpc.id)
+          rpc.on('closed', function () {
+            console.log('Disconnected', rpc.id)
+          })
+        }
+        return
+      }
+
+      status[rpc.id] = simplify(peer)
+
       console.log('Connected', stringify(peer))
       //means that we have created this connection, not received it.
       peer.client = !!isClient
@@ -191,13 +320,13 @@ module.exports = {
       }
 
       rpc.on('closed', function () {
+        delete status[rpc.id]
         console.log('Disconnected', stringify(peer))
         //track whether we have successfully connected.
         //or how many failures there have been.
         var since = peer.stateChange
         peer.stateChange = Date.now()
-       // if(peer.state === 'connected') //may be "disconnecting"
-       // peer.duration.value(peer.stateChange - since)
+//        if(peer.state === 'connected') //may be "disconnecting"
         peer.duration = stats(peer.duration, peer.stateChange - since)
         peer.state = undefined
         notify({ type: 'disconnect', peer: peer })
@@ -207,24 +336,37 @@ module.exports = {
       notify({ type: 'connect', peer: peer })
     })
 
+    var last
+    stateFile.get(function (err, ary) {
+      last = ary || []
+      if(Array.isArray(ary))
+        ary.forEach(function (v) {
+          delete v.state
+          // don't add local peers (wait to rediscover)
+          if(v.source !== 'local') {
+            gossip.add(v, 'stored')
+          }
+        })
+    })
+
+    var int = setInterval(function () {
+      var copy = JSON.parse(JSON.stringify(peers))
+      copy.filter(function (e) {
+        return e.source !== 'local'
+      }).forEach(function (e) {
+        delete e.state
+      })
+      if(deepEqual(copy, last)) return
+      last = copy
+      stateFile.set(copy, function(err) {
+        if (err) console.log(err)
+      })
+    }, 10*1000)
+
+    if(int.unref) int.unref()
+
     return gossip
   }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
