@@ -9,7 +9,7 @@ var stringify    = require('pull-stringify')
 var createHash   = require('multiblob/util').createHash
 var minimist     = require('minimist')
 var muxrpcli     = require('muxrpcli')
-var cmdAliases   = require('scuttlebot/lib/cli-cmd-aliases')
+var cmdAliases   = require('./lib/cli-cmd-aliases')
 
 //get config as cli options after --, options before that are
 //options to the command.
@@ -18,12 +18,9 @@ var i = argv.indexOf('--')
 var conf = argv.slice(i+1)
 argv = ~i ? argv.slice(0, i) : argv
 
-var config = require('ssb-config/inject')(process.env.ssb_appname, minimist(conf))
+var config = require('./plugins/ssb-config/inject')(process.env.ssb_appname, minimist(conf))
 
 var keys = ssbKeys.loadOrCreateSync(path.join(config.path, 'secret'))
-if(keys.curve === 'k256')
-  throw new Error('k256 curves are no longer supported,'+
-                  'please delete' + path.join(config.path, 'secret'))
 
 var manifestFile = path.join(config.path, 'manifest.json')
 
@@ -32,32 +29,25 @@ if (argv[0] == 'server') {
   // special server command:
   // import sbot and start the server
 
-  var createSbot = require('scuttlebot')
-    .use(require('scuttlebot/plugins/plugins'))
-    .use(require('scuttlebot/plugins/master'))
-    .use(require('scuttlebot/plugins/gossip'))
-    .use(require('scuttlebot/plugins/replicate'))
-    .use(require('ssb-friends'))
-    .use(require('ssb-blobs'))
-    .use(require('scuttlebot/plugins/invite'))
-    //.use(require('scuttlebot/plugins/block'))
-    .use(require('scuttlebot/plugins/local'))
-    .use(require('scuttlebot/plugins/logging'))
-    .use(require('scuttlebot/plugins/private'))
-    .use(require('ssb-ws'))
-    .use(require('ssb-links'))
-    .use(require('ssb-query'))
-    .use(require('ssb-ebt'))
-    .use(require('./serve'))
-    .use(require('./sdash'))
-    .use(require('ssb-viewer-ev'))
-    .use(require('git-ssb-web'))
-    //.use(require('ssb-fulltext'))
-  //var lite = require('./serve')
-  //lite.serve()
+  var createSbot = require('./lib/')
+    .use(require('./plugins/plugins'))
+    .use(require('./plugins/master'))
+    .use(require('./plugins/gossip'))
+    .use(require('./plugins/friends'))
+    .use(require('./plugins/replicate'))
+    .use(require('./plugins/ssb-blobs'))
+    .use(require('./plugins/invite'))
+    .use(require('./plugins/block'))
+    .use(require('./plugins/local'))
+    .use(require('./plugins/logging'))
+    .use(require('./plugins/private'))
+    .use(require('./plugins/ssb-ws'))
+    .use(require('./plugins/ssb-links'))
+    .use(require('./plugins/ssb-query'))
+    .use(require('./plugins/sdash'))
 
   // add third-party plugins
-  //require('scuttlebot/plugins/plugins').loadUserPlugins(createSbot, config)
+  require('./plugins/plugins').loadUserPlugins(createSbot, config)
 
   // start server
 
@@ -67,6 +57,8 @@ if (argv[0] == 'server') {
   // write RPC manifest to ~/.ssb/manifest.json
   fs.writeFileSync(manifestFile, JSON.stringify(server.getManifest(), null, 2))
 
+  var lite = require('./serve')
+  lite.serve()
 
 } else {
 
@@ -85,7 +77,7 @@ if (argv[0] == 'server') {
   }
 
   // connect
-  require('ssb-client')(keys, {
+  require('./plugins/ssb-client')(keys, {
     manifest: manifest,
     port: config.port,
     host: config.host||'localhost',

@@ -1,0 +1,21 @@
+{
+  "name": "ssb-links",
+  "description": "",
+  "version": "2.0.0",
+  "homepage": "https://github.com/dominictarr/ssb-links",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/dominictarr/ssb-links.git"
+  },
+  "dependencies": {
+    "pull-stream": "^3.1.0",
+    "ssb-msgs": "^5.2.0",
+    "streamview-links": "^2.0.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "set -e; for t in test/*.js; do node $t; done"
+  },
+  "author": "Dominic Tarr <dominic.tarr@gmail.com> (http://dominictarr.com)",
+  "license": "MIT"
+}
