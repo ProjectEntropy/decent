@@ -44,7 +44,7 @@ if (argv[0] == 'server') {
     .use(require('./plugins/ssb-ws'))
     .use(require('ssb-links'))
     .use(require('ssb-query'))
-    .use(require('./plugins/sdash'))
+    .use(require('ssb-ebt'))
 
   // add third-party plugins
   require('./plugins/plugins').loadUserPlugins(createSbot, config)
