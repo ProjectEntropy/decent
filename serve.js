@@ -14,7 +14,7 @@ exports.serve = function() {
   ).listen(3001)
 
   http.createServer(function (req, res){
-    if (req.url === '/invite/') {
+    if (req.url === '/') {
       client(function (err, sbot) {
         sbot.invite.create(opts, function (err, invite) {
           if(err) throw err
