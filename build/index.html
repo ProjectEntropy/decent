@@ -739,7 +739,7 @@ var h = require('hyperscript')
 var u = require('../util')
 var suggest = require('suggest-box')
 var mentions = require('ssb-mentions')
-var lightbox = require('hyperlightbox')
+//var lightbox = require('hyperlightbox')
 var cont = require('cont')
 
 exports.needs = {
@@ -890,7 +890,7 @@ exports.create = function (api) {
 
 
 
-},{"../util":53,"cont":60,"hyperlightbox":93,"hyperscript":96,"ssb-mentions":257,"suggest-box":265}],17:[function(require,module,exports){
+},{"../util":53,"cont":60,"hyperscript":96,"ssb-mentions":257,"suggest-box":265}],17:[function(require,module,exports){
 var ref = require('ssb-ref')
 var keys = require('../keys')
 var ssbKeys = require('ssb-keys')
@@ -3645,6 +3645,7 @@ var ref = require('ssb-ref')
 var visualize = require('visualize-buffer')
 var id = require('../keys').id
 var getAvatar = require('ssb-avatar')
+var lightbox = require('hyperlightbox')
 
 function ancestor (el) {
   if(!el) return
@@ -3710,6 +3711,8 @@ exports.create = function (api) {
       if(ref.isBlob(avatar.image))
         img.src = api.blob_url(avatar.image)
     })
+
+    tabs.add('Public')
      
     //reposition hypertabs menu to inside a container...
     tabs.insertBefore(h('div.header.left',
@@ -3853,7 +3856,7 @@ exports.create = function (api) {
 }
 
 }).call(this,require("buffer").Buffer)
-},{"../keys":3,"../keyscroll":4,"../util":53,"buffer":324,"hyperscript":96,"hypertabs-vertical":97,"open-external":132,"pull-stream":192,"ssb-avatar":245,"ssb-ref":259,"visualize-buffer":273}],50:[function(require,module,exports){
+},{"../keys":3,"../keyscroll":4,"../util":53,"buffer":324,"hyperlightbox":93,"hyperscript":96,"hypertabs-vertical":97,"open-external":132,"pull-stream":192,"ssb-avatar":245,"ssb-ref":259,"visualize-buffer":273}],50:[function(require,module,exports){
 var pull = require('pull-stream')
 var Cat = require('pull-cat')
 var sort = require('ssb-sort')
