@@ -86,7 +86,7 @@ exports.create = function (api) {
       var div = h('div.column.scroller', {style: 'overflow: auto;'},
         h('div.column.scroller__wrapper',
           h('div.column.scroller__content', {style: 'margin-top: 25%;'},
-            h('h1', {innerHTML: 'The <a href="https://scuttlebot.io">Secure Scuttlebutt</a> Lite Client'}),
+            h('h1', {innerHTML: 'Welcome to Decent'}),
             h('p', "You've been invited to join:"),
             h('p', h('code', data.invite))
           ),

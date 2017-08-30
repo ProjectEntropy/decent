@@ -23,7 +23,7 @@ exports.create = function (api) {
             h('div.scroller__wrapper',
               h('div.column.scroller__content',
                   h('h1', 'You\'re in! Now, you need a name'),
-                  h('p', {innerHTML: '<p>You\'ve just generated a new public/private keypair: <pre><code>' + localStorage['browser/.ssb/secret'] + '</code></pre> You\'re the only person with access to the private key. If you want to hang onto this identity, save this key somewhere safe.<hr />'}),
+                  h('p', {innerHTML: '<p>You\'ve just generated a new public/private keypair: <pre><code>' + localStorage['browser/.decent/secret'] + '</code></pre> You\'re the only person with access to the private key. If you want to hang onto this identity, save this key somewhere safe.<hr />'}),
                   h('p', {innerHTML: 'Right now, you\'re only identified by your public key: <code>' + id + '</code></p><p>Start by giving yourself a name:'},
                   api.avatar_edit(id),
                   h('p', {innerHTML: 'Once you\'re done, navigate to <a href="./index.html">your feed</a>.'})
