@@ -9,10 +9,11 @@ exports.serve = function() {
   title = 'decent'
   opts = {"modern": true}
 
+  http.createServer(
+    serve({ root: __dirname + '/build/'})
+  ).listen(3001)
+
   http.createServer(function (req, res){
-    if (req.url === '/') {
-      serve({ root: __dirname + '/build/'})
-    }
     if (req.url === '/invite/') {
       client(function (err, sbot) {
         sbot.invite.create(opts, function (err, invite) {
@@ -36,5 +37,5 @@ exports.serve = function() {
         ).outerHTML)
       }
     }
-  }).listen(3001)
+  }).listen(3002)
 }
