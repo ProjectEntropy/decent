@@ -1,20 +1,40 @@
 var http = require('http');
 var serve = require('ecstatic');
 var client = require('./plugins/ssb-client')
+var h = require('hyperscript')
 
 exports.serve = function() {
-  http.createServer(
-    serve({ root: __dirname + '/build/'})
-  ).listen(3001);
-  
+
+  host = 'http://localhost:3001'
+  title = 'decent'
   opts = {"modern": true}
-  
-  client(function (err, sbot) {  
-    if(err) throw err
-    sbot.invite.create(opts, function (err, invite) {
-      if(err) throw err
-      var lite = invite
-      console.log('Your lite client is now listening at http://localhost:3001\nHere\'s an invite\nhttp://localhost:3001#' + invite)
-    })
-  })
+
+  http.createServer(function (req, res){
+    if (req.url === '/') {
+      serve({ root: __dirname + '/build/'})
+    }
+    if (req.url === '/invite/') {
+      client(function (err, sbot) {
+        sbot.invite.create(opts, function (err, invite) {
+          if(err) throw err
+          lite = invite
+          gotInvite()
+          sbot.close()
+        })
+      })
+      function gotInvite() {
+        res.end(
+        h('html',
+          h('head',
+            h('title', title),
+          ),
+          h('body',
+            h('div.msg',
+             h('p', {innerHTML: '<a href="' + host + '#' + lite + '" rel="nofollow" target="_blank">'+ host + '#' + lite + '</a>'})
+            )
+          )
+        ).outerHTML)
+      }
+    }
+  }).listen(3001)
 }
