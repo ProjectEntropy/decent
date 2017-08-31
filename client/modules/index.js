@@ -44,6 +44,7 @@ module.exports = {
   "key.js":  require('./key.js'),
   "notifications.js":  require('./notifications.js'),
   "search.js": require('./search'),
-  "split.js":  require('./split.js')
+  "split.js":  require('./split.js'),
+  "writer.js":  require('./writer.js')
 }
 
