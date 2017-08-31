@@ -11,6 +11,7 @@ exports.needs = {
 
 exports.gives = {
   message_content_mini: true,
+  avatar_action: true,
 }
 
 exports.create = function (api) {
@@ -20,6 +21,15 @@ exports.create = function (api) {
     if(msg.value.content.type !== 'nudge') return
     return h('span', 'nudged ', api.avatar_link(msg.value.content.id, api.avatar_name(msg.value.content.id)))
   }
-  
+ 
+  exports.avatar_action = function (id) {
+    return h('a', {href:'#', onclick: function () {
+      api.message_confirm({
+	      type: 'nudge',
+	      id: id
+      })
+    }}, h('button', 'nudge'))
+  }
+
 	return exports
 }
