@@ -87,7 +87,6 @@
     "ssb-query": "^1.0.0",
     "ssb-ref": "^2.7.1",
     "ssb-sort": "^1.0.0",
-    "ssb-ws": "^1.0.3",
     "statistics": "3.0.0",
     "stream-to-pull-stream": "^1.6.10",
     "suggest-box": "^2.2.1",

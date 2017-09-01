@@ -46,7 +46,7 @@ require('depject')(
 ).app[0]()
 
 
-},{"./modules":24,"depject":83}],3:[function(require,module,exports){
+},{"./modules":25,"depject":83}],3:[function(require,module,exports){
 (function (process){
 var config = require('../plugins/ssb-config/inject')(process.env.ssb_appname)
 var ssbKeys      = require('ssb-keys')
@@ -953,6 +953,79 @@ module.exports = {
 
 
 },{"../keys":3,"ssb-keys":251,"ssb-ref":260}],18:[function(require,module,exports){
+var h = require('hyperscript')
+var u = require('../util')
+var pull = require('pull-stream')
+
+exports.needs = {
+  message_confirm: 'first',
+  message_link: 'first',
+  sbot_links: 'first'
+}
+
+exports.gives = {
+  message_content: true,
+  message_content_mini: true,
+  message_meta: true,
+  message_action: true
+}
+
+exports.create = function (api) {
+  var exports = {}
+
+  exports.message_content =
+  exports.message_content_mini = function (msg, sbot) {
+    if(msg.value.content.type !== 'vote') return
+    var link = msg.value.content.vote.link
+    return [
+        msg.value.content.vote.value > 0 ? 'dug' : 'undug',
+        ' ', api.message_link(link)
+      ]
+  }
+
+  exports.message_meta = function (msg, sbot) {
+    var digs = h('a')
+
+    var votes = []
+    for(var k in CACHE) {
+      if (CACHE[k].content.vote != null) {
+        if(CACHE[k].content.type == 'vote' &&
+        (CACHE[k].content.vote == msg.key ||
+        CACHE[k].content.vote.link == msg.key
+        ))
+        votes.push({source: CACHE[k].author, dest: k, rel: 'vote'})
+      }
+    }
+
+    if(votes.length === 1)
+      digs.textContent = ' 1 Dig'
+    if(votes.length > 1)
+      digs.textContent = ' ' + votes.length + ' Digs'
+
+    return digs
+  }
+
+  exports.message_action = function (msg, sbot) {
+    if(msg.value.content.type !== 'vote')
+      return h('a.dig', {href: '#', onclick: function () {
+        var dig = {
+          type: 'vote',
+          vote: { link: msg.key, value: 1, expression: 'Dig' }
+        }
+        if(msg.value.content.recps) {
+          dig.recps = msg.value.content.recps.map(function (e) {
+            return e && typeof e !== 'string' ? e.link : e
+          })
+          dig.private = true
+        }
+        api.message_confirm(dig)
+      }}, 'Dig')
+
+  }
+  return exports
+}
+
+},{"../util":54,"hyperscript":97,"pull-stream":193}],19:[function(require,module,exports){
 var emojis = require('emoji-named-characters')
 var emojiNames = Object.keys(emojis)
 
@@ -972,7 +1045,7 @@ exports.create = function (api) {
 }
 
 
-},{"emoji-named-characters":86}],19:[function(require,module,exports){
+},{"emoji-named-characters":86}],20:[function(require,module,exports){
 var ref = require('ssb-ref')
 var Scroller = require('pull-scroll')
 var h = require('hyperscript')
@@ -1026,7 +1099,7 @@ exports.create = function (api) {
 }
 
 
-},{"../util":54,"hyperscript":97,"pull-scroll":190,"pull-stream":193,"ssb-ref":260}],20:[function(require,module,exports){
+},{"../util":54,"hyperscript":97,"pull-scroll":190,"pull-stream":193,"ssb-ref":260}],21:[function(require,module,exports){
 (function (Buffer){
 var u = require('../util')
 var h = require('hyperscript')
@@ -1067,7 +1140,7 @@ module.exports = {
 
 
 }).call(this,require("buffer").Buffer)
-},{"../util":54,"buffer":325,"hyperscript":97,"pull-stream":193,"simple-mime":241,"split-buffer":245}],21:[function(require,module,exports){
+},{"../util":54,"buffer":325,"hyperscript":97,"pull-stream":193,"simple-mime":241,"split-buffer":245}],22:[function(require,module,exports){
 var h = require('hyperscript')
 var u = require('../util')
 var pull = require('pull-stream')
@@ -1159,7 +1232,7 @@ exports.create = function (api) {
   return exports
 }
 
-},{"../keys":3,"../util":54,"hyperscript":97,"pull-stream":193}],22:[function(require,module,exports){
+},{"../keys":3,"../util":54,"hyperscript":97,"pull-stream":193}],23:[function(require,module,exports){
 var h = require('hyperscript')
 var pull = require('pull-stream')
 var paramap = require('pull-paramap')
@@ -1652,7 +1725,7 @@ exports.create = function (api) {
 
 
 
-},{"../keys":3,"human-time":89,"hypercombo":90,"hyperscript":97,"kvgraph":109,"pull-cat":139,"pull-paramap":184,"pull-stream":193,"ssb-git/merge":250}],23:[function(require,module,exports){
+},{"../keys":3,"human-time":89,"hypercombo":90,"hyperscript":97,"kvgraph":109,"pull-cat":139,"pull-paramap":184,"pull-stream":193,"ssb-git/merge":250}],24:[function(require,module,exports){
 (function (process){
 var h = require('hyperscript')
 var u = require('../util')
@@ -1696,7 +1769,7 @@ exports.create = function (api) {
 
 
 }).call(this,require('_process'))
-},{"../keys":3,"../util":54,"_process":384,"hyperscript":97,"pull-scroll":190,"pull-stream":193}],24:[function(require,module,exports){
+},{"../keys":3,"../util":54,"_process":384,"hyperscript":97,"pull-scroll":190,"pull-stream":193}],25:[function(require,module,exports){
 module.exports = {
   "app.js":  require('./app.js'),
   "blob-url.js":  require('./blob-url.js'),
@@ -1717,7 +1790,7 @@ module.exports = {
   "feed.js":  require('./feed.js'),
   "follow.js":  require('./follow.js'),
   "invite.js":  require('./invite.js'),
-  "like.js":  require('./like.js'),
+  "dig.js":  require('./dig.js'),
   "markdown.js":  require('./markdown.js'),
   "message-link.js":  require('./message-link.js'),
   "message-name.js":  require('./message-name.js'),
@@ -1747,7 +1820,7 @@ module.exports = {
 }
 
 
-},{"./about.js":6,"./app.js":7,"./avatar-edit.js":8,"./avatar-image.js":9,"./avatar-link.js":10,"./avatar-name.js":11,"./avatar-profile.js":12,"./avatar.js":13,"./blob-url.js":14,"./channel.js":15,"./compose.js":16,"./crypto.js":17,"./emoji.js":18,"./feed.js":19,"./file-input.js":20,"./follow.js":21,"./git.js":22,"./identify.js":23,"./invite.js":25,"./key.js":26,"./like.js":27,"./markdown.js":28,"./menu.js":29,"./message-confirm.js":30,"./message-link.js":31,"./message-name.js":32,"./message.js":33,"./names.js":34,"./network.js":35,"./notifications.js":36,"./nudge.js":37,"./post.js":38,"./private.js":39,"./pub.js":40,"./public.js":41,"./raw.js":42,"./relationships.js":43,"./sbot.js":44,"./search":46,"./search-box.js":45,"./split.js":47,"./suggest-emoji.js":48,"./suggest-mentions.js":49,"./tabs.js":50,"./thread.js":51,"./timestamp.js":52}],25:[function(require,module,exports){
+},{"./about.js":6,"./app.js":7,"./avatar-edit.js":8,"./avatar-image.js":9,"./avatar-link.js":10,"./avatar-name.js":11,"./avatar-profile.js":12,"./avatar.js":13,"./blob-url.js":14,"./channel.js":15,"./compose.js":16,"./crypto.js":17,"./dig.js":18,"./emoji.js":19,"./feed.js":20,"./file-input.js":21,"./follow.js":22,"./git.js":23,"./identify.js":24,"./invite.js":26,"./key.js":27,"./markdown.js":28,"./menu.js":29,"./message-confirm.js":30,"./message-link.js":31,"./message-name.js":32,"./message.js":33,"./names.js":34,"./network.js":35,"./notifications.js":36,"./nudge.js":37,"./post.js":38,"./private.js":39,"./pub.js":40,"./public.js":41,"./raw.js":42,"./relationships.js":43,"./sbot.js":44,"./search":46,"./search-box.js":45,"./split.js":47,"./suggest-emoji.js":48,"./suggest-mentions.js":49,"./tabs.js":50,"./thread.js":51,"./timestamp.js":52}],26:[function(require,module,exports){
 (function (process){
 'use strict'
 var ref = require('ssb-ref')
@@ -1871,7 +1944,7 @@ exports.create = function (api) {
 
 
 }).call(this,require('_process'))
-},{"../../plugins/ssb-client":276,"../keys":3,"_process":384,"hyperprogress":96,"hyperscript":97,"ssb-ref":260}],26:[function(require,module,exports){
+},{"../../plugins/ssb-client":276,"../keys":3,"_process":384,"hyperprogress":96,"hyperscript":97,"ssb-ref":260}],27:[function(require,module,exports){
 (function (process){
 var h = require('hyperscript')
 var u = require('../util')
@@ -1949,80 +2022,7 @@ exports.create = function (api) {
 
 
 }).call(this,require('_process'))
-},{"../util":54,"_process":384,"hyperscript":97,"pull-scroll":190,"pull-stream":193}],27:[function(require,module,exports){
-var h = require('hyperscript')
-var u = require('../util')
-var pull = require('pull-stream')
-
-exports.needs = {
-  message_confirm: 'first',
-  message_link: 'first',
-  sbot_links: 'first'
-}
-
-exports.gives = {
-  message_content: true,
-  message_content_mini: true,
-  message_meta: true,
-  message_action: true
-}
-
-exports.create = function (api) {
-  var exports = {}
-
-  exports.message_content =
-  exports.message_content_mini = function (msg, sbot) {
-    if(msg.value.content.type !== 'vote') return
-    var link = msg.value.content.vote.link
-    return [
-        msg.value.content.vote.value > 0 ? 'dug' : 'undug',
-        ' ', api.message_link(link)
-      ]
-  }
-
-  exports.message_meta = function (msg, sbot) {
-    var digs = h('a')
-
-    var votes = []
-    for(var k in CACHE) {
-      if (CACHE[k].content.vote != null) {
-        if(CACHE[k].content.type == 'vote' &&
-        (CACHE[k].content.vote == msg.key ||
-        CACHE[k].content.vote.link == msg.key
-        ))
-        votes.push({source: CACHE[k].author, dest: k, rel: 'vote'})
-      }
-    }
-
-    if(votes.length === 1)
-      digs.textContent = ' 1 Dig'
-    if(votes.length > 1)
-      digs.textContent = ' ' + votes.length + ' Digs'
-
-    return digs
-  }
-
-  exports.message_action = function (msg, sbot) {
-    if(msg.value.content.type !== 'vote')
-      return h('a.dig', {href: '#', onclick: function () {
-        var dig = {
-          type: 'vote',
-          vote: { link: msg.key, value: 1, expression: 'Dig' }
-        }
-        if(msg.value.content.recps) {
-          dig.recps = msg.value.content.recps.map(function (e) {
-            return e && typeof e !== 'string' ? e.link : e
-          })
-          dig.private = true
-        }
-        api.message_confirm(dig)
-      }}, 'Dig')
-
-  }
-  return exports
-}
-
-},{"../util":54,"hyperscript":97,"pull-stream":193}],28:[function(require,module,exports){
+},{"../util":54,"_process":384,"hyperscript":97,"pull-scroll":190,"pull-stream":193}],28:[function(require,module,exports){
 var markdown = require('ssb-markdown')
 var h = require('hyperscript')
 var ref = require('ssb-ref')

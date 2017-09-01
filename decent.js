@@ -42,7 +42,7 @@ if (argv[0] == 'server') {
     .use(require('./plugins/private'))
     .use(require('ssb-query'))
     .use(require('ssb-links'))
-    .use(require('ssb-ws'))
+    .use(require('./plugins/ssb-ws'))
     .use(require('ssb-ebt'))
     .use(require('./plugins/viewer'))
 
