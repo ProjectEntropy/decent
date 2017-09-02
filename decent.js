@@ -30,7 +30,6 @@ if (argv[0] == 'server') {
   // import sbot and start the server
 
   var createSbot = require('./lib')
-    .use(require('./plugins/plugins'))
     .use(require('./plugins/master'))
     .use(require('./plugins/gossip'))
     .use(require('./plugins/replicate'))
@@ -46,7 +45,6 @@ if (argv[0] == 'server') {
     .use(require('ssb-ebt'))
 
   // add third-party plugins
-  require('./plugins/plugins').loadUserPlugins(createSbot, config)
 
   // start server
 
