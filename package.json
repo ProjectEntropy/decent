@@ -69,7 +69,6 @@
     "pull-stream": "^3.4.5",
     "pull-stringify": "^2.0.0",
     "rc": "^1.2.1",
-    "rimraf": "^2.4.2",
     "secret-stack": "^4.0.0",
     "secure-scuttlebutt": "^16.3.7",
     "simple-mime": "^0.1.0",
