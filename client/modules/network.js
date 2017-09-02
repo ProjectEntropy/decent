@@ -97,6 +97,7 @@ exports.create = function (api) {
           return setTimeout(poll, 1000)
 
         api.sbot_gossip_peers(function (err, list) {
+          if (list) {
           ol.innerHTML = ''
           list.sort(function (a, b) {
             return (
@@ -132,6 +133,7 @@ exports.create = function (api) {
             )
           })
           setTimeout(poll, 1000)
+        }
         })
       })()
       return h('div.column.scroller', h('div.column.scroll-y', h('div.column.scroller__wrapper', ol)))
