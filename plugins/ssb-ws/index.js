@@ -4,6 +4,10 @@ var SHS = require('multiserver/plugins/shs')
 var http = require('http')
 var muxrpc = require('muxrpc')
 var pull = require('pull-stream')
+var JSONApi = require('./json-api')
+
+var cap =
+  new Buffer('1KHLiKZvAvjbY1ziZEHMXawbCEIM6qwjCDm3VYRan/s=', 'base64')
 
 function toSodiumKeys(keys) {
   return {
@@ -41,7 +45,7 @@ var READ_AND_ADD = [ //except for add, of course
 
 
 exports.name = 'ws'
-exports.version = require('./package.json').version
+exports.version = '1.0.0'
 exports.manifest = {
   getAddress: 'sync'
 }
@@ -60,13 +64,15 @@ exports.init = function (sbot, config) {
   if(!port)
     port = 1024+(~~(Math.random()*(65536-1024)))
 
+  var server = http.createServer(JSONApi(sbot)).listen(port)
+
   function _auth (id, cb) {
     cb(null, {allow: READ_AND_ADD, deny: null})
   }
 
   var ms = MultiServer([
     [
-      WS({port: port, host: config.host || 'localhost'}),
+      WS({server: server, port: port, host: config.host || 'localhost'}),
       SHS({
         keys: toSodiumKeys(config.keys),
         appKey: (config.caps && config.caps.shs) || cap,
