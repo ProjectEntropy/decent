@@ -50,6 +50,7 @@ hr {
   top: 0; bottom: 0;
   left: 0; right: 0;
   overflow-y: hidden;
+  background: #f5f5f5;
 }
 
 .column {
@@ -136,7 +137,7 @@ pre {
 }
 
 .message:hover {
-  background: #f5f5f5;
+  background: white;
 }
 
 .message_content--mini div > span {
@@ -318,7 +319,7 @@ pre {
   left: 0;
   width: 25%;
   height: 100%;
-  background: #eee;
+  background: #f5f5f5;
 }
 
 .hypertabs__content {
