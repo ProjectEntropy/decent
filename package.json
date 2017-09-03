@@ -4,7 +4,8 @@
   "description": "A decent(tralized) network for communication and development",
   "scripts": {
     "start": "node decent",
-    "build": "node client/scripts/style.js && mkdir -p build && browserify client/index.js | indexhtmlify > build/index.html"
+    "build": "node client/scripts/style.js && mkdir -p build && browserify client/index.js | indexhtmlify > build/index.html",
+    "fonts": "git clone ssb://%XoC0EPXVomSYODRk0g9w6iGuD/vPCjinTVVW6Dz1hEQ=.sha256 build/ssp"
   },
   "author": "Ev Bogue",
   "license": "MIT",

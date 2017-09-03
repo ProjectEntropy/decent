@@ -1,8 +1,7 @@
-var fs           = require('fs')
-var path         = require('path')
-var ssbKeys      = require('ssb-keys')
-var stringify    = require('pull-stringify')
-
+var fs = require('fs')
+var path = require('path')
+var ssbKeys = require('ssb-keys')
+var stringify = require('pull-stringify')
 var config = require('./plugins/ssb-config/inject')(process.env.ssb_appname)
 
 var keys = ssbKeys.loadOrCreateSync(path.join(config.path, 'secret'))
@@ -28,10 +27,7 @@ var createSbot = require('./lib')
 config.keys = keys
 var server = createSbot(config)
 
-// write RPC manifest to ~/.ssb/manifest.json
-fs.writeFileSync(manifestFile, JSON.stringify(server.getManifest(), null, 2))
-
-
-
-
+fs.writeFileSync(
+  manifestFile, JSON.stringify(server.getManifest(), null, 2)
+)
 
