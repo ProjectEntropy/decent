@@ -97,41 +97,43 @@ exports.create = function (api) {
           return setTimeout(poll, 1000)
 
         api.sbot_gossip_peers(function (err, list) {
-          ol.innerHTML = ''
-          list.sort(function (a, b) {
-            return (
-              (states[b.state] || 0) - (states[a.state] || 0)
-              || origin(b) - origin(a)
-              || types[getType(b)] - types[getType(a)]
-              || b.stateChange - a.stateChange
-            )
-          }).forEach(function (peer) {
-            ol.appendChild(h('div.message',
-              api.avatar(peer.key, 'thumbnail'),
-              h('div',
-                peer.state || 'not connected',
-                ' ',
-                getType(peer),
-                ' ',
-                (peer.ping && peer.ping.rtt) ? duration(peer.ping.rtt.mean) : '',
-                ' ',
-                (peer.ping && peer.ping.skew) ? duration(peer.ping.skew.mean) : '',
-                h('label',
-                  {title: new Date(peer.stateChange).toString()},
-                  peer.stateChange && ('(' + human(new Date(peer.stateChange))) + ')')
-                ),
-                'source:'+peer.source,
-                h('pre', legacyToMultiServer(peer)),
-                h('button', 'connect', {onclick: function () {
-                  api.sbot_gossip_connect(peer, function (err) {
-                    if(err) console.error(err)
-                    else console.log('connected to', peer)
-                  })
-                }})
+          if (list) {
+            ol.innerHTML = ''
+            list.sort(function (a, b) {
+              return (
+                (states[b.state] || 0) - (states[a.state] || 0)
+                || origin(b) - origin(a)
+                || types[getType(b)] - types[getType(a)]
+                || b.stateChange - a.stateChange
               )
-            )
-          })
-          setTimeout(poll, 1000)
+            }).forEach(function (peer) {
+              ol.appendChild(h('div.message',
+                api.avatar(peer.key, 'thumbnail'),
+                h('div',
+                  peer.state || 'not connected',
+                  ' ',
+                  getType(peer),
+                  ' ',
+                  (peer.ping && peer.ping.rtt) ? duration(peer.ping.rtt.mean) : '',
+                  ' ',
+                  (peer.ping && peer.ping.skew) ? duration(peer.ping.skew.mean) : '',
+                  h('label',
+                    {title: new Date(peer.stateChange).toString()},
+                    peer.stateChange && ('(' + human(new Date(peer.stateChange))) + ')')
+                  ),
+                  'source:'+peer.source,
+                  h('pre', legacyToMultiServer(peer)),
+                  h('button', 'connect', {onclick: function () {
+                    api.sbot_gossip_connect(peer, function (err) {
+                      if(err) console.error(err)
+                      else console.log('connected to', peer)
+                    })
+                  }})
+                )
+              )
+            })
+            setTimeout(poll, 1000)
+          }
         })
       })()
       return h('div.column.scroller', h('div.column.scroll-y', h('div.column.scroller__wrapper', ol)))
