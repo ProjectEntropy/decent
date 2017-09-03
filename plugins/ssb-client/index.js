@@ -26,10 +26,12 @@ function toSodiumKeys(keys) {
   }
 }
 
+
 //load cap from config instead!
-var cap = 'EVRctE2Iv8GrO/BpQCF34e2FMPsDJot9x0j846LjVtc='
+//var cap = 'EVRctE2Iv8GrO/BpQCF34e2FMPsDJot9x0j846LjVtc='
 
 var createConfig = require('../ssb-config/inject')
+
 
 module.exports = function (keys, opts, cb) {
   var config
@@ -51,7 +53,7 @@ module.exports = function (keys, opts, cb) {
   keys = keys || ssbKeys.loadOrCreateSync(path.join(config.path, 'secret'))
   opts = opts || {}
 
-  var appKey = new Buffer((opts.caps && opts.caps.shs) || cap, 'base64')
+  var appKey = new Buffer(opts.caps && opts.caps.shs)
 
   var remote
   if(opts.remote)
