@@ -6,6 +6,7 @@ module.exports = {
   create: function (api) {
     return function () {
       document.head.appendChild(h('style', require('../style.css.json')))
+      document.head.appendChild(h('link', {href: '/ssp/ssp.css.json'}))
 
       window.addEventListener('error', window.onError = function (e) {
         document.body.appendChild(h('div.error',
