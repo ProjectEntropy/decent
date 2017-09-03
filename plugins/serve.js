@@ -10,7 +10,7 @@ exports.init = function() {
   opts = {"modern": true}
 
   http.createServer(
-    serve({ root: __dirname + '/build/'})
+    serve({ root: __dirname + './../build/'})
   ).listen(3001)
 
   http.createServer(function (req, res){
