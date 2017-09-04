@@ -84,7 +84,7 @@ exports.create = function (api) {
       h('div.header__search', h('div', search), api.menu())
     ), tabs.firstChild)
 
-    var saved = ['Public', 'Direct', 'Mentions', 'Key']
+    var saved = ['Public', 'Compose', 'Direct', 'Mentions', 'Key']
 
     saved.forEach(function (path) {
       var el = api.screen_view(path)

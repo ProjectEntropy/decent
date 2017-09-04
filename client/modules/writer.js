@@ -18,26 +18,16 @@ exports.create = function (api) {
   return {
 
     screen_view: function (path, sbot) {
-      if(path === 'Writer') {
+      if(path === 'Compose') {
 
         var content = h('div.column.scroller__content')
         var div = h('div.column.scroller',
           {style: {'overflow':'auto'}},
           h('div.scroller__wrapper',
-            api.message_compose({type: 'post'}, {placeholder: 'What\'s the scuttle?'}),
+            api.message_compose({type: 'post'}, {placeholder: 'Write here... '}),
             content
           )
         )
-
-        //pull(
-          //u.next(api.sbot_log, {old: false, limit: 100}),
-          //Scroller(div, content, api.message_render, true, false)
-        //)
-
-        //pull(
-          //u.next(api.sbot_log, {reverse: true, limit: 100, live: false}),
-          //Scroller(div, content, api.message_render, false, false)
-        //)
 
         return div
       }
