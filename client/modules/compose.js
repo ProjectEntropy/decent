@@ -59,6 +59,7 @@ exports.create = function (api) {
 
    
     accessories = h('div.row.compose__controls',
+      api.avatar_link(id, api.avatar_image(id, 'tiny')),
       api.file_input(function (file) {
         files.push(file)
         filesById[file.link] = file
@@ -66,7 +67,7 @@ exports.create = function (api) {
         ta.value += embed + '['+file.name+']('+file.link+')'
         console.log('added:', file)
       }),
-    publishBtn, api.avatar_link(id, api.avatar_image(id, 'tiny')))
+    publishBtn)
 
 
     if(opts.shrink !== false) {
