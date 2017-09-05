@@ -5,7 +5,7 @@ var suggest = require('suggest-box')
 var mentions = require('ssb-mentions')
 var lightbox = require('hyperlightbox')
 var cont = require('cont')
-var id = require('../keys').id
+var me = require('../keys').id
 
 exports.needs = {
   avatar_image: 'first',
@@ -59,7 +59,7 @@ exports.create = function (api) {
 
    
     accessories = h('div.row.compose__controls',
-      api.avatar_link(id, api.avatar_image(id, 'tiny')),
+      api.avatar_link(id, api.avatar_image(me, 'tiny')),
       api.file_input(function (file) {
         files.push(file)
         filesById[file.link] = file

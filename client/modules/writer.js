@@ -1,12 +1,9 @@
 var h = require('hyperscript')
-var u = require('../util')
 var pull = require('pull-stream')
 var Scroller = require('pull-scroll')
 
 exports.needs = {
-  message_render: 'first',
-  message_compose: 'first',
-  sbot_log: 'first',
+  message_compose: 'first'
 }
 
 exports.gives = {
@@ -16,7 +13,6 @@ exports.gives = {
 exports.create = function (api) {
 
   return {
-
     screen_view: function (path, sbot) {
       if(path === 'Compose') {
 
@@ -24,11 +20,9 @@ exports.create = function (api) {
         var div = h('div.column.scroller',
           {style: {'overflow':'auto'}},
           h('div.scroller__wrapper',
-            api.message_compose({type: 'post'}, {placeholder: 'Write here... '}),
-            content
+            api.message_compose({type: 'post'}, {placeholder: 'Write here... '})
           )
         )
-
         return div
       }
     }
