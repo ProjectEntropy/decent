@@ -18,7 +18,7 @@ module.exports = {
   "feed.js":  require('./feed.js'),
   "follow.js":  require('./follow.js'),
   "invite.js":  require('./invite.js'),
-  "dig.js":  require('./dig.js'),
+  "star.js":  require('./star.js'),
   "markdown.js":  require('./markdown.js'),
   "message-link.js":  require('./message-link.js'),
   "message-name.js":  require('./message-name.js'),
