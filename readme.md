@@ -14,16 +14,30 @@ Decent is based on [Scuttlebot](http://scuttlebot.io), but uses an alternative n
 
 Decent combines all of the necessary parts of Scuttlebot for a simpler install process
 
+### Try Decent in your browser
+
++ http://decent.gitmx.com/
++ http://decent.evbogue.com/
++ http://decent.gwenbell.com/
+
+### Install Decent on your local or vps
+
 ```
-% git clone
-% npm install
-% npm build
+% git clone http://github.com/evbogue/decent.git
+% cd decent && npm install
+% npm run build
 % npm start
 ```
 
-You'll need an invite from a Decent pub to join the network [email me](mailto:ev@evbogue.com), or contact me via a lite client.
+Navigate to http://localhost:3001/ to see your Decent.
 
-You can get free local and lite client invites to Decent [here](http://sdash.evbogue.com/invite/):
+### Embed Decent on your website
+
+```
+<iframe src="http://decent.gitmx.com/" style="width: 100%; border: none; height: 24em;"></iframe>
+```
+
+If you're deploying Decent on your local or your own VPS, you will need a follow from an existing Decent pub. Please request an invite: [ev@evbogue.com](mailto:ev@evbogue.com)
 
 Once you're on Decent, be sure to obey the first rule:
 

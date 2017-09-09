@@ -5,9 +5,7 @@ var u = require('../util')
 var keyscroll = require('../keyscroll')
 var open = require('open-external')
 var ref = require('ssb-ref')
-var visualize = require('visualize-buffer')
 var id = require('../keys').id
-var getAvatar = require('ssb-avatar')
 
 function ancestor (el) {
   if(!el) return
@@ -19,6 +17,9 @@ exports.needs = {
   screen_view: 'first', 
   search_box: 'first', 
   blob_url: 'first',
+  avatar_image: 'first',
+  avatar_name: 'first',
+  avatar_link: 'first',
   menu: 'first', 
   sbot_links: 'first'
 }
@@ -62,28 +63,17 @@ exports.create = function (api) {
       }
     })
 
-    var img = visualize(new Buffer(id.substring(1), 'base64'), 256)
-    img.classList.add('avatar--full')
-    var selected = null, selected_data = null
-
-    getAvatar({links: api.sbot_links}, id, id, function (err, avatar) {
-      if (err) return console.error(err)
-      //don't show user has already selected an avatar.
-      if(selected) return
-      if(ref.isBlob(avatar.image))
-        img.src = api.blob_url(avatar.image)
-    })
-     
     //reposition hypertabs menu to inside a container...
     tabs.insertBefore(h('div.header.left',
-      h('div', 
-        h('a', {href: '#' + id}, img)
+      h('div.header__profile', 
+        h('a', {href: '#' + id}, api.avatar_image(id, 'full')),
+        h('div',  api.avatar_link(id, api.avatar_name(id)))
       ),
       h('div.header__tabs', tabs.firstChild), //tabs
       h('div.header__search', h('div', search), api.menu())
     ), tabs.firstChild)
 
-    var saved = ['Public', 'Direct', 'Mentions', 'Key']
+    var saved = ['Public', 'Compose', 'Direct', 'Mentions', 'Key']
 
     saved.forEach(function (path) {
       var el = api.screen_view(path)

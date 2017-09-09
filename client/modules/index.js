@@ -18,7 +18,7 @@ module.exports = {
   "feed.js":  require('./feed.js'),
   "follow.js":  require('./follow.js'),
   "invite.js":  require('./invite.js'),
-  "dig.js":  require('./dig.js'),
+  "star.js":  require('./star.js'),
   "markdown.js":  require('./markdown.js'),
   "message-link.js":  require('./message-link.js'),
   "message-name.js":  require('./message-name.js'),
@@ -42,6 +42,7 @@ module.exports = {
   "suggest-emoji.js":  require('./suggest-emoji.js'),
   "key.js":  require('./key.js'),
   "notifications.js":  require('./notifications.js'),
-  "search.js": require('./search')
+  "search.js": require('./search'),
+  "writer.js":  require('./writer.js')
 }
 

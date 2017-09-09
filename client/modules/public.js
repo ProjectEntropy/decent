@@ -10,16 +10,13 @@ exports.needs = {
 }
 
 exports.gives = {
-  builtin_tabs: true, screen_view: true
+  screen_view: true
 }
 
 exports.create = function (api) {
 
   return {
-    builtin_tabs: function () {
-      return ['Public']
-    },
-
+    
     screen_view: function (path, sbot) {
       if(path === 'Public') {
 
@@ -27,7 +24,7 @@ exports.create = function (api) {
         var div = h('div.column.scroller',
           {style: {'overflow':'auto'}},
           h('div.scroller__wrapper',
-            api.message_compose({type: 'post'}, {placeholder: 'What\'s the scuttle?'}),
+            //api.message_compose({type: 'post'}, {placeholder: 'Write here...'}),
             content
           )
         )

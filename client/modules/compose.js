@@ -5,8 +5,11 @@ var suggest = require('suggest-box')
 var mentions = require('ssb-mentions')
 var lightbox = require('hyperlightbox')
 var cont = require('cont')
+var me = require('../keys').id
 
 exports.needs = {
+  avatar_image: 'first',
+  avatar_link: 'first',
   suggest_mentions: 'map',
   publish: 'first',
   message_content: 'first',
@@ -36,7 +39,6 @@ exports.create = function (api) {
 
     if(!opts) opts = {}
     opts.prepublish = opts.prepublish || id
-
     var accessories
     meta = meta || {}
     if(!meta.type) throw new Error('message must have type')
@@ -55,7 +57,9 @@ exports.create = function (api) {
       style: {height: opts.shrink === false ? '200px' : ''}
     })
 
+   
     accessories = h('div.row.compose__controls',
+      api.avatar_link(id, api.avatar_image(me, 'tiny')),
       api.file_input(function (file) {
         files.push(file)
         filesById[file.link] = file
