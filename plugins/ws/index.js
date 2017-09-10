@@ -6,8 +6,8 @@ var muxrpc = require('muxrpc')
 var pull = require('pull-stream')
 var JSONApi = require('./json-api')
 
-var cap =
-  new Buffer('1KHLiKZvAvjbY1ziZEHMXawbCEIM6qwjCDm3VYRan/s=', 'base64')
+//var cap =
+  //new Buffer('1KHLiKZvAvjbY1ziZEHMXawbCEIM6qwjCDm3VYRan/s=', 'base64')
 
 function toSodiumKeys(keys) {
   return {

@@ -26,9 +26,9 @@ function toSodiumKeys(keys) {
   }
 }
 
-var cap = 'EVRctE2Iv8GrO/BpQCF34e2FMPsDJot9x0j846LjVtc='
+//var cap = 'EVRctE2Iv8GrO/BpQCF34e2FMPsDJot9x0j846LjVtc='
 
-var createConfig = require('../ssb-config/inject')
+var createConfig = require('../../config/inject')
 
 
 module.exports = function (keys, opts, cb) {

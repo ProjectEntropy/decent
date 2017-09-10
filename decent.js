@@ -4,7 +4,7 @@ var serve = require('ecstatic')
 var path = require('path')
 var ssbKeys = require('ssb-keys')
 var stringify = require('pull-stringify')
-var config = require('./plugins/ssb-config/inject')(process.env.ssb_appname)
+var config = require('./config/inject')(process.env.ssb_appname)
 
 var keys = ssbKeys.loadOrCreateSync(path.join(config.path, 'secret'))
 
@@ -19,7 +19,7 @@ var createSbot = require('./lib')
   .use(require('./plugins/local'))
   .use(require('ssb-query'))
   .use(require('ssb-links'))
-  .use(require('./plugins/ssb-ws'))
+  .use(require('./plugins/ws'))
   .use(require('ssb-ebt'))
 
 config.keys = keys
