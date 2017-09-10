@@ -46,16 +46,16 @@ require('depject')(
 ).app[0]()
 
 
-},{"./modules":25,"depject":84}],3:[function(require,module,exports){
+},{"./modules":24,"depject":85}],3:[function(require,module,exports){
 (function (process){
-var config = require('../plugins/ssb-config/inject')(process.env.ssb_appname)
+var config = require('../config/inject')(process.env.ssb_appname)
 var ssbKeys      = require('ssb-keys')
 var path         = require('path')
 module.exports = ssbKeys.loadOrCreateSync(path.join(config.path, 'secret'))
 
 
 }).call(this,require('_process'))
-},{"../plugins/ssb-config/inject":279,"_process":385,"path":382,"ssb-keys":253}],4:[function(require,module,exports){
+},{"../config/inject":56,"_process":385,"path":382,"ssb-keys":254}],4:[function(require,module,exports){
 module.exports = function (container) {
   var curMsgEl
 
@@ -203,7 +203,7 @@ exports.create = function (api) {
   }
 }
 
-},{"hyperscript":98}],7:[function(require,module,exports){
+},{"hyperscript":99}],7:[function(require,module,exports){
 var h = require('hyperscript')
 
 module.exports = {
@@ -244,7 +244,7 @@ module.exports = {
 
 
 
-},{"../style.css.json":54,"hyperscript":98}],8:[function(require,module,exports){
+},{"../style.css.json":54,"hyperscript":99}],8:[function(require,module,exports){
 (function (Buffer){
 'use strict'
 var dataurl = require('dataurl-')
@@ -318,7 +318,7 @@ exports.create = function (api) {
 }
 
 }).call(this,require("buffer").Buffer)
-},{"../keys":3,"buffer":326,"dataurl-":79,"hypercrop":92,"hyperfile":94,"hyperlightbox":95,"hyperscript":98,"pull-stream":195,"ssb-avatar":248,"ssb-ref":262,"visualize-buffer":276}],9:[function(require,module,exports){
+},{"../keys":3,"buffer":326,"dataurl-":80,"hypercrop":93,"hyperfile":95,"hyperlightbox":96,"hyperscript":99,"pull-stream":196,"ssb-avatar":249,"ssb-ref":263,"visualize-buffer":277}],9:[function(require,module,exports){
 (function (Buffer){
 'use strict'
 
@@ -429,7 +429,7 @@ exports.create = function (api) {
 
 
 }).call(this,require("buffer").Buffer)
-},{"../keys":3,"buffer":326,"hyperscript":98,"path":382,"pull-stream":195,"ssb-avatar":248,"ssb-ref":262,"visualize-buffer":276}],10:[function(require,module,exports){
+},{"../keys":3,"buffer":326,"hyperscript":99,"path":382,"pull-stream":196,"ssb-avatar":249,"ssb-ref":263,"visualize-buffer":277}],10:[function(require,module,exports){
 var h = require('hyperscript')
 
 exports.needs = {signifier: 'first'}
@@ -453,7 +453,7 @@ exports.create = function (api) {
 
 
 
-},{"hyperscript":98}],11:[function(require,module,exports){
+},{"hyperscript":99}],11:[function(require,module,exports){
 var h = require('hyperscript')
 
 exports.needs = { signifier: 'first' }
@@ -474,7 +474,7 @@ exports.create = function (api) {
 }
 
 
-},{"hyperscript":98}],12:[function(require,module,exports){
+},{"hyperscript":99}],12:[function(require,module,exports){
 var h = require('hyperscript')
 var pull = require('pull-stream')
 
@@ -554,7 +554,7 @@ exports.create = function (api) {
 }
 
 
-},{"hyperscript":98,"pull-stream":195}],13:[function(require,module,exports){
+},{"hyperscript":99,"pull-stream":196}],13:[function(require,module,exports){
 var h = require('hyperscript')
 var u = require('../util')
 
@@ -593,7 +593,7 @@ exports.create = function (api) {
 
 
 
-},{"../util":55,"hyperscript":98}],14:[function(require,module,exports){
+},{"../util":55,"hyperscript":99}],14:[function(require,module,exports){
 var config = require('../config')
 
 module.exports = {
@@ -727,7 +727,7 @@ exports.create = function (api) {
 }
 
 
-},{"../util":55,"hyperscript":98,"map-filter-reduce":112,"pull-scroll":192,"pull-stream":195}],16:[function(require,module,exports){
+},{"../util":55,"hyperscript":99,"map-filter-reduce":113,"pull-scroll":193,"pull-stream":196}],16:[function(require,module,exports){
 'use strict'
 var h = require('hyperscript')
 var u = require('../util')
@@ -888,7 +888,7 @@ exports.create = function (api) {
 
 
 
-},{"../keys":3,"../util":55,"cont":62,"hyperlightbox":95,"hyperscript":98,"ssb-mentions":260,"suggest-box":268}],17:[function(require,module,exports){
+},{"../keys":3,"../util":55,"cont":63,"hyperlightbox":96,"hyperscript":99,"ssb-mentions":261,"suggest-box":269}],17:[function(require,module,exports){
 var ref = require('ssb-ref')
 var keys = require('../keys')
 var ssbKeys = require('ssb-keys')
@@ -950,85 +950,7 @@ module.exports = {
 }
 
 
-},{"../keys":3,"ssb-keys":253,"ssb-ref":262}],18:[function(require,module,exports){
-var h = require('hyperscript')
-var u = require('../util')
-var pull = require('pull-stream')
-
-exports.needs = {
-  message_confirm: 'first',
-  message_link: 'first',
-  sbot_links: 'first',
-  emoji_url: 'first'
-}
-
-exports.gives = {
-  message_content: true,
-  message_content_mini: true,
-  message_meta: true,
-  message_action: true
-}
-
-exports.create = function (api) {
-  var exports = {}
-
-  exports.message_content =
-  exports.message_content_mini = function (msg, sbot) {
-    var star = api.emoji_url('star')
-    var stars = api.emoji_url('stars')
-    if(msg.value.content.type !== 'vote') return
-    var link = msg.value.content.vote.link
-    return [
-        msg.value.content.vote.value > 0 
-        ? h('img', {className: 'emoji', src: star}) 
-        : h('img', {className: 'emoji', src: stars}),
-        ' ', api.message_link(link)
-      ]
-  }
-
-  exports.message_meta = function (msg, sbot) {
-    var star = api.emoji_url('star')
-    var digs = h('a')
-
-    var votes = []
-    for(var k in CACHE) {
-      if (CACHE[k].content.vote != null) {
-        if(CACHE[k].content.type == 'vote' &&
-        (CACHE[k].content.vote == msg.key ||
-        CACHE[k].content.vote.link == msg.key
-        ))
-        votes.push({source: CACHE[k].author, dest: k, rel: 'vote'})
-      }
-    }
-    var digs
-    for (i = 0; i < votes.length; i++) {
-      digs = '<img src="' + star + '" class="emoji">' + digs
-    }
-    return h('span', {innerHTML: digs})
-  }
-
-  exports.message_action = function (msg, sbot) {
-    var star = api.emoji_url('star')
-    if(msg.value.content.type !== 'vote')
-      return h('a.dig', {href: '#', onclick: function () {
-        var dig = {
-          type: 'vote',
-          vote: { link: msg.key, value: 1, expression: 'Star' }
-        }
-        if(msg.value.content.recps) {
-          dig.recps = msg.value.content.recps.map(function (e) {
-            return e && typeof e !== 'string' ? e.link : e
-          })
-          dig.private = true
-        }
-        api.message_confirm(dig)
-      }}, h('img', {className: 'emoji', src: star}))
-
-  }
-  return exports
-}
-
-},{"../util":55,"hyperscript":98,"pull-stream":195}],19:[function(require,module,exports){
+},{"../keys":3,"ssb-keys":254,"ssb-ref":263}],18:[function(require,module,exports){
 var emojis = require('emoji-named-characters')
 var emojiNames = Object.keys(emojis)
 
@@ -1048,7 +970,7 @@ exports.create = function (api) {
 }
 
 
-},{"emoji-named-characters":87}],20:[function(require,module,exports){
+},{"emoji-named-characters":88}],19:[function(require,module,exports){
 var ref = require('ssb-ref')
 var Scroller = require('pull-scroll')
 var h = require('hyperscript')
@@ -1102,7 +1024,7 @@ exports.create = function (api) {
 }
 
 
-},{"../util":55,"hyperscript":98,"pull-scroll":192,"pull-stream":195,"ssb-ref":262}],21:[function(require,module,exports){
+},{"../util":55,"hyperscript":99,"pull-scroll":193,"pull-stream":196,"ssb-ref":263}],20:[function(require,module,exports){
 (function (Buffer){
 var u = require('../util')
 var h = require('hyperscript')
@@ -1143,7 +1065,7 @@ module.exports = {
 
 
 }).call(this,require("buffer").Buffer)
-},{"../util":55,"buffer":326,"hyperscript":98,"pull-stream":195,"simple-mime":243,"split-buffer":247}],22:[function(require,module,exports){
+},{"../util":55,"buffer":326,"hyperscript":99,"pull-stream":196,"simple-mime":244,"split-buffer":248}],21:[function(require,module,exports){
 var h = require('hyperscript')
 var u = require('../util')
 var pull = require('pull-stream')
@@ -1235,7 +1157,7 @@ exports.create = function (api) {
   return exports
 }
 
-},{"../keys":3,"../util":55,"hyperscript":98,"pull-stream":195}],23:[function(require,module,exports){
+},{"../keys":3,"../util":55,"hyperscript":99,"pull-stream":196}],22:[function(require,module,exports){
 var h = require('hyperscript')
 var pull = require('pull-stream')
 var paramap = require('pull-paramap')
@@ -1728,7 +1650,7 @@ exports.create = function (api) {
 
 
 
-},{"../keys":3,"human-time":90,"hypercombo":91,"hyperscript":98,"kvgraph":110,"pull-cat":141,"pull-paramap":186,"pull-stream":195,"ssb-git/merge":252}],24:[function(require,module,exports){
+},{"../keys":3,"human-time":91,"hypercombo":92,"hyperscript":99,"kvgraph":111,"pull-cat":142,"pull-paramap":187,"pull-stream":196,"ssb-git/merge":253}],23:[function(require,module,exports){
 (function (process){
 var h = require('hyperscript')
 var u = require('../util')
@@ -1772,7 +1694,7 @@ exports.create = function (api) {
 
 
 }).call(this,require('_process'))
-},{"../keys":3,"../util":55,"_process":385,"hyperscript":98,"pull-scroll":192,"pull-stream":195}],25:[function(require,module,exports){
+},{"../keys":3,"../util":55,"_process":385,"hyperscript":99,"pull-scroll":193,"pull-stream":196}],24:[function(require,module,exports){
 module.exports = {
   "app.js":  require('./app.js'),
   "blob-url.js":  require('./blob-url.js'),
@@ -1793,7 +1715,7 @@ module.exports = {
   "feed.js":  require('./feed.js'),
   "follow.js":  require('./follow.js'),
   "invite.js":  require('./invite.js'),
-  "dig.js":  require('./dig.js'),
+  "star.js":  require('./star.js'),
   "markdown.js":  require('./markdown.js'),
   "message-link.js":  require('./message-link.js'),
   "message-name.js":  require('./message-name.js'),
@@ -1824,11 +1746,11 @@ module.exports = {
 }
 
 
-},{"./about.js":6,"./app.js":7,"./avatar-edit.js":8,"./avatar-image.js":9,"./avatar-link.js":10,"./avatar-name.js":11,"./avatar-profile.js":12,"./avatar.js":13,"./blob-url.js":14,"./channel.js":15,"./compose.js":16,"./crypto.js":17,"./dig.js":18,"./emoji.js":19,"./feed.js":20,"./file-input.js":21,"./follow.js":22,"./git.js":23,"./identify.js":24,"./invite.js":26,"./key.js":27,"./markdown.js":28,"./menu.js":29,"./message-confirm.js":30,"./message-link.js":31,"./message-name.js":32,"./message.js":33,"./names.js":34,"./network.js":35,"./notifications.js":36,"./nudge.js":37,"./post.js":38,"./private.js":39,"./pub.js":40,"./public.js":41,"./raw.js":42,"./relationships.js":43,"./sbot.js":44,"./search":46,"./search-box.js":45,"./split.js":47,"./suggest-emoji.js":48,"./suggest-mentions.js":49,"./tabs.js":50,"./thread.js":51,"./timestamp.js":52,"./writer.js":53}],26:[function(require,module,exports){
+},{"./about.js":6,"./app.js":7,"./avatar-edit.js":8,"./avatar-image.js":9,"./avatar-link.js":10,"./avatar-name.js":11,"./avatar-profile.js":12,"./avatar.js":13,"./blob-url.js":14,"./channel.js":15,"./compose.js":16,"./crypto.js":17,"./emoji.js":18,"./feed.js":19,"./file-input.js":20,"./follow.js":21,"./git.js":22,"./identify.js":23,"./invite.js":25,"./key.js":26,"./markdown.js":27,"./menu.js":28,"./message-confirm.js":29,"./message-link.js":30,"./message-name.js":31,"./message.js":32,"./names.js":33,"./network.js":34,"./notifications.js":35,"./nudge.js":36,"./post.js":37,"./private.js":38,"./pub.js":39,"./public.js":40,"./raw.js":41,"./relationships.js":42,"./sbot.js":43,"./search":45,"./search-box.js":44,"./split.js":46,"./star.js":47,"./suggest-emoji.js":48,"./suggest-mentions.js":49,"./tabs.js":50,"./thread.js":51,"./timestamp.js":52,"./writer.js":53}],25:[function(require,module,exports){
 (function (process){
 'use strict'
 var ref = require('ssb-ref')
-var ssbClient = require('../../plugins/ssb-client')
+var ssbClient = require('../../plugins/client')
 var id = require('../keys').id
 var h = require('hyperscript')
 
@@ -1948,7 +1870,7 @@ exports.create = function (api) {
 
 
 }).call(this,require('_process'))
-},{"../../plugins/ssb-client":278,"../keys":3,"_process":385,"hyperprogress":97,"hyperscript":98,"ssb-ref":262}],27:[function(require,module,exports){
+},{"../../plugins/client":279,"../keys":3,"_process":385,"hyperprogress":98,"hyperscript":99,"ssb-ref":263}],26:[function(require,module,exports){
 (function (process){
 var h = require('hyperscript')
 var u = require('../util')
@@ -2026,7 +1948,7 @@ exports.create = function (api) {
 
 
 }).call(this,require('_process'))
-},{"../util":55,"_process":385,"hyperscript":98,"pull-scroll":192,"pull-stream":195}],28:[function(require,module,exports){
+},{"../util":55,"_process":385,"hyperscript":99,"pull-scroll":193,"pull-stream":196}],27:[function(require,module,exports){
 var markdown = require('ssb-markdown')
 var h = require('hyperscript')
 var ref = require('ssb-ref')
@@ -2074,7 +1996,7 @@ exports.create = function (api) {
 }
 
 
-},{"hyperscript":98,"ssb-markdown":258,"ssb-ref":262}],29:[function(require,module,exports){
+},{"hyperscript":99,"ssb-markdown":259,"ssb-ref":263}],28:[function(require,module,exports){
 var h = require('hyperscript')
 
 module.exports = {
@@ -2104,7 +2026,7 @@ module.exports = {
 
 
 
-},{"hyperscript":98}],30:[function(require,module,exports){
+},{"hyperscript":99}],29:[function(require,module,exports){
 var lightbox = require('hyperlightbox')
 var h = require('hyperscript')
 var u = require('../util')
@@ -2167,7 +2089,7 @@ exports.create = function (api) {
 }
 
 
-},{"../keys":3,"../util":55,"hyperlightbox":95,"hyperscript":98}],31:[function(require,module,exports){
+},{"../keys":3,"../util":55,"hyperlightbox":96,"hyperscript":99}],30:[function(require,module,exports){
 var h = require('hyperscript')
 var ref = require('ssb-ref')
 
@@ -2204,7 +2126,7 @@ exports.create = function (api) {
 
 
 
-},{"hyperscript":98,"ssb-ref":262}],32:[function(require,module,exports){
+},{"hyperscript":99,"ssb-ref":263}],31:[function(require,module,exports){
 
 function title (s) {
   var m = /^\n*([^\n]{0,40})/.exec(s)
@@ -2230,7 +2152,7 @@ exports.create = function (api) {
 }
 
 
-},{}],33:[function(require,module,exports){
+},{}],32:[function(require,module,exports){
 var h = require('hyperscript')
 var u = require('../util')
 var pull = require('pull-stream')
@@ -2325,7 +2247,7 @@ exports.create = function (api) {
 
 
 
-},{"../util":55,"hyperscript":98,"pull-stream":195}],34:[function(require,module,exports){
+},{"../util":55,"hyperscript":99,"pull-stream":196}],33:[function(require,module,exports){
 var pull = require('pull-stream')
 var many = require('pull-many')
 var mfr = require('map-filter-reduce')
@@ -2506,7 +2428,7 @@ exports.create = function (api) {
   return exports
 }
 
-},{"map-filter-reduce":112,"pull-many":183,"pull-stream":195}],35:[function(require,module,exports){
+},{"map-filter-reduce":113,"pull-many":184,"pull-stream":196}],34:[function(require,module,exports){
 var isVisible = require('is-visible').isVisible
 var human = require('human-time')
 var h = require('hyperscript')
@@ -2652,7 +2574,7 @@ exports.create = function (api) {
 
 
 
-},{"human-time":90,"hyperscript":98,"is-visible":109}],36:[function(require,module,exports){
+},{"human-time":91,"hyperscript":99,"is-visible":110}],35:[function(require,module,exports){
 'use strict'
 var h = require('hyperscript')
 var u = require('../util')
@@ -2816,7 +2738,7 @@ exports.create = function (api) {
 }
 
 
-},{"../keys":3,"../util":55,"cont":62,"hyperscript":98,"pull-paramap":186,"pull-scroll":192,"pull-stream":195,"ssb-ref":262}],37:[function(require,module,exports){
+},{"../keys":3,"../util":55,"cont":63,"hyperscript":99,"pull-paramap":187,"pull-scroll":193,"pull-stream":196,"ssb-ref":263}],36:[function(require,module,exports){
 var h = require('hyperscript')
 var u = require('../util')
 var pull = require('pull-stream')
@@ -2855,7 +2777,7 @@ exports.create = function (api) {
   return exports
 }
 
-},{"../util":55,"hyperscript":98,"pull-stream":195}],38:[function(require,module,exports){
+},{"../util":55,"hyperscript":99,"pull-stream":196}],37:[function(require,module,exports){
 var markdown = require('ssb-markdown')
 var h = require('hyperscript')
 var u = require('../util')
@@ -2893,7 +2815,7 @@ exports.create = function (api) {
 
 
 
-},{"../util":55,"hyperscript":98,"ssb-markdown":258,"ssb-ref":262}],39:[function(require,module,exports){
+},{"../util":55,"hyperscript":99,"ssb-markdown":259,"ssb-ref":263}],38:[function(require,module,exports){
 'use strict'
 var h = require('hyperscript')
 var u = require('../util')
@@ -3003,7 +2925,7 @@ exports.create = function (api) {
 }
 
 
-},{"../keys":3,"../util":55,"hyperscript":98,"pull-scroll":192,"pull-stream":195,"ssb-ref":262}],40:[function(require,module,exports){
+},{"../keys":3,"../util":55,"hyperscript":99,"pull-scroll":193,"pull-stream":196,"ssb-ref":263}],39:[function(require,module,exports){
 var h = require('hyperscript')
 
 exports.needs = {
@@ -3031,7 +2953,7 @@ exports.create = function (api) {
 
 }
 
-},{"hyperscript":98}],41:[function(require,module,exports){
+},{"hyperscript":99}],40:[function(require,module,exports){
 var h = require('hyperscript')
 var u = require('../util')
 var pull = require('pull-stream')
@@ -3079,7 +3001,7 @@ exports.create = function (api) {
   }
 }
 
-},{"../util":55,"hyperscript":98,"pull-scroll":192,"pull-stream":195}],42:[function(require,module,exports){
+},{"../util":55,"hyperscript":99,"pull-scroll":193,"pull-stream":196}],41:[function(require,module,exports){
 var h = require('hyperscript')
 var u = require('../util')
 var pull = require('pull-stream')
@@ -3132,7 +3054,7 @@ exports.create = function (api) {
 }
 
 
-},{"../util":55,"hyperscript":98,"pull-scroll":192,"pull-stream":195}],43:[function(require,module,exports){
+},{"../util":55,"hyperscript":99,"pull-scroll":193,"pull-stream":196}],42:[function(require,module,exports){
 var pull = require('pull-stream')
 
 //this is a bit crude, and doesn't actually show unfollows yet.
@@ -3193,14 +3115,14 @@ exports.create = function (api) {
 }
 
 
-},{"pull-stream":195}],44:[function(require,module,exports){
+},{"pull-stream":196}],43:[function(require,module,exports){
 (function (process,Buffer){
 var pull = require('pull-stream')
 var ssbKeys = require('ssb-keys')
 var ref = require('ssb-ref')
 var Reconnect = require('pull-reconnect')
 var path = require('path')
-var config = require('../../plugins/ssb-config/inject')(process.env.ssb_appname)
+var config = require('../../config/inject')(process.env.ssb_appname)
 config.keys = ssbKeys.loadOrCreateSync(path.join(config.path, 'secret'))
 
 function Hash (onHash) {
@@ -3218,9 +3140,9 @@ function Hash (onHash) {
   })
 }
 
-var createClient = require('../../plugins/ssb-client')
+var createClient = require('../../plugins/client')
 
-var createConfig = require('../../plugins/ssb-config/inject')
+var createConfig = require('../../config/inject')
 
 var createFeed   = require('ssb-feed')
 var keys = require('../keys')
@@ -3371,7 +3293,7 @@ module.exports = {
 
 
 }).call(this,require('_process'),require("buffer").Buffer)
-},{"../../plugins/ssb-client":278,"../../plugins/ssb-config/inject":279,"../config":1,"../keys":3,"../manifest.json":5,"_process":385,"buffer":326,"path":382,"pull-reconnect":191,"pull-stream":195,"ssb-feed":249,"ssb-keys":253,"ssb-ref":262}],45:[function(require,module,exports){
+},{"../../config/inject":56,"../../plugins/client":279,"../config":1,"../keys":3,"../manifest.json":5,"_process":385,"buffer":326,"path":382,"pull-reconnect":192,"pull-stream":196,"ssb-feed":250,"ssb-keys":254,"ssb-ref":263}],44:[function(require,module,exports){
 'use strict'
 var cont = require('cont')
 var h = require('hyperscript')
@@ -3446,7 +3368,7 @@ exports.create = function (api) {
 }
 
 
-},{"cont":62,"hyperscript":98,"pull-stream":195,"suggest-box":268}],46:[function(require,module,exports){
+},{"cont":63,"hyperscript":99,"pull-stream":196,"suggest-box":269}],45:[function(require,module,exports){
 var h = require('hyperscript')
 var u = require('../util')
 var pull = require('pull-stream')
@@ -3552,7 +3474,7 @@ exports.create = function (api) {
 
 }
 
-},{"../util":55,"hyperscript":98,"pull-scroll":192,"pull-stream":195,"text-node-searcher":271}],47:[function(require,module,exports){
+},{"../util":55,"hyperscript":99,"pull-scroll":193,"pull-stream":196,"text-node-searcher":272}],46:[function(require,module,exports){
 var h = require('hyperscript')
 
 exports.needs = {
@@ -3575,7 +3497,85 @@ exports.create = function (api) {
   }
 }
 
-},{"hyperscript":98}],48:[function(require,module,exports){
+},{"hyperscript":99}],47:[function(require,module,exports){
+var h = require('hyperscript')
+var u = require('../util')
+var pull = require('pull-stream')
+
+exports.needs = {
+  message_confirm: 'first',
+  message_link: 'first',
+  sbot_links: 'first',
+  emoji_url: 'first'
+}
+
+exports.gives = {
+  message_content: true,
+  message_content_mini: true,
+  message_meta: true,
+  message_action: true
+}
+
+exports.create = function (api) {
+  var exports = {}
+
+  exports.message_content =
+  exports.message_content_mini = function (msg, sbot) {
+    var star = api.emoji_url('star')
+    var stars = api.emoji_url('stars')
+    if(msg.value.content.type !== 'vote') return
+    var link = msg.value.content.vote.link
+    return [
+        msg.value.content.vote.value > 0 
+        ? h('img', {className: 'emoji', src: star}) 
+        : h('img', {className: 'emoji', src: stars}),
+        ' ', api.message_link(link)
+      ]
+  }
+
+  exports.message_meta = function (msg, sbot) {
+    var star = api.emoji_url('star')
+    var digs = h('a')
+
+    var votes = []
+    for(var k in CACHE) {
+      if (CACHE[k].content.vote != null) {
+        if(CACHE[k].content.type == 'vote' &&
+        (CACHE[k].content.vote == msg.key ||
+        CACHE[k].content.vote.link == msg.key
+        ))
+        votes.push({source: CACHE[k].author, dest: k, rel: 'vote'})
+      }
+    }
+    var digs
+    for (i = 0; i < votes.length; i++) {
+      digs = '<img src="' + star + '" class="emoji">' + digs
+    }
+    return h('span', {innerHTML: digs})
+  }
+
+  exports.message_action = function (msg, sbot) {
+    var star = api.emoji_url('star')
+    if(msg.value.content.type !== 'vote')
+      return h('a.dig', {href: '#', onclick: function () {
+        var dig = {
+          type: 'vote',
+          vote: { link: msg.key, value: 1, expression: 'Star' }
+        }
+        if(msg.value.content.recps) {
+          dig.recps = msg.value.content.recps.map(function (e) {
+            return e && typeof e !== 'string' ? e.link : e
+          })
+          dig.private = true
+        }
+        api.message_confirm(dig)
+      }}, h('img', {className: 'emoji', src: star}))
+
+  }
+  return exports
+}
+
+},{"../util":55,"hyperscript":99,"pull-stream":196}],48:[function(require,module,exports){
 exports.needs = {
   emoji_url: 'first',
   emoji_names: 'first'
@@ -3675,7 +3675,7 @@ exports.create = function (api) {
   }
 }
 
-},{"pull-stream":195}],50:[function(require,module,exports){
+},{"pull-stream":196}],50:[function(require,module,exports){
 var Tabs = require('hypertabs-vertical')
 var h = require('hyperscript')
 var pull = require('pull-stream')
@@ -3883,7 +3883,7 @@ exports.create = function (api) {
 
 }
 
-},{"../keys":3,"../keyscroll":4,"../util":55,"hyperscript":98,"hypertabs-vertical":99,"open-external":135,"pull-stream":195,"ssb-ref":262}],51:[function(require,module,exports){
+},{"../keys":3,"../keyscroll":4,"../util":55,"hyperscript":99,"hypertabs-vertical":100,"open-external":136,"pull-stream":196,"ssb-ref":263}],51:[function(require,module,exports){
 var pull = require('pull-stream')
 var Cat = require('pull-cat')
 var sort = require('ssb-sort')
@@ -4012,7 +4012,7 @@ exports.create = function (api) {
   }
 }
 
-},{"../keys":3,"../util":55,"hyperscript":98,"pull-cat":141,"pull-scroll":192,"pull-stream":195,"ssb-ref":262,"ssb-sort":264}],52:[function(require,module,exports){
+},{"../keys":3,"../util":55,"hyperscript":99,"pull-cat":142,"pull-scroll":193,"pull-stream":196,"ssb-ref":263,"ssb-sort":265}],52:[function(require,module,exports){
 var h = require('hyperscript')
 var human = require('human-time')
 
@@ -4039,7 +4039,7 @@ exports.create = function () {
   }
 }
 
-},{"human-time":90,"hyperscript":98}],53:[function(require,module,exports){
+},{"human-time":91,"hyperscript":99}],53:[function(require,module,exports){
 var h = require('hyperscript')
 var pull = require('pull-stream')
 var Scroller = require('pull-scroll')
@@ -4071,7 +4071,7 @@ exports.create = function (api) {
   }
 }
 
-},{"hyperscript":98,"pull-scroll":192,"pull-stream":195}],54:[function(require,module,exports){
+},{"hyperscript":99,"pull-scroll":193,"pull-stream":196}],54:[function(require,module,exports){
 module.exports="body, input, button, p, li, h1, h2, h3, h4, h5, h6, textarea {\n  font-family: \"Source Sans Pro\", sans-serif;\n}\n\na:link, a:visited, a:active {\n  color: #0088cc;\n  text-decoration: underline;\n}\n\na:hover,\na:focus {\n  color: #005580;\n}\n\n* {\n  word-wrap: break-word;\n}\n\n\npre {\n    height: auto;\n    max-height: 200px;\n    overflow: auto;\n    background-color: #eeeeee;\n    word-break: normal !important;\n    word-wrap: normal !important;\n    white-space: pre !important;\n}\n\nh1, h2, h3, h4, h5, h6 {\n  font-size: 1.2em;\n  margin-top: .35ex;\n}\n\np {\n  margin-top: .35ex;\n}\n\nhr {\n  border: solid #eee;\n  clear: both;\n  border-width: 1px 0 0;\n  height: 0;\n  margin-bottom: .9em;\n}\n\n.screen {\n  width: 100%;\n  position: absolute;\n  top: 0; bottom: 0;\n  left: 0; right: 0;\n  overflow-y: hidden;\n  background: #f5f5f5;\n}\n\n.column {\n  display: flex;\n  flex-direction: column;\n  min-height:0px;\n}\n\n.row {\n  display: flex;\n  flex-direction: row;\n  min-height:0px;\n}\n\n.end {\n  justify-content: flex-end;\n}\n\n.wrap {\n  display: flex;\n  flex-direction: row;\n  flex-wrap: wrap;\n}\n\n.no-shrink {\n  flex-shrink: 0;\n}\n\n.expand {\n  justify-content: space-between;\n}\n\n.scroll-y {\n  overflow-y: auto;\n  min-height: 0px;\n}\n\n.scroll-x {\n  overflow-x: auto;\n  min-width: 0px;\n}\n\npre {\n  white-space: pre-wrap;\n  word-wrap: break-word;\n}\n\n.wide {\n  width: 100%;\n}\n\n/* scrolling feeds, threads */\n\n.scroller {\n  width: 100%;\n  margin-left: auto;\n  margin-right: auto;\n  flex: 1;\n}\n\n.scroller__wrapper {\n}\n\n/* compose */\n\n.compose {\n  margin-bottom: .5em;\n  width: 95%;\n}\n\n.compose__controls {\n  margin-top: .2em;\n}\n\ninput, textarea {\n  border: 1px solid #ccc;\n  border-radius: .5em;\n}\n\ntextarea {\n  font-size: 1em;\n  padding: .5em;\n  margin-top: 1em;\n}\n\n/* messages */\n\n.message {\n  position: relative;\n  flex-basis: 0;\n  padding: .5em;\n  border: 1px solid #eee;\n  margin-top: -1px;\n  border-radius: 5px;\n  background: #f5f5f5;\n}\n\n.message:hover {\n  background: white;\n}\n\n.message_content--mini div > span {\n  display: inline-block;\n}\n\n.message_meta {\n  float: right;\n}\n\n.message_meta > * {\n  margin-left: .5ex;\n}\n\n.message_actions {\n  float: right;\n}\n\n.message img {\n  max-width: 100%;\n}\n\n.message > .title > .avatar {\n  margin-left: 0;\n}\n\n.message_content {\n  padding: .5ex;\n}\n\n.actions > :not(:last-child) {\n  border-right: 2px solid #eee;\n  padding-right: 5px;\n}\n\n.emoji {\n  height: 1em;\n  width: 1em;\n  vertical-align: top;\n}\n\n\n/* -- suggest box */\n\n.suggest-box > * {\n  display: block;\n}\n\n.suggest-box ul {\n  padding: 0;\n  list-style-type: none;\n  padding-left: 0;\n  margin: 0;\n}\n\n.suggest-box .selected {\n  background: #ddd;\n}\n\n.suggest-box {\n  width: max-content;\n  background: white;\n}\n\n/* emoji */\n.suggest-box img {\n  height: 20px;\n  width: 20px;\n}\n\n/* avatar */\n\n.avatar--profile {\n  width: 5em;\n  height: 5em;\n  float: left;\n}\n\n.avatar--full {\n  width: 100%;\n  border-radius: 5px;\n}\n\n.avatar--large {\n  width: 3.5em;\n  height: 3.5em;\n  border-radius: 5px;\n}\n\n.avatar--thumbnail {\n  width: 2.5em;\n  height: 2.5em;\n  float: left;\n  margin-right: .5ex;\n  border-radius: 5px;\n}\n\n.avatar--tiny {\n  margin-top: 7px;\n  width: 20px;\n  height: 20px;\n  border-radius: 1px;\n}\n\n.avatar--fullsize {\n  width: 50%;\n  border-radius: 5px;\n}\n\n.profile {\n  padding: .5ex;\n}\n\n.profile__info {\n  margin-left: .5em;\n}\n\n/* lightbox - used in message-confirm */\n\n.lightbox {\n  overflow: auto;\n  margin-top: 3em;\n  margin-bottom: 3em;\n  width: 90%;\n  max-width: 600px;\n  z-index: 5;\n}\n\n/* searchprompt */\n\n.searchprompt {\n  margin-top: 1px;\n  margin-bottom: 1px;\n  float: left;\n  padding: .5em;\n  width: 85%;\n}\n\n.header__search {\n  position: absolute;\n  bottom: .5em;\n  left: .5em;\n}\n\n.header__profile {\n  margin: .7em;\n}\n\n/* TextNodeSearcher highlights */\n\n.highlight {\n  background: yellow;\n}\n\n/* avatar editor */\n\n.hypercrop__canvas {\n  width: 100%;\n}\n\n/* gitssb */\n\n.git-table-wrapper {\n  max-height: 12em;\n  overflow: auto;\n  word-break: break-all;\n  margin: 1em 0;\n}\n\n.git-table-wrapper table {\n  width: 100%;\n}\n\n/* --- network status --- */\n\n.status {\n  width: 1em;\n  height: 1em;\n  margin: .5em;\n  background: #08c;\n}\n\n.error {\n  background: red;\n}\n\n/* tabs */\n\n.left {\n  position: fixed;\n  left: 0;\n  width: 25%;\n  height: 100%;\n  background: #f5f5f5;\n}\n\n.hypertabs__content {\n  margin-left: auto;\n  width: 75%;\n}\n\n/* --- hypertabs ------- */\n\n.hypertabs__tabs {\n  min-width: 0px;\n  width: 100%;\n  border-radius 2px;\n}\n\n.hypertabs__tab {\n  overflow-x: hidden;\n  min-width: 0px;\n  border: 1px solid #eee;\n  margin-top: -1px;\n  background: white;\n}\n\n.hypertabs__tab:hover {\n  background: #f5f5f5;\n  color: black;\n}\n\n.hypertabs__button {\n  overflow-x: hidden;\n  min-width: 0px;\n  width: 100%;\n  padding-left: 1em;\n}\n\n.hypertabs__tab {\n  color: black;\n  border-top-left-radius: 5px;\n  margin-left: -3px;\n  padding-top: .5em;\n  border-left: 1px solid #ccc;\n  width: 100%;\n  height: 1.5em;\n}\n\n.hypertabs__tab > a {\n  color: #666;\n  text-decoration: none;\n  white-space: nowrap;\n  font-size: .9em;\n}\n\n.hypertabs--selected {\n  font-weight: bold;\n  background: #f5f5f5;\n  border-top-right-radius: 5px;\n  z-index: 3;\n}\n\n.hypertabs__x  {\n  display: none; \n  transform: translate(-4px, -2px);\n}\n\n.hypertabs--selected .hypertabs__x {\n  display: block;\n}\n\n/* progress bar */\n\n.hyperprogress__bar {\n  background: darkgrey;\n}\n.hyperprogress__liquid {\n  background: lightblue;\n}\n\n\n"
 },{}],55:[function(require,module,exports){
 var pull = require('pull-stream')
@@ -4126,7 +4126,60 @@ exports.next = function (createStream, opts, property, range) {
 
 
 
-},{"pull-next":184,"pull-stream":195}],56:[function(require,module,exports){
+},{"pull-next":185,"pull-stream":196}],56:[function(require,module,exports){
+var path = require('path')
+var home = require('os-homedir')
+
+var nonPrivate = require('non-private-ip')
+var merge = require('deep-extend')
+
+var RC = require('rc')
+
+var SEC = 1e3
+var MIN = 60*SEC
+
+module.exports = function (name, override) {
+  //name = name || 'ssb'
+  name = name || 'decent'
+  var HOME = home() || 'browser' //most probably browser
+  return RC(name, merge({
+    //just use an ipv4 address by default.
+    //there have been some reports of seemingly non-private
+    //ipv6 addresses being returned and not working.
+    //https://github.com/ssbc/scuttlebot/pull/102
+    host: nonPrivate.v4 || '',
+    port: 3333,
+    timeout: 0,
+    pub: true,
+    local: true,
+    friends: {
+      dunbar: 150,
+      hops: 3
+    },
+    ws: {
+      port: 3939
+    },
+    gossip: {
+      connections: 3
+    },
+    path: path.join(HOME, '.' + name),
+    timers: {
+      connection: 0,
+      reconnect: 5*SEC,
+      ping: 5*MIN,
+      handshake: 5*SEC
+    },
+    caps: { 
+      shs: 'EVRctE2Iv8GrO/BpQCF34e2FMPsDJot9x0j846LjVtc=',
+      //shs: '1KHLiKZvAvjbY1ziZEHMXawbCEIM6qwjCDm3VYRan/s=',
+      sign: null
+    },
+    master: [],
+    party: true //disable quotas
+  }, override || {}))
+}
+
+},{"deep-extend":81,"non-private-ip":134,"os-homedir":137,"path":382,"rc":237}],57:[function(require,module,exports){
 module.exports = function(haystack, needle, comparator, low, high) {
   var mid, cmp;
 
@@ -4171,7 +4224,7 @@ module.exports = function(haystack, needle, comparator, low, high) {
   return ~low;
 }
 
-},{}],57:[function(require,module,exports){
+},{}],58:[function(require,module,exports){
 /*!
  * Cross-Browser Split 1.1.1
  * Copyright 2007-2012 Steven Levithan <stevenlevithan.com>
@@ -4279,17 +4332,17 @@ module.exports = (function split(undef) {
   return self;
 })();
 
-},{}],58:[function(require,module,exports){
+},{}],59:[function(require,module,exports){
 var _require = require //fool browserify
 module.exports =
   _require('sodium-chloride')(_require('sodium-native'))
 
 
-},{}],59:[function(require,module,exports){
+},{}],60:[function(require,module,exports){
 
 module.exports = require('sodium-browserify-tweetnacl')
 
-},{"sodium-browserify-tweetnacl":244}],60:[function(require,module,exports){
+},{"sodium-browserify-tweetnacl":245}],61:[function(require,module,exports){
 (function (process,Buffer){
 var isElectron = require('is-electron')
 
@@ -4327,7 +4380,7 @@ if(process.env.CHLORIDE_JS) {
 
 
 }).call(this,require('_process'),require("buffer").Buffer)
-},{"./bindings":58,"./browser-small":59,"_process":385,"buffer":326,"is-electron":107}],61:[function(require,module,exports){
+},{"./bindings":59,"./browser-small":60,"_process":385,"buffer":326,"is-electron":108}],62:[function(require,module,exports){
 // contains, add, remove, toggle
 var indexof = require('indexof')
 
@@ -4428,7 +4481,7 @@ function isTruthy(value) {
     return !!value
 }
 
-},{"indexof":104}],62:[function(require,module,exports){
+},{"indexof":105}],63:[function(require,module,exports){
 var cont = require('continuable')
 
 exports = module.exports = function (fun) {
@@ -4441,7 +4494,7 @@ for(var k in cont)
 exports.para = require('continuable-para')
 exports.series = require('continuable-series')
 
-},{"continuable":67,"continuable-para":76,"continuable-series":77}],63:[function(require,module,exports){
+},{"continuable":68,"continuable-para":77,"continuable-series":78}],64:[function(require,module,exports){
 // both := (Continuable) => Continuable<[Error, Any]>
 module.exports = both
 
@@ -4453,7 +4506,7 @@ function both(source) {
     }
 }
 
-},{}],64:[function(require,module,exports){
+},{}],65:[function(require,module,exports){
 module.exports = chain
 
 // chain := (Continuable<A>, lambda:(A) => Continuable<B>) => Continuable<B>
@@ -4469,7 +4522,7 @@ function chain(source, lambda) {
     }
 }
 
-},{}],65:[function(require,module,exports){
+},{}],66:[function(require,module,exports){
 var of = require("./of")
 
 module.exports = either
@@ -4498,7 +4551,7 @@ function either(cont, left, right) {
     }
 }
 
-},{"./of":72}],66:[function(require,module,exports){
+},{"./of":73}],67:[function(require,module,exports){
 module.exports = error
 
 // error := (Error) => Continuable<void>
@@ -4508,7 +4561,7 @@ function error(err) {
     }
 }
 
-},{}],67:[function(require,module,exports){
+},{}],68:[function(require,module,exports){
 var maybeCallback = require("./maybe-callback.js")
 maybeCallback.both = require("./both.js")
 maybeCallback.chain = require("./chain.js")
@@ -4523,7 +4576,7 @@ maybeCallback.to = require("./to.js")
 module.exports = maybeCallback
 
 
-},{"./both.js":63,"./chain.js":64,"./either.js":65,"./error.js":66,"./join.js":68,"./map-async.js":69,"./map.js":70,"./maybe-callback.js":71,"./of.js":72,"./to.js":73}],68:[function(require,module,exports){
+},{"./both.js":64,"./chain.js":65,"./either.js":66,"./error.js":67,"./join.js":69,"./map-async.js":70,"./map.js":71,"./maybe-callback.js":72,"./of.js":73,"./to.js":74}],69:[function(require,module,exports){
 module.exports = join
 
 // join := (Continuable<Continuable<T>>) => Continuable<T>
@@ -4539,7 +4592,7 @@ function join(source) {
     }
 }
 
-},{}],69:[function(require,module,exports){
+},{}],70:[function(require,module,exports){
 module.exports = mapAsync
 
 // mapAsync := (Continuable<A>, lambda: (A, Callback<B>)) => Continuable<B>
@@ -4555,7 +4608,7 @@ function mapAsync(source, lambda) {
     }
 }
 
-},{}],70:[function(require,module,exports){
+},{}],71:[function(require,module,exports){
 module.exports = map
 
 // map := (Continuable<A>, (A) => B) => Continuable<B>
@@ -4571,7 +4624,7 @@ function map(source, lambda) {
     }
 }
 
-},{}],71:[function(require,module,exports){
+},{}],72:[function(require,module,exports){
 var slice = Array.prototype.slice
 
 /* Given a function that takes n arguments and returns a continuable
@@ -4615,7 +4668,7 @@ function maybeCallback(fn) {
     }
 }
 
-},{}],72:[function(require,module,exports){
+},{}],73:[function(require,module,exports){
 module.exports = of
 
 // of := (Value) => Continuable<Value>
@@ -4625,7 +4678,7 @@ function of(value) {
     }
 }
 
-},{}],73:[function(require,module,exports){
+},{}],74:[function(require,module,exports){
 var slice = Array.prototype.slice
 
 module.exports = to
@@ -4648,7 +4701,7 @@ function to(asyncFn) {
     }
 }
 
-},{}],74:[function(require,module,exports){
+},{}],75:[function(require,module,exports){
 var maybeCallback = require("continuable/maybe-callback")
 
 module.exports = maybeCallback(hash)
@@ -4681,7 +4734,7 @@ function hash(tasks) {
     }
 }
 
-},{"continuable/maybe-callback":78}],75:[function(require,module,exports){
+},{"continuable/maybe-callback":79}],76:[function(require,module,exports){
 var maybeCallback = require("continuable/maybe-callback")
 
 module.exports = maybeCallback(list)
@@ -4713,7 +4766,7 @@ function list(tasks) {
     }
 }
 
-},{"continuable/maybe-callback":78}],76:[function(require,module,exports){
+},{"continuable/maybe-callback":79}],77:[function(require,module,exports){
 var list = require('continuable-list')
 var hash = require('continuable-hash')
 
@@ -4726,7 +4779,7 @@ module.exports = function (obj, cb) {
     return list([].slice.call(arguments))
 }
 
-},{"continuable-hash":74,"continuable-list":75}],77:[function(require,module,exports){
+},{"continuable-hash":75,"continuable-list":76}],78:[function(require,module,exports){
 module.exports = function series (continuables, callback) {
   if('function' === typeof continuables)
     return series([].slice.call(arguments))
@@ -4746,9 +4799,9 @@ module.exports = function series (continuables, callback) {
   }
 }
 
-},{}],78:[function(require,module,exports){
-arguments[4][71][0].apply(exports,arguments)
-},{"dup":71}],79:[function(require,module,exports){
+},{}],79:[function(require,module,exports){
+arguments[4][72][0].apply(exports,arguments)
+},{"dup":72}],80:[function(require,module,exports){
 (function (Buffer){
 const REGEX = {
   dataurl: /data:(.*?)(?:;charset=(.*?))?(;base64)?,(.+)/i,
@@ -4814,7 +4867,7 @@ dataurl.parse = function (string) {
 
 
 }).call(this,require("buffer").Buffer)
-},{"buffer":326}],80:[function(require,module,exports){
+},{"buffer":326}],81:[function(require,module,exports){
 (function (Buffer){
 /*!
  * @description Recursive object extending
@@ -4962,7 +5015,7 @@ var deepExtend = module.exports = function (/*obj_1, [obj_2], [obj_N]*/) {
 }
 
 }).call(this,require("buffer").Buffer)
-},{"buffer":326}],81:[function(require,module,exports){
+},{"buffer":326}],82:[function(require,module,exports){
 module.exports = {
   reduce: function (funs) {
     return function (value, context) {
@@ -4994,7 +5047,7 @@ module.exports = {
 }
 
 
-},{}],82:[function(require,module,exports){
+},{}],83:[function(require,module,exports){
 var N = require('libnested')
 
 module.exports = function assertGiven (gives, given, key) {
@@ -5024,7 +5077,7 @@ function isObject (o) {
   return o && typeof o === 'object'
 }
 
-},{"libnested":111}],83:[function(require,module,exports){
+},{"libnested":112}],84:[function(require,module,exports){
 var N = require('libnested')
 
 var apply = require('./apply')
@@ -5039,7 +5092,7 @@ module.exports = function entry (sockets, needs) {
   })
 }
 
-},{"./apply":81,"libnested":111}],84:[function(require,module,exports){
+},{"./apply":82,"libnested":112}],85:[function(require,module,exports){
 var N = require('libnested')
 
 var isModule = require('./is')
@@ -5144,7 +5197,7 @@ function eachModule (obj, iter, path) {
   }
 }
 
-},{"./assertGiven":82,"./entry":83,"./is":85,"libnested":111}],85:[function(require,module,exports){
+},{"./assertGiven":83,"./entry":84,"./is":86,"libnested":112}],86:[function(require,module,exports){
 var N = require('libnested')
 
 function isFunction (f) {
@@ -5177,7 +5230,7 @@ function isString (s) {
 
 module.exports = isModule
 
-},{"libnested":111}],86:[function(require,module,exports){
+},{"libnested":112}],87:[function(require,module,exports){
 /*
  * ed2curve: convert Ed25519 signing key pair into Curve25519
  * key pair suitable for Diffie-Hellman key exchange.
@@ -5345,7 +5398,7 @@ module.exports = isModule
 
 }));
 
-},{"tweetnacl/nacl-fast":274}],87:[function(require,module,exports){
+},{"tweetnacl/nacl-fast":275}],88:[function(require,module,exports){
 // universal module definition: https://github.com/umdjs/umd/blob/master/returnExports.js#L41
 (function (root, factory) {
     if (typeof exports === 'object') {
@@ -5364,7 +5417,7 @@ module.exports = isModule
     return {"100":{"character":"💯","syllables":3,"types":["noun"]},"1234":{"character":"🔢","syllables":4,"types":[]},"+1":{"character":"👍","syllables":2,"types":["interjection"]},"-1":{"character":"👎","syllables":3,"types":[]},"8ball":{"character":"🎱","syllables":2,"types":[]},"a":{"character":"🅰","syllables":1,"types":["noun","idiom","indefinite-article","preposition","auxiliary-verb","abbreviation"]},"ab":{"character":"🆎","syllables":1,"types":["noun"]},"abc":{"character":"🔤","syllables":3,"types":[]},"abcd":{"character":"🔡","syllables":4,"types":[]},"accept":{"character":"🉑","syllables":2,"types":["verb-transitive","verb-intransitive"]},"aerial_tramway":{"character":"🚡","syllables":3,"types":[]},"airplane":{"character":"✈️","syllables":2,"types":["noun"]},"alarm_clock":{"character":"⏰","syllables":3,"types":[]},"alien":{"character":"👽","syllables":3,"types":["adjective","noun","verb-transitive"]},"ambulance":{"character":"🚑","syllables":3,"types":["noun"]},"anchor":{"character":"⚓️","syllables":2,"types":["noun","verb-transitive","verb-intransitive"]},"angel":{"character":"👼","syllables":2,"types":["noun"]},"anger":{"character":"💢","syllables":2,"types":["noun","verb-transitive","verb-intransitive"]},"angry":{"character":"😠","syllables":2,"types":["adjective"]},"anguished":{"character":"😟","syllables":2,"types":["adjective"]},"ant":{"character":"🐜","syllables":1,"types":["noun","idiom"]},"apple":{"character":"🍎","syllables":2,"types":["noun","idiom"]},"aquarius":{"character":"♒️","syllables":4,"types":[]},"aries":{"character":"♈️","syllables":2,"types":[]},"arrow_backward":{"character":"◀️","syllables":4,"types":[]},"arrow_double_down":{"character":"⏬","syllables":5,"types":[]},"arrow_double_up":{"character":"⏫","syllables":5,"types":[]},"arrow_down":{"character":"⬇️","syllables":3,"types":[]},"arrow_down_small":{"character":"🔽","syllables":4,"types":[]},"arrow_forward":{"character":"▶️","syllables":4,"types":[]},"arrow_heading_down":{"character":"⤵️","syllables":5,"types":[]},"arrow_heading_up":{"character":"⤴️","syllables":5,"types":[]},"arrow_left":{"character":"⬅️","syllables":3,"types":[]},"arrow_lower_left":{"character":"↙️","syllables":5,"types":[]},"arrow_lower_right":{"character":"↘️","syllables":5,"types":[]},"arrow_right":{"character":"➡️","syllables":3,"types":[]},"arrow_right_hook":{"character":"↪️","syllables":4,"types":[]},"arrow_up":{"character":"⬆️","syllables":3,"types":[]},"arrow_up_down":{"character":"↕️","syllables":4,"types":[]},"arrow_up_small":{"character":"🔼","syllables":4,"types":[]},"arrow_upper_left":{"character":"↖️","syllables":5,"types":[]},"arrow_upper_right":{"character":"↗️","syllables":5,"types":[]},"arrows_clockwise":{"character":"🔃","syllables":4,"types":[]},"arrows_counterclockwise":{"character":"🔄","syllables":6,"types":[]},"art":{"character":"🎨","syllables":1,"types":["noun","verb"]},"articulated_lorry":{"character":"🚛","syllables":7,"types":[]},"astonished":{"character":"😲","syllables":3,"types":["adjective","verb"]},"atm":{"character":"🏧","syllables":3,"types":["abbreviation"]},"b":{"character":"🅱","syllables":1,"types":["noun","abbreviation"]},"baby":{"character":"👶","syllables":2,"types":["noun","adjective","verb-transitive"]},"baby_bottle":{"character":"🍼","syllables":4,"types":[]},"baby_chick":{"character":"🐤","syllables":3,"types":[]},"baby_symbol":{"character":"🚼","syllables":4,"types":[]},"baggage_claim":{"character":"🛄","syllables":3,"types":[]},"balloon":{"character":"🎈","syllables":2,"types":["noun","verb-intransitive","verb-transitive","adjective"]},"ballot_box_with_check":{"character":"☑️","syllables":5,"types":[]},"bamboo":{"character":"🎍","syllables":2,"types":["noun"]},"banana":{"character":"🍌","syllables":3,"types":["noun"]},"bangbang":{"character":"‼️","syllables":2,"types":[]},"bank":{"character":"🏦","syllables":1,"types":["noun","verb-transitive","verb-intransitive","phrasal-verb"]},"bar_chart":{"character":"📊","syllables":2,"types":[]},"barber":{"character":"💈","syllables":2,"types":["noun","verb-transitive","verb-intransitive"]},"baseball":{"character":"⚾️","syllables":2,"types":["noun"]},"basketball":{"character":"🏀","syllables":3,"types":["noun"]},"bath":{"character":"🛀","syllables":1,"types":["noun"]},"bathtub":{"character":"🛁","syllables":2,"types":["noun"]},"battery":{"character":"🔋","syllables":3,"types":["noun"]},"bear":{"character":"🐻","syllables":1,"types":["verb-transitive","verb-intransitive","phrasal-verb","idiom","noun","adjective"]},"bee":{"character":"🐝","syllables":1,"types":["noun","idiom"]},"beer":{"character":"🍺","syllables":1,"types":["noun"]},"beers":{"character":"🍻","syllables":1,"types":["noun"]},"beetle":{"character":"🐞","syllables":2,"types":["noun","verb-intransitive","adjective"]},"beginner":{"character":"🔰","syllables":3,"types":["noun"]},"bell":{"character":"🔔","syllables":1,"types":["noun","verb-transitive","verb-intransitive","idiom"]},"bento":{"character":"🍱","syllables":2,"types":["noun"]},"bicyclist":{"character":"🚴","syllables":3,"types":["noun"]},"bike":{"character":"🚲","syllables":1,"types":["noun","verb-intransitive"]},"bikini":{"character":"👙","syllables":3,"types":["noun"]},"bird":{"character":"🐦","syllables":1,"types":["noun","verb-intransitive","idiom"]},"birthday":{"character":"🎂","syllables":2,"types":["noun"]},"black_circle":{"character":"⚫","syllables":3,"types":[]},"black_joker":{"character":"🃏","syllables":3,"types":[]},"black_nib":{"character":"✒️","syllables":2,"types":[]},"black_square":{"character":"⬛️","syllables":2,"types":[]},"black_square_button":{"character":"🔲","syllables":4,"types":[]},"blossom":{"character":"🌼","syllables":2,"types":["noun","verb-intransitive"]},"blowfish":{"character":"🐡","syllables":2,"types":["noun"]},"blue_book":{"character":"📘","syllables":2,"types":[]},"blue_car":{"character":"🚙","syllables":2,"types":[]},"blue_heart":{"character":"💙","syllables":2,"types":[]},"blush":{"character":"😊","syllables":1,"types":["verb-intransitive","noun"]},"boar":{"character":"🐗","syllables":1,"types":["noun"]},"boat":{"character":"⛵️","syllables":1,"types":["noun","verb-intransitive","verb-transitive","idiom"]},"bomb":{"character":"💣","syllables":1,"types":["noun","verb-transitive","verb-intransitive"]},"book":{"character":"📖","syllables":1,"types":["noun","verb-transitive","verb-intransitive","adjective","idiom"]},"bookmark":{"character":"🔖","syllables":2,"types":["noun"]},"bookmark_tabs":{"character":"📑","syllables":3,"types":[]},"books":{"character":"📚","syllables":1,"types":["noun","verb"]},"boom":{"character":"💥","syllables":1,"types":["verb-intransitive","verb-transitive","noun","idiom"]},"boot":{"character":"👢","syllables":1,"types":["noun","verb-transitive","verb-intransitive","idiom"]},"bouquet":{"character":"💐","syllables":2,"types":["noun"]},"bow":{"character":"🙇","syllables":1,"types":["noun","verb-intransitive","verb-transitive","phrasal-verb","idiom"]},"bowling":{"character":"🎳","syllables":2,"types":["noun"]},"boy":{"character":"👦","syllables":1,"types":["noun","interjection"]},"bread":{"character":"🍞","syllables":1,"types":["noun","verb-transitive"]},"bride_with_veil":{"character":"👰","syllables":3,"types":[]},"bridge_at_night":{"character":"🌉","syllables":3,"types":[]},"briefcase":{"character":"💼","syllables":2,"types":["noun"]},"broken_heart":{"character":"💔","syllables":3,"types":[]},"bug":{"character":"🐛","syllables":1,"types":["noun","verb-intransitive","verb-transitive","phrasal-verb","idiom"]},"bulb":{"character":"💡","syllables":1,"types":["noun"]},"bullettrain_front":{"character":"🚆","syllables":4,"types":[]},"bullettrain_side":{"character":"🚅","syllables":4,"types":[]},"bus":{"character":"🚌","syllables":1,"types":["noun","verb-transitive","verb-intransitive"]},"busstop":{"character":"🚏","syllables":2,"types":[]},"bust_in_silhouette":{"character":"👤","syllables":5,"types":[]},"busts_in_silhouette":{"character":"👥","syllables":5,"types":[]},"cactus":{"character":"🌵","syllables":2,"types":["noun"]},"cake":{"character":"🍰","syllables":1,"types":["noun","verb-transitive","verb-intransitive"]},"calendar":{"character":"📆","syllables":3,"types":["noun","verb-transitive"]},"calling":{"character":"📲","syllables":2,"types":["noun"]},"camel":{"character":"🐫","syllables":2,"types":["noun"]},"camera":{"character":"📷","syllables":3,"types":["noun","idiom"]},"cancer":{"character":"♋️","syllables":2,"types":["noun"]},"candy":{"character":"🍬","syllables":2,"types":["noun","verb-transitive","verb-intransitive"]},"capital_abcd":{"character":"🔠","syllables":7,"types":[]},"capricorn":{"character":"♑️","syllables":3,"types":[]},"car":{"character":"🚗","syllables":1,"types":["noun"]},"card_index":{"character":"📇","syllables":3,"types":[]},"carousel_horse":{"character":"🎠","syllables":4,"types":[]},"cat":{"character":"🐱","syllables":1,"types":["noun","verb-transitive","verb-intransitive","idiom"]},"cat2":{"character":"🐈","syllables":2,"types":[]},"cd":{"character":"💿","syllables":2,"types":["abbreviation"]},"chart":{"character":"💹","syllables":1,"types":["noun","verb-transitive","verb-intransitive"]},"chart_with_downwards_trend":{"character":"📉","syllables":5,"types":[]},"chart_with_upwards_trend":{"character":"📈","syllables":5,"types":[]},"checkered_flag":{"character":"🏁","syllables":3,"types":[]},"cherries":{"character":"🍒","syllables":2,"types":["noun"]},"cherry_blossom":{"character":"🌸","syllables":4,"types":[]},"chestnut":{"character":"🌰","syllables":2,"types":["noun","adjective"]},"chicken":{"character":"🐔","syllables":2,"types":["noun","adjective","verb-intransitive"]},"children_crossing":{"character":"🚸","syllables":4,"types":[]},"chocolate_bar":{"character":"🍫","syllables":3,"types":[]},"christmas_tree":{"character":"🎄","syllables":3,"types":[]},"church":{"character":"⛪️","syllables":1,"types":["noun","verb-transitive","adjective"]},"cinema":{"character":"🎦","syllables":3,"types":["noun"]},"circus_tent":{"character":"🎪","syllables":3,"types":[]},"city_sunrise":{"character":"🌇","syllables":4,"types":[]},"city_sunset":{"character":"🌆","syllables":4,"types":[]},"cl":{"character":"🆑","syllables":2,"types":["abbreviation"]},"clap":{"character":"👏","syllables":1,"types":["verb-intransitive","verb-transitive","noun"]},"clapper":{"character":"🎬","syllables":2,"types":["noun"]},"clipboard":{"character":"📋","syllables":2,"types":["noun"]},"clock1":{"character":"🕐","syllables":2,"types":[]},"clock10":{"character":"🕙","syllables":2,"types":[]},"clock1030":{"character":"🕥","syllables":4,"types":[]},"clock11":{"character":"🕚","syllables":4,"types":[]},"clock1130":{"character":"🕦","syllables":6,"types":[]},"clock12":{"character":"🕛","syllables":2,"types":[]},"clock1230":{"character":"🕧","syllables":4,"types":[]},"clock130":{"character":"🕜","syllables":4,"types":[]},"clock2":{"character":"🕑","syllables":2,"types":[]},"clock230":{"character":"🕝","syllables":4,"types":[]},"clock3":{"character":"🕒","syllables":2,"types":[]},"clock330":{"character":"🕞","syllables":4,"types":[]},"clock4":{"character":"🕓","syllables":2,"types":[]},"clock430":{"character":"🕟","syllables":4,"types":[]},"clock5":{"character":"🕔","syllables":2,"types":[]},"clock530":{"character":"🕠","syllables":4,"types":[]},"clock6":{"character":"🕕","syllables":2,"types":[]},"clock630":{"character":"🕡","syllables":4,"types":[]},"clock7":{"character":"🕖","syllables":3,"types":[]},"clock730":{"character":"🕢","syllables":5,"types":[]},"clock8":{"character":"🕗","syllables":2,"types":[]},"clock830":{"character":"🕣","syllables":4,"types":[]},"clock9":{"character":"🕘","syllables":2,"types":[]},"clock930":{"character":"🕤","syllables":4,"types":[]},"closed_book":{"character":"📕","syllables":2,"types":[]},"closed_lock_with_key":{"character":"🔐","syllables":4,"types":[]},"closed_umbrella":{"character":"🌂","syllables":4,"types":[]},"cloud":{"character":"☁️","syllables":1,"types":["noun","verb-transitive","verb-intransitive","idiom"]},"clubs":{"character":"♣️","syllables":1,"types":["verb","noun"]},"cn":{"character":"🇨🇳","syllables":2,"types":[]},"cocktail":{"character":"🍸","syllables":2,"types":["noun","adjective"]},"coffee":{"character":"☕️","syllables":2,"types":["noun"]},"cold_sweat":{"character":"😰","syllables":2,"types":[]},"collision":{"character":"💥","syllables":3,"types":["noun"]},"computer":{"character":"💻","syllables":3,"types":["noun"]},"confetti_ball":{"character":"🎊","syllables":4,"types":[]},"confounded":{"character":"😖","syllables":3,"types":["adjective"]},"confused":{"character":"😕","syllables":2,"types":["adjective"]},"congratulations":{"character":"㊗️","syllables":5,"types":["interjection","noun"]},"construction":{"character":"🚧","syllables":3,"types":["noun"]},"construction_worker":{"character":"👷","syllables":5,"types":[]},"convenience_store":{"character":"🏪","syllables":4,"types":[]},"cookie":{"character":"🍪","syllables":2,"types":["noun"]},"cool":{"character":"🆒","syllables":1,"types":["adjective","adverb","verb-transitive","verb-intransitive","noun","idiom"]},"cop":{"character":"👮","syllables":1,"types":["noun","verb-transitive","phrasal-verb","idiom"]},"copyright":{"character":"©","syllables":3,"types":["noun","adjective","verb-transitive"]},"corn":{"character":"🌽","syllables":1,"types":["noun","verb-transitive","verb-intransitive"]},"couple":{"character":"👫","syllables":2,"types":["noun","verb-transitive","verb-intransitive","adjective"]},"couple_with_heart":{"character":"💑","syllables":4,"types":[]},"couplekiss":{"character":"💏","syllables":3,"types":[]},"cow":{"character":"🐮","syllables":1,"types":["noun","idiom","verb-transitive"]},"cow2":{"character":"🐄","syllables":2,"types":[]},"credit_card":{"character":"💳","syllables":3,"types":[]},"crocodile":{"character":"🐊","syllables":3,"types":["noun"]},"crossed_flags":{"character":"🎌","syllables":2,"types":[]},"crown":{"character":"👑","syllables":1,"types":["noun","verb-transitive","verb-intransitive"]},"cry":{"character":"😢","syllables":1,"types":["verb-intransitive","verb-transitive","noun","phrasal-verb","idiom"]},"crying_cat_face":{"character":"😿","syllables":4,"types":[]},"crystal_ball":{"character":"🔮","syllables":3,"types":[]},"cupid":{"character":"💘","syllables":2,"types":["noun"]},"curly_loop":{"character":"➰","syllables":3,"types":[]},"currency_exchange":{"character":"💱","syllables":5,"types":[]},"curry":{"character":"🍛","syllables":2,"types":["verb-transitive","idiom","noun"]},"custard":{"character":"🍮","syllables":2,"types":["noun"]},"customs":{"character":"🛃","syllables":2,"types":["noun"]},"cyclone":{"character":"🌀","syllables":2,"types":["noun"]},"dancer":{"character":"💃","syllables":2,"types":["noun"]},"dancers":{"character":"👯","syllables":2,"types":["noun"]},"dango":{"character":"🍡","syllables":2,"types":[]},"dart":{"character":"🎯","syllables":1,"types":["noun","verb-intransitive","verb-transitive"]},"dash":{"character":"💨","syllables":1,"types":["verb-transitive","verb-intransitive","noun"]},"date":{"character":"📅","syllables":1,"types":["noun","verb-transitive","verb-intransitive","idiom"]},"de":{"character":"🇩🇪","syllables":1,"types":["noun","verb"]},"deciduous_tree":{"character":"🌳","syllables":5,"types":[]},"department_store":{"character":"🏬","syllables":4,"types":[]},"diamond_shape_with_a_dot_inside":{"character":"💠","syllables":8,"types":[]},"diamonds":{"character":"♦️","syllables":2,"types":["noun","verb"]},"disappointed":{"character":"😞","syllables":4,"types":["adjective"]},"disappointed_relieved":{"character":"😥","syllables":6,"types":[]},"dizzy":{"character":"💫","syllables":2,"types":["adjective","verb-transitive"]},"dizzy_face":{"character":"😵","syllables":3,"types":[]},"do_not_litter":{"character":"🚯","syllables":4,"types":[]},"dog":{"character":"🐶","syllables":1,"types":["noun","adverb","verb-transitive","idiom"]},"dog2":{"character":"🐕","syllables":2,"types":[]},"dollar":{"character":"💵","syllables":2,"types":["noun"]},"dolls":{"character":"🎎","syllables":1,"types":["noun"]},"dolphin":{"character":"🐬","syllables":2,"types":["noun"]},"donut":{"character":"🍩","syllables":2,"types":["noun"]},"door":{"character":"🚪","syllables":1,"types":["noun","verb-transitive","idiom"]},"doughnut":{"character":"🍩","syllables":2,"types":["noun"]},"dragon":{"character":"🐉","syllables":2,"types":["noun"]},"dragon_face":{"character":"🐲","syllables":3,"types":[]},"dress":{"character":"👗","syllables":1,"types":["verb-transitive","verb-intransitive","noun","adjective","phrasal-verb","idiom"]},"dromedary_camel":{"character":"🐪","syllables":6,"types":[]},"droplet":{"character":"💧","syllables":2,"types":["noun"]},"dvd":{"character":"📀","syllables":3,"types":[]},"e-mail":{"character":"📧","syllables":2,"types":["noun","verb-transitive"]},"ear":{"character":"👂","syllables":1,"types":["noun","idiom","verb-intransitive"]},"ear_of_rice":{"character":"🌾","syllables":3,"types":[]},"earth_africa":{"character":"🌍","syllables":4,"types":[]},"earth_americas":{"character":"🌎","syllables":5,"types":[]},"earth_asia":{"character":"🌏","syllables":3,"types":[]},"egg":{"character":"🍳","syllables":1,"types":["noun","verb-transitive","idiom"]},"eggplant":{"character":"🍆","syllables":2,"types":["noun"]},"eight":{"character":"8️⃣","syllables":1,"types":["noun"]},"eight_pointed_black_star":{"character":"✴️","syllables":5,"types":[]},"eight_spoked_asterisk":{"character":"✳️","syllables":4,"types":[]},"electric_plug":{"character":"🔌","syllables":4,"types":[]},"elephant":{"character":"🐘","syllables":3,"types":["noun"]},"email":{"character":"📩","syllables":2,"types":["noun","verb"]},"end":{"character":"🔚","syllables":1,"types":["noun","verb-transitive","verb-intransitive","idiom"]},"envelope":{"character":"✉️","syllables":3,"types":["noun","idiom"]},"es":{"character":"🇪🇸","syllables":1,"types":["noun"]},"euro":{"character":"💶","syllables":2,"types":["noun"]},"european_castle":{"character":"🏰","syllables":6,"types":[]},"european_post_office":{"character":"🏤","syllables":7,"types":[]},"evergreen_tree":{"character":"🌲","syllables":4,"types":[]},"exclamation":{"character":"❗️","syllables":4,"types":["noun"]},"expressionless":{"character":"😑","syllables":4,"types":["adjective"]},"eyeglasses":{"character":"👓","syllables":3,"types":["noun"]},"eyes":{"character":"👀","syllables":1,"types":["noun","verb"]},"facepunch":{"character":"👊","syllables":2,"types":[]},"factory":{"character":"🏭","syllables":3,"types":["noun"]},"fallen_leaf":{"character":"🍂","syllables":3,"types":[]},"family":{"character":"👪","syllables":3,"types":["noun","adjective"]},"fast_forward":{"character":"⏩","syllables":3,"types":[]},"fax":{"character":"📠","syllables":1,"types":["noun","verb-transitive"]},"fearful":{"character":"😨","syllables":2,"types":["adjective"]},"feet":{"character":"👣","syllables":1,"types":["noun"]},"ferris_wheel":{"character":"🎡","syllables":3,"types":[]},"file_folder":{"character":"📁","syllables":3,"types":[]},"fire":{"character":"🔥","syllables":2,"types":["noun","verb-transitive","verb-intransitive","phrasal-verb","idiom"]},"fire_engine":{"character":"🚒","syllables":4,"types":[]},"fireworks":{"character":"🎆","syllables":2,"types":["noun"]},"first_quarter_moon":{"character":"🌓","syllables":4,"types":[]},"first_quarter_moon_with_face":{"character":"🌛","syllables":6,"types":[]},"fish":{"character":"🐟","syllables":1,"types":["noun","verb-intransitive","verb-transitive","phrasal-verb","idiom"]},"fish_cake":{"character":"🍥","syllables":2,"types":[]},"fishing_pole_and_fish":{"character":"🎣","syllables":5,"types":[]},"fist":{"character":"✊","syllables":1,"types":["noun","verb-transitive"]},"five":{"character":"5️⃣","syllables":1,"types":["noun"]},"flags":{"character":"🎏","syllables":1,"types":["noun"]},"flashlight":{"character":"🔦","syllables":2,"types":["noun"]},"floppy_disk":{"character":"💾","syllables":3,"types":[]},"flower_playing_cards":{"character":"🎴","syllables":5,"types":[]},"flushed":{"character":"😳","syllables":1,"types":["adjective","verb"]},"foggy":{"character":"🌁","syllables":2,"types":["adjective"]},"football":{"character":"🏈","syllables":2,"types":["noun"]},"fork_and_knife":{"character":"🍴","syllables":3,"types":[]},"fountain":{"character":"⛲️","syllables":2,"types":["noun","verb-transitive"]},"four":{"character":"4️⃣","syllables":1,"types":["noun","idiom"]},"four_leaf_clover":{"character":"🍀","syllables":4,"types":[]},"fr":{"character":"🇫🇷","syllables":2,"types":[]},"free":{"character":"🆓","syllables":1,"types":["adjective","adverb","verb-transitive","idiom"]},"fried_shrimp":{"character":"🍤","syllables":2,"types":[]},"fries":{"character":"🍟","syllables":1,"types":["verb","noun"]},"frog":{"character":"🐸","syllables":1,"types":["noun"]},"frowning":{"character":"😦","syllables":2,"types":["verb"]},"fuelpump":{"character":"⛽️","syllables":2,"types":[]},"full_moon":{"character":"🌕","syllables":2,"types":[]},"full_moon_with_face":{"character":"🌝","syllables":4,"types":[]},"game_die":{"character":"🎲","syllables":2,"types":[]},"gb":{"character":"🇬🇧","syllables":2,"types":[]},"gem":{"character":"💎","syllables":1,"types":["noun","verb-transitive"]},"gemini":{"character":"♊️","syllables":3,"types":[]},"ghost":{"character":"👻","syllables":1,"types":["noun","verb-intransitive","verb-transitive"]},"gift":{"character":"🎁","syllables":1,"types":["noun","verb-transitive"]},"gift_heart":{"character":"💝","syllables":2,"types":[]},"girl":{"character":"👧","syllables":1,"types":["noun"]},"globe_with_meridians":{"character":"🌐","syllables":2,"types":[]},"goat":{"character":"🐐","syllables":1,"types":["noun"]},"golf":{"character":"⛳️","syllables":1,"types":["noun","verb-intransitive"]},"grapes":{"character":"🍇","syllables":1,"types":["noun"]},"green_apple":{"character":"🍏","syllables":3,"types":[]},"green_book":{"character":"📗","syllables":2,"types":[]},"green_heart":{"character":"💚","syllables":2,"types":[]},"grey_exclamation":{"character":"❕","syllables":5,"types":[]},"grey_question":{"character":"❔","syllables":3,"types":[]},"grimacing":{"character":"😬","syllables":3,"types":["verb"]},"grin":{"character":"😁","syllables":1,"types":["verb-intransitive","verb-transitive","noun"]},"grinning":{"character":"😀","syllables":2,"types":["verb"]},"guardsman":{"character":"💂","syllables":2,"types":["noun"]},"guitar":{"character":"🎸","syllables":2,"types":["noun"]},"gun":{"character":"🔫","syllables":1,"types":["noun","verb-transitive","verb-intransitive","phrasal-verb","idiom"]},"haircut":{"character":"💇","syllables":2,"types":["noun"]},"hamburger":{"character":"🍔","syllables":3,"types":["noun"]},"hammer":{"character":"🔨","syllables":2,"types":["noun","verb-transitive","verb-intransitive","idiom"]},"hamster":{"character":"🐹","syllables":2,"types":["noun"]},"hand":{"character":"✋","syllables":1,"types":["noun","verb-transitive","verb-intransitive","phrasal-verb","idiom"]},"handbag":{"character":"👜","syllables":2,"types":["noun"]},"hankey":{"character":"💩","syllables":2,"types":["noun"]},"hash":{"character":"#️⃣","syllables":1,"types":["noun","verb-transitive","idiom"]},"hatched_chick":{"character":"🐥","syllables":2,"types":[]},"hatching_chick":{"character":"🐣","syllables":3,"types":[]},"headphones":{"character":"🎧","syllables":2,"types":["noun"]},"hear_no_evil":{"character":"🙉","syllables":4,"types":[]},"heart":{"character":"❤️","syllables":1,"types":["noun","verb-transitive","idiom"]},"heart_decoration":{"character":"💟","syllables":5,"types":[]},"heart_eyes":{"character":"😍","syllables":2,"types":[]},"heart_eyes_cat":{"character":"😻","syllables":3,"types":[]},"heartbeat":{"character":"💓","syllables":2,"types":["noun"]},"heartpulse":{"character":"💗","syllables":2,"types":[]},"hearts":{"character":"♥️","syllables":1,"types":["noun","verb"]},"heavy_check_mark":{"character":"✔️","syllables":4,"types":[]},"heavy_division_sign":{"character":"➗","syllables":6,"types":[]},"heavy_dollar_sign":{"character":"💲","syllables":5,"types":[]},"heavy_exclamation_mark":{"character":"❗️","syllables":7,"types":[]},"heavy_minus_sign":{"character":"➖","syllables":5,"types":[]},"heavy_multiplication_x":{"character":"✖️","syllables":8,"types":[]},"heavy_plus_sign":{"character":"➕","syllables":4,"types":[]},"helicopter":{"character":"🚁","syllables":4,"types":["noun","verb-transitive"]},"herb":{"character":"🌿","syllables":1,"types":["noun"]},"hibiscus":{"character":"🌺","syllables":3,"types":["noun"]},"high_brightness":{"character":"🔆","syllables":3,"types":[]},"high_heel":{"character":"👠","syllables":2,"types":[]},"hocho":{"character":"🔪","syllables":2,"types":[]},"honey_pot":{"character":"🍯","syllables":3,"types":[]},"honeybee":{"character":"🐝","syllables":3,"types":["noun"]},"horse":{"character":"🐴","syllables":1,"types":["noun","verb-transitive","verb-intransitive","adjective","phrasal-verb","idiom"]},"horse_racing":{"character":"🏇","syllables":3,"types":[]},"hospital":{"character":"🏥","syllables":3,"types":["noun"]},"hotel":{"character":"🏨","syllables":2,"types":["noun"]},"hotsprings":{"character":"♨️","syllables":2,"types":[]},"hourglass":{"character":"⌛️","syllables":3,"types":["noun","adjective"]},"hourglass_flowing_sand":{"character":"⏳","syllables":6,"types":[]},"house":{"character":"🏠","syllables":1,"types":["noun","verb-transitive","verb-intransitive","idiom"]},"house_with_garden":{"character":"🏡","syllables":4,"types":[]},"hushed":{"character":"😧","syllables":1,"types":["adjective","verb"]},"ice_cream":{"character":"🍨","syllables":2,"types":[]},"icecream":{"character":"🍦","syllables":2,"types":["noun"]},"id":{"character":"🆔","syllables":1,"types":["noun"]},"ideograph_advantage":{"character":"🉐","syllables":3,"types":[]},"imp":{"character":"👿","syllables":1,"types":["noun","verb-transitive"]},"inbox_tray":{"character":"📥","syllables":1,"types":[]},"incoming_envelope":{"character":"📨","syllables":6,"types":[]},"information_desk_person":{"character":"💁","syllables":7,"types":[]},"information_source":{"character":"ℹ️","syllables":5,"types":[]},"innocent":{"character":"😇","syllables":3,"types":["adjective","noun"]},"interrobang":{"character":"⁉️","syllables":4,"types":["noun"]},"iphone":{"character":"📱","syllables":2,"types":[]},"it":{"character":"🇮🇹","syllables":1,"types":["pronoun","noun","idiom"]},"izakaya_lantern":{"character":"🏮","syllables":2,"types":[]},"jack_o_lantern":{"character":"🎃","syllables":4,"types":[]},"japan":{"character":"🗾","syllables":2,"types":["noun","verb-transitive"]},"japanese_castle":{"character":"🏯","syllables":5,"types":[]},"japanese_goblin":{"character":"👺","syllables":5,"types":[]},"japanese_ogre":{"character":"👹","syllables":5,"types":[]},"jeans":{"character":"👖","syllables":1,"types":["noun"]},"joy":{"character":"😂","syllables":1,"types":["noun","verb-intransitive","verb-transitive"]},"joy_cat":{"character":"😹","syllables":2,"types":[]},"jp":{"character":"🇯🇵","syllables":2,"types":["abbreviation"]},"key":{"character":"🔑","syllables":1,"types":["noun","adjective","verb-transitive","verb-intransitive","phrasal-verb","idiom"]},"keycap_ten":{"character":"🔟","syllables":1,"types":[]},"kimono":{"character":"👘","syllables":3,"types":["noun"]},"kiss":{"character":"💋","syllables":1,"types":["verb-transitive","verb-intransitive","noun","phrasal-verb","idiom"]},"kissing":{"character":"😗","syllables":2,"types":["verb","adjective"]},"kissing_cat":{"character":"😽","syllables":3,"types":[]},"kissing_closed_eyes":{"character":"😚","syllables":4,"types":[]},"kissing_face":{"character":"😚","syllables":3,"types":[]},"kissing_heart":{"character":"😘","syllables":3,"types":[]},"kissing_smiling_eyes":{"character":"😙","syllables":5,"types":[]},"koala":{"character":"🐨","syllables":3,"types":["noun"]},"koko":{"character":"🈁","syllables":2,"types":["noun"]},"kr":{"character":"🇰🇷","syllables":2,"types":[]},"large_blue_circle":{"character":"🔵","syllables":4,"types":[]},"large_blue_diamond":{"character":"🔷","syllables":4,"types":[]},"large_orange_diamond":{"character":"🔶","syllables":5,"types":[]},"last_quarter_moon":{"character":"🌗","syllables":4,"types":[]},"last_quarter_moon_with_face":{"character":"🌜","syllables":6,"types":[]},"laughing":{"character":"😆","syllables":2,"types":["noun","verb"]},"leaves":{"character":"🍃","syllables":1,"types":["noun"]},"ledger":{"character":"📒","syllables":2,"types":["noun"]},"left_luggage":{"character":"🛅","syllables":3,"types":[]},"left_right_arrow":{"character":"↔️","syllables":4,"types":[]},"leftwards_arrow_with_hook":{"character":"↩️","syllables":4,"types":[]},"lemon":{"character":"🍋","syllables":2,"types":["noun","adjective"]},"leo":{"character":"♌️","syllables":2,"types":[]},"leopard":{"character":"🐆","syllables":2,"types":["noun"]},"libra":{"character":"♎️","syllables":2,"types":["noun"]},"light_rail":{"character":"🚈","syllables":2,"types":[]},"link":{"character":"🔗","syllables":1,"types":["noun","verb-transitive","verb-intransitive"]},"lips":{"character":"👄","syllables":1,"types":["noun"]},"lipstick":{"character":"💄","syllables":2,"types":["noun"]},"lock":{"character":"🔒","syllables":1,"types":["noun","verb-transitive","verb-intransitive","phrasal-verb","idiom"]},"lock_with_ink_pen":{"character":"🔏","syllables":4,"types":[]},"lollipop":{"character":"🍭","syllables":3,"types":["noun"]},"loop":{"character":"➿","syllables":1,"types":["noun","verb-transitive","verb-intransitive","idiom"]},"loudspeaker":{"character":"📢","syllables":3,"types":["noun"]},"love_hotel":{"character":"🏩","syllables":3,"types":[]},"love_letter":{"character":"💌","syllables":3,"types":[]},"low_brightness":{"character":"🔅","syllables":3,"types":[]},"m":{"character":"ⓜ","syllables":1,"types":["noun","abbreviation"]},"mag":{"character":"🔍","syllables":1,"types":["noun"]},"mag_right":{"character":"🔎","syllables":2,"types":[]},"mahjong":{"character":"🀄️","syllables":2,"types":["noun"]},"mailbox":{"character":"📫","syllables":2,"types":["noun"]},"mailbox_closed":{"character":"📪","syllables":3,"types":[]},"mailbox_with_mail":{"character":"📬","syllables":4,"types":[]},"mailbox_with_no_mail":{"character":"📭","syllables":5,"types":[]},"man":{"character":"👨","syllables":1,"types":["noun","verb-transitive","interjection","idiom"]},"man_with_gua_pi_mao":{"character":"👲","syllables":4,"types":[]},"man_with_turban":{"character":"👳","syllables":4,"types":[]},"mans_shoe":{"character":"👞","syllables":2,"types":[]},"maple_leaf":{"character":"🍁","syllables":3,"types":[]},"mask":{"character":"😷","syllables":1,"types":["noun","verb-transitive","verb-intransitive"]},"massage":{"character":"💆","syllables":2,"types":["noun","verb-transitive"]},"meat_on_bone":{"character":"🍖","syllables":3,"types":[]},"mega":{"character":"📣","syllables":2,"types":["adjective"]},"melon":{"character":"🍈","syllables":2,"types":["noun"]},"memo":{"character":"📝","syllables":2,"types":["noun"]},"mens":{"character":"🚹","syllables":1,"types":[]},"metro":{"character":"🚇","syllables":2,"types":["noun","adjective"]},"microphone":{"character":"🎤","syllables":3,"types":["noun"]},"microscope":{"character":"🔬","syllables":3,"types":["noun"]},"milky_way":{"character":"🌌","syllables":3,"types":[]},"minibus":{"character":"🚐","syllables":3,"types":["noun"]},"minidisc":{"character":"💽","syllables":3,"types":["noun"]},"mobile_phone_off":{"character":"📴","syllables":4,"types":[]},"money_with_wings":{"character":"💸","syllables":4,"types":[]},"moneybag":{"character":"💰","syllables":3,"types":["noun"]},"monkey":{"character":"🐒","syllables":2,"types":["noun","verb-intransitive","verb-transitive"]},"monkey_face":{"character":"🐵","syllables":3,"types":[]},"monorail":{"character":"🚝","syllables":3,"types":["noun"]},"moon":{"character":"🌙","syllables":1,"types":["noun","verb-intransitive","verb-transitive"]},"mortar_board":{"character":"🎓","syllables":3,"types":[]},"mount_fuji":{"character":"🗻","syllables":3,"types":[]},"mountain_bicyclist":{"character":"🚵","syllables":5,"types":[]},"mountain_cableway":{"character":"🚠","syllables":2,"types":[]},"mountain_railway":{"character":"🚞","syllables":4,"types":[]},"mouse":{"character":"🐭","syllables":1,"types":["noun","verb-intransitive"]},"mouse2":{"character":"🐁","syllables":2,"types":[]},"movie_camera":{"character":"🎥","syllables":5,"types":[]},"moyai":{"character":"🗿","syllables":2,"types":[]},"muscle":{"character":"💪","syllables":2,"types":["noun","verb-intransitive","verb-transitive"]},"mushroom":{"character":"🍄","syllables":2,"types":["noun","verb-intransitive","adjective"]},"musical_keyboard":{"character":"🎹","syllables":5,"types":[]},"musical_note":{"character":"🎵","syllables":4,"types":[]},"musical_score":{"character":"🎼","syllables":4,"types":[]},"mute":{"character":"🔇","syllables":1,"types":["adjective","noun","verb-transitive"]},"nail_care":{"character":"💅","syllables":2,"types":[]},"name_badge":{"character":"📛","syllables":2,"types":[]},"necktie":{"character":"👔","syllables":2,"types":["noun"]},"negative_squared_cross_mark":{"character":"❎","syllables":6,"types":[]},"neutral_face":{"character":"😐","syllables":3,"types":[]},"new":{"character":"🆕","syllables":1,"types":["adjective","adverb"]},"new_moon":{"character":"🌑","syllables":2,"types":[]},"new_moon_with_face":{"character":"🌚","syllables":4,"types":[]},"newspaper":{"character":"📰","syllables":3,"types":["noun"]},"ng":{"character":"🆖","syllables":1,"types":["abbreviation"]},"nine":{"character":"9️⃣","syllables":1,"types":["noun","idiom"]},"no_bell":{"character":"🔕","syllables":2,"types":[]},"no_bicycles":{"character":"🚳","syllables":4,"types":[]},"no_entry":{"character":"⛔️","syllables":3,"types":[]},"no_entry_sign":{"character":"🚫","syllables":4,"types":[]},"no_good":{"character":"🙅","syllables":2,"types":[]},"no_mobile_phones":{"character":"📵","syllables":4,"types":[]},"no_mouth":{"character":"😶","syllables":2,"types":[]},"no_pedestrians":{"character":"🚷","syllables":5,"types":[]},"no_smoking":{"character":"🚭","syllables":3,"types":[]},"non-potable_water":{"character":"🚱","syllables":6,"types":[]},"nose":{"character":"👃","syllables":1,"types":["noun","verb-transitive","verb-intransitive","phrasal-verb","idiom"]},"notebook":{"character":"📓","syllables":2,"types":["noun"]},"notebook_with_decorative_cover":{"character":"📔","syllables":8,"types":[]},"notes":{"character":"🎶","syllables":1,"types":["noun"]},"nut_and_bolt":{"character":"🔩","syllables":3,"types":[]},"o":{"character":"⭕️","syllables":1,"types":["noun"]},"o2":{"character":"🅾","syllables":2,"types":[]},"ocean":{"character":"🌊","syllables":2,"types":["noun"]},"octopus":{"character":"🐙","syllables":3,"types":["noun"]},"oden":{"character":"🍢","syllables":2,"types":[]},"office":{"character":"🏢","syllables":2,"types":["noun"]},"ok":{"character":"🆗","syllables":2,"types":["adjective"]},"ok_hand":{"character":"👌","syllables":3,"types":[]},"ok_woman":{"character":"🙆","syllables":4,"types":[]},"older_man":{"character":"👴","syllables":3,"types":[]},"older_woman":{"character":"👵","syllables":4,"types":[]},"on":{"character":"🔛","syllables":1,"types":["preposition","adverb","adjective","idiom"]},"oncoming_automobile":{"character":"🚘","syllables":7,"types":[]},"oncoming_bus":{"character":"🚍","syllables":4,"types":[]},"oncoming_police_car":{"character":"🚔","syllables":6,"types":[]},"oncoming_taxi":{"character":"🚖","syllables":5,"types":[]},"one":{"character":"1️⃣","syllables":1,"types":["adjective","noun","pronoun","idiom"]},"open_file_folder":{"character":"📂","syllables":5,"types":[]},"open_hands":{"character":"👐","syllables":3,"types":[]},"open_mouth":{"character":"😮","syllables":3,"types":[]},"ophiuchus":{"character":"⛎","syllables":4,"types":[]},"orange_book":{"character":"📙","syllables":3,"types":[]},"outbox_tray":{"character":"📤","syllables":1,"types":[]},"ox":{"character":"🐂","syllables":1,"types":["noun"]},"page_facing_up":{"character":"📄","syllables":4,"types":[]},"page_with_curl":{"character":"📃","syllables":3,"types":[]},"pager":{"character":"📟","syllables":2,"types":["noun"]},"palm_tree":{"character":"🌴","syllables":2,"types":[]},"panda_face":{"character":"🐼","syllables":3,"types":[]},"paperclip":{"character":"📎","syllables":3,"types":["noun"]},"parking":{"character":"🅿️","syllables":2,"types":["noun"]},"part_alternation_mark":{"character":"〽️","syllables":6,"types":[]},"partly_sunny":{"character":"⛅️","syllables":4,"types":[]},"passport_control":{"character":"🛂","syllables":4,"types":[]},"paw_prints":{"character":"🐾","syllables":2,"types":[]},"peach":{"character":"🍑","syllables":1,"types":["noun","verb-intransitive","verb-transitive"]},"pear":{"character":"🍐","syllables":1,"types":["noun"]},"pencil":{"character":"📝","syllables":2,"types":["noun","verb-transitive","phrasal-verb"]},"pencil2":{"character":"✏️","syllables":3,"types":[]},"penguin":{"character":"🐧","syllables":2,"types":["noun"]},"pensive":{"character":"😔","syllables":2,"types":["adjective"]},"performing_arts":{"character":"🎭","syllables":4,"types":[]},"persevere":{"character":"😣","syllables":3,"types":["verb-intransitive"]},"person_frowning":{"character":"🙍","syllables":4,"types":[]},"person_with_blond_hair":{"character":"👱","syllables":5,"types":[]},"person_with_pouting_face":{"character":"🙎","syllables":6,"types":[]},"phone":{"character":"☎️","syllables":1,"types":["noun","verb-intransitive","verb-transitive"]},"pig":{"character":"🐷","syllables":1,"types":["noun","verb-intransitive","phrasal-verb","idiom"]},"pig2":{"character":"🐖","syllables":2,"types":[]},"pig_nose":{"character":"🐽","syllables":2,"types":[]},"pill":{"character":"💊","syllables":1,"types":["noun","verb-transitive","verb-intransitive"]},"pineapple":{"character":"🍍","syllables":3,"types":["noun"]},"pisces":{"character":"♓️","syllables":2,"types":[]},"pizza":{"character":"🍕","syllables":2,"types":["noun"]},"plus1":{"character":"👍","syllables":2,"types":[]},"point_down":{"character":"👇","syllables":2,"types":[]},"point_left":{"character":"👈","syllables":2,"types":[]},"point_right":{"character":"👉","syllables":2,"types":[]},"point_up":{"character":"☝️","syllables":2,"types":[]},"point_up_2":{"character":"👆","syllables":2,"types":[]},"police_car":{"character":"🚓","syllables":3,"types":[]},"poodle":{"character":"🐩","syllables":2,"types":["noun"]},"poop":{"character":"💩","syllables":1,"types":["noun","verb-transitive","phrasal-verb","verb-intransitive"]},"post_office":{"character":"🏣","syllables":3,"types":[]},"postal_horn":{"character":"📯","syllables":3,"types":[]},"postbox":{"character":"📮","syllables":2,"types":["noun"]},"potable_water":{"character":"🚰","syllables":5,"types":[]},"pouch":{"character":"👝","syllables":1,"types":["noun","verb-transitive","verb-intransitive"]},"poultry_leg":{"character":"🍗","syllables":3,"types":[]},"pound":{"character":"💷","syllables":1,"types":["noun","verb-transitive","verb-intransitive","idiom"]},"pouting_cat":{"character":"😾","syllables":3,"types":[]},"pray":{"character":"🙏","syllables":1,"types":["verb-intransitive","verb-transitive"]},"princess":{"character":"👸","syllables":2,"types":["noun","adjective"]},"punch":{"character":"👊","syllables":1,"types":["noun","verb-transitive","phrasal-verb","idiom"]},"purple_heart":{"character":"💜","syllables":3,"types":[]},"purse":{"character":"👛","syllables":1,"types":["noun","verb-transitive"]},"pushpin":{"character":"📌","syllables":2,"types":["noun"]},"put_litter_in_its_place":{"character":"🚮","syllables":6,"types":[]},"question":{"character":"❓","syllables":2,"types":["noun","verb-transitive","verb-intransitive","idiom"]},"rabbit":{"character":"🐰","syllables":2,"types":["noun","verb-intransitive"]},"rabbit2":{"character":"🐇","syllables":3,"types":[]},"racehorse":{"character":"🐎","syllables":2,"types":["noun"]},"radio":{"character":"📻","syllables":3,"types":["noun","verb-transitive","verb-intransitive"]},"radio_button":{"character":"🔘","syllables":5,"types":[]},"rage":{"character":"😡","syllables":1,"types":["noun","verb-intransitive"]},"railway_car":{"character":"🚋","syllables":3,"types":[]},"rainbow":{"character":"🌈","syllables":2,"types":["noun"]},"raised_hand":{"character":"✋","syllables":2,"types":[]},"raised_hands":{"character":"🙌","syllables":2,"types":[]},"raising_hand":{"character":"🙋","syllables":3,"types":[]},"ram":{"character":"🐏","syllables":1,"types":["noun","verb-transitive"]},"ramen":{"character":"🍜","syllables":2,"types":["noun"]},"rat":{"character":"🐀","syllables":1,"types":["noun","verb-intransitive","verb-transitive"]},"recycle":{"character":"♻️","syllables":3,"types":["verb-transitive"]},"red_car":{"character":"🚗","syllables":2,"types":[]},"red_circle":{"character":"🔴","syllables":3,"types":[]},"registered":{"character":"®","syllables":3,"types":["adjective"]},"relaxed":{"character":"☺️","syllables":2,"types":["adjective"]},"relieved":{"character":"😌","syllables":2,"types":["adjective","verb"]},"repeat":{"character":"🔁","syllables":2,"types":["verb-transitive","verb-intransitive","noun","adjective"]},"repeat_one":{"character":"🔂","syllables":3,"types":[]},"restroom":{"character":"🚻","syllables":2,"types":["noun"]},"revolving_hearts":{"character":"💞","syllables":4,"types":[]},"rewind":{"character":"⏪","syllables":2,"types":["verb-transitive","noun"]},"ribbon":{"character":"🎀","syllables":2,"types":["noun","verb-transitive"]},"rice":{"character":"🍚","syllables":1,"types":["noun","verb-transitive"]},"rice_ball":{"character":"🍙","syllables":2,"types":[]},"rice_cracker":{"character":"🍘","syllables":3,"types":[]},"rice_scene":{"character":"🎑","syllables":2,"types":[]},"ring":{"character":"💍","syllables":1,"types":["noun","verb-transitive","verb-intransitive","phrasal-verb","idiom"]},"rocket":{"character":"🚀","syllables":2,"types":["noun","verb-intransitive","verb-transitive"]},"roller_coaster":{"character":"🎢","syllables":4,"types":[]},"rooster":{"character":"🐓","syllables":2,"types":["noun"]},"rose":{"character":"🌹","syllables":1,"types":["noun","adjective","idiom","verb"]},"rotating_light":{"character":"🚨","syllables":4,"types":[]},"round_pushpin":{"character":"📍","syllables":3,"types":[]},"rowboat":{"character":"🚣","syllables":2,"types":["noun"]},"ru":{"character":"🇷🇺","syllables":1,"types":[]},"rugby_football":{"character":"🏉","syllables":4,"types":[]},"runner":{"character":"🏃","syllables":2,"types":["noun"]},"running":{"character":"🏃","syllables":2,"types":["noun","adjective","adverb","idiom"]},"running_shirt_with_sash":{"character":"🎽","syllables":5,"types":[]},"sa":{"character":"🈂","syllables":1,"types":[]},"sagittarius":{"character":"♐️","syllables":5,"types":[]},"sailboat":{"character":"⛵️","syllables":2,"types":["noun"]},"sake":{"character":"🍶","syllables":1,"types":["noun"]},"sandal":{"character":"👡","syllables":2,"types":["noun"]},"santa":{"character":"🎅","syllables":2,"types":[]},"satellite":{"character":"📡","syllables":3,"types":["noun"]},"satisfied":{"character":"😆","syllables":3,"types":["adjective"]},"saxophone":{"character":"🎷","syllables":3,"types":["noun"]},"school":{"character":"🏫","syllables":1,"types":["noun","verb-transitive","adjective","verb-intransitive"]},"school_satchel":{"character":"🎒","syllables":1,"types":[]},"scissors":{"character":"✂️","syllables":2,"types":["noun","verb"]},"scorpius":{"character":"♏️","syllables":3,"types":[]},"scream":{"character":"😱","syllables":1,"types":["verb-intransitive","verb-transitive","noun"]},"scream_cat":{"character":"🙀","syllables":2,"types":[]},"scroll":{"character":"📜","syllables":1,"types":["noun","verb-transitive","verb-intransitive"]},"seat":{"character":"💺","syllables":1,"types":["noun","verb-transitive","verb-intransitive","idiom"]},"secret":{"character":"㊙️","syllables":2,"types":["adjective","noun"]},"see_no_evil":{"character":"🙈","syllables":4,"types":[]},"seedling":{"character":"🌱","syllables":2,"types":["noun"]},"seven":{"character":"7️⃣","syllables":2,"types":["noun"]},"shaved_ice":{"character":"🍧","syllables":2,"types":[]},"sheep":{"character":"🐑","syllables":1,"types":["noun"]},"shell":{"character":"🐚","syllables":1,"types":["noun","verb-transitive","verb-intransitive","phrasal-verb"]},"ship":{"character":"🚢","syllables":1,"types":["noun","verb-transitive","verb-intransitive","phrasal-verb","idiom"]},"shirt":{"character":"👕","syllables":1,"types":["noun","idiom"]},"shit":{"character":"💩","syllables":1,"types":["verb-intransitive","verb-transitive","noun","interjection","phrasal-verb","idiom"]},"shoe":{"character":"👟","syllables":1,"types":["noun","verb-transitive","idiom"]},"shower":{"character":"🚿","syllables":2,"types":["noun","verb-transitive","verb-intransitive"]},"signal_strength":{"character":"📶","syllables":3,"types":[]},"six":{"character":"6️⃣","syllables":1,"types":["noun","idiom"]},"six_pointed_star":{"character":"🔯","syllables":4,"types":[]},"ski":{"character":"🎿","syllables":1,"types":["noun","verb-intransitive","verb-transitive"]},"skull":{"character":"💀","syllables":1,"types":["noun"]},"sleeping":{"character":"😴","syllables":2,"types":["verb","adjective","noun"]},"sleepy":{"character":"😪","syllables":2,"types":["adjective"]},"slot_machine":{"character":"🎰","syllables":3,"types":[]},"small_blue_diamond":{"character":"🔹","syllables":4,"types":[]},"small_orange_diamond":{"character":"🔸","syllables":5,"types":[]},"small_red_triangle":{"character":"🔺","syllables":5,"types":[]},"small_red_triangle_down":{"character":"🔻","syllables":6,"types":[]},"smile":{"character":"😄","syllables":1,"types":["noun","verb-intransitive","verb-transitive"]},"smile_cat":{"character":"😸","syllables":2,"types":[]},"smiley":{"character":"😃","syllables":2,"types":["noun","adjective"]},"smiley_cat":{"character":"😺","syllables":3,"types":[]},"smiling_imp":{"character":"😈","syllables":3,"types":[]},"smirk":{"character":"😏","syllables":1,"types":["verb-intransitive","noun"]},"smirk_cat":{"character":"😼","syllables":2,"types":[]},"smoking":{"character":"🚬","syllables":2,"types":["adjective"]},"snail":{"character":"🐌","syllables":1,"types":["noun"]},"snake":{"character":"🐍","syllables":1,"types":["noun","verb-transitive","verb-intransitive"]},"snowboarder":{"character":"🏂","syllables":3,"types":["noun"]},"snowflake":{"character":"❄️","syllables":2,"types":["noun"]},"snowman":{"character":"⛄️","syllables":2,"types":["noun"]},"sob":{"character":"😭","syllables":1,"types":["verb-intransitive","verb-transitive","noun"]},"soccer":{"character":"⚽️","syllables":2,"types":["noun"]},"soon":{"character":"🔜","syllables":1,"types":["adverb","idiom"]},"sos":{"character":"🆘","syllables":3,"types":[]},"sound":{"character":"🔉","syllables":1,"types":["noun","verb-intransitive","verb-transitive","phrasal-verb","adjective","adverb"]},"space_invader":{"character":"👾","syllables":4,"types":[]},"spades":{"character":"♠️","syllables":1,"types":["noun","verb"]},"spaghetti":{"character":"🍝","syllables":3,"types":["noun"]},"sparkler":{"character":"🎇","syllables":2,"types":["noun"]},"sparkles":{"character":"✨","syllables":2,"types":["noun","verb"]},"sparkling_heart":{"character":"💖","syllables":3,"types":[]},"speak_no_evil":{"character":"🙊","syllables":4,"types":[]},"speaker":{"character":"🔈","syllables":2,"types":["noun"]},"speech_balloon":{"character":"💬","syllables":3,"types":[]},"speedboat":{"character":"🚤","syllables":2,"types":["noun"]},"star":{"character":"⭐️","syllables":1,"types":["noun","adjective","verb-transitive","verb-intransitive","idiom"]},"star2":{"character":"🌟","syllables":2,"types":[]},"stars":{"character":"🌠","syllables":1,"types":["noun","verb"]},"station":{"character":"🚉","syllables":2,"types":["noun","verb-transitive"]},"statue_of_liberty":{"character":"🗽","syllables":6,"types":[]},"steam_locomotive":{"character":"🚂","syllables":5,"types":[]},"stew":{"character":"🍲","syllables":1,"types":["verb-transitive","verb-intransitive","noun"]},"straight_ruler":{"character":"📏","syllables":3,"types":[]},"strawberry":{"character":"🍓","syllables":3,"types":["noun","adjective"]},"stuck_out_tongue":{"character":"😛","syllables":3,"types":[]},"stuck_out_tongue_closed_eyes":{"character":"😝","syllables":5,"types":[]},"stuck_out_tongue_winking_eye":{"character":"😜","syllables":6,"types":[]},"sun_with_face":{"character":"🌞","syllables":3,"types":[]},"sunflower":{"character":"🌻","syllables":3,"types":["noun"]},"sunglasses":{"character":"😎","syllables":3,"types":["noun"]},"sunny":{"character":"☀️","syllables":2,"types":["adjective"]},"sunrise":{"character":"🌅","syllables":2,"types":["noun"]},"sunrise_over_mountains":{"character":"🌄","syllables":6,"types":[]},"surfer":{"character":"🏄","syllables":2,"types":["noun"]},"sushi":{"character":"🍣","syllables":2,"types":["noun"]},"suspension_railway":{"character":"🚟","syllables":5,"types":[]},"sweat":{"character":"😓","syllables":1,"types":["verb-intransitive","verb-transitive","noun","phrasal-verb","idiom"]},"sweat_drops":{"character":"💦","syllables":2,"types":[]},"sweat_smile":{"character":"😅","syllables":2,"types":[]},"sweet_potato":{"character":"🍠","syllables":4,"types":[]},"swimmer":{"character":"🏊","syllables":2,"types":["noun"]},"symbols":{"character":"🔣","syllables":2,"types":["noun"]},"syringe":{"character":"💉","syllables":2,"types":["noun"]},"tada":{"character":"🎉","syllables":2,"types":["interjection"]},"tanabata_tree":{"character":"🎋","syllables":5,"types":[]},"tangerine":{"character":"🍊","syllables":3,"types":["noun"]},"taurus":{"character":"♉️","syllables":2,"types":["noun"]},"taxi":{"character":"🚕","syllables":2,"types":["noun","verb-intransitive","verb-transitive"]},"tea":{"character":"🍵","syllables":1,"types":["noun"]},"telephone":{"character":"☎️","syllables":3,"types":["noun","verb-transitive","verb-intransitive"]},"telephone_receiver":{"character":"📞","syllables":6,"types":[]},"telescope":{"character":"🔭","syllables":3,"types":["noun","verb-transitive","verb-intransitive"]},"tennis":{"character":"🎾","syllables":2,"types":["noun"]},"tent":{"character":"⛺️","syllables":1,"types":["noun","verb-intransitive","verb-transitive"]},"thought_balloon":{"character":"💭","syllables":3,"types":[]},"three":{"character":"3️⃣","syllables":1,"types":["noun"]},"thumbsdown":{"character":"👎","syllables":2,"types":[]},"thumbsup":{"character":"👍","syllables":2,"types":[]},"ticket":{"character":"🎫","syllables":2,"types":["noun","verb-transitive"]},"tiger":{"character":"🐯","syllables":2,"types":["noun"]},"tiger2":{"character":"🐅","syllables":3,"types":[]},"tired_face":{"character":"😫","syllables":3,"types":[]},"tm":{"character":"™","syllables":2,"types":[]},"toilet":{"character":"🚽","syllables":2,"types":["noun"]},"tokyo_tower":{"character":"🗼","syllables":5,"types":[]},"tomato":{"character":"🍅","syllables":3,"types":["noun"]},"tongue":{"character":"👅","syllables":1,"types":["noun","verb-transitive","verb-intransitive","idiom"]},"top":{"character":"🔝","syllables":1,"types":["noun","adjective","verb-transitive","verb-intransitive","phrasal-verb","idiom"]},"tophat":{"character":"🎩","syllables":2,"types":["noun"]},"tractor":{"character":"🚜","syllables":2,"types":["noun"]},"traffic_light":{"character":"🚥","syllables":3,"types":[]},"train":{"character":"🚋","syllables":1,"types":["noun","verb-transitive","verb-intransitive"]},"train2":{"character":"🚆","syllables":2,"types":[]},"tram":{"character":"🚊","syllables":1,"types":["noun","verb-transitive"]},"triangular_flag_on_post":{"character":"🚩","syllables":7,"types":[]},"triangular_ruler":{"character":"📐","syllables":6,"types":[]},"trident":{"character":"🔱","syllables":2,"types":["noun","adjective"]},"triumph":{"character":"😤","syllables":2,"types":["verb-intransitive","noun"]},"trolleybus":{"character":"🚎","syllables":3,"types":["noun"]},"trophy":{"character":"🏆","syllables":2,"types":["noun"]},"tropical_drink":{"character":"🍹","syllables":4,"types":[]},"tropical_fish":{"character":"🐠","syllables":4,"types":[]},"truck":{"character":"🚚","syllables":1,"types":["noun","verb-transitive","verb-intransitive"]},"trumpet":{"character":"🎺","syllables":2,"types":["noun","verb-intransitive","verb-transitive"]},"tshirt":{"character":"👕","syllables":2,"types":[]},"tulip":{"character":"🌷","syllables":2,"types":["noun"]},"turtle":{"character":"🐢","syllables":2,"types":["noun","verb-intransitive"]},"tv":{"character":"📺","syllables":2,"types":["noun"]},"twisted_rightwards_arrows":{"character":"🔀","syllables":4,"types":[]},"two":{"character":"2️⃣","syllables":1,"types":["noun","idiom"]},"two_hearts":{"character":"💕","syllables":2,"types":[]},"two_men_holding_hands":{"character":"👬","syllables":5,"types":[]},"two_women_holding_hands":{"character":"👭","syllables":6,"types":[]},"u5272":{"character":"🈹","syllables":0,"types":[]},"u5408":{"character":"🈴","syllables":0,"types":[]},"u55b6":{"character":"🈺","syllables":0,"types":[]},"u6307":{"character":"🈯️","syllables":0,"types":[]},"u6708":{"character":"🈷","syllables":0,"types":[]},"u6709":{"character":"🈶","syllables":0,"types":[]},"u6e80":{"character":"🈵","syllables":0,"types":[]},"u7121":{"character":"🈚️","syllables":0,"types":[]},"u7533":{"character":"🈸","syllables":0,"types":[]},"u7981":{"character":"🈲","syllables":0,"types":[]},"u7a7a":{"character":"🈳","syllables":0,"types":[]},"uk":{"character":"🇬🇧","syllables":2,"types":[]},"umbrella":{"character":"☔️","syllables":3,"types":["noun"]},"unamused":{"character":"😒","syllables":3,"types":["adjective"]},"underage":{"character":"🔞","syllables":3,"types":["noun","adjective"]},"unlock":{"character":"🔓","syllables":2,"types":["verb-transitive","verb-intransitive"]},"up":{"character":"🆙","syllables":1,"types":["adverb","adjective","preposition","noun","verb-transitive","verb-intransitive","idiom"]},"us":{"character":"🇺🇸","syllables":1,"types":["pronoun"]},"v":{"character":"✌️","syllables":1,"types":["noun"]},"vertical_traffic_light":{"character":"🚦","syllables":6,"types":[]},"vhs":{"character":"📼","syllables":3,"types":[]},"vibration_mode":{"character":"📳","syllables":4,"types":[]},"video_camera":{"character":"📹","syllables":6,"types":[]},"video_game":{"character":"🎮","syllables":4,"types":[]},"violin":{"character":"🎻","syllables":3,"types":["noun"]},"virgo":{"character":"♍️","syllables":2,"types":[]},"volcano":{"character":"🌋","syllables":3,"types":["noun"]},"vs":{"character":"🆚","syllables":2,"types":["preposition"]},"walking":{"character":"🚶","syllables":2,"types":["adjective","noun"]},"waning_crescent_moon":{"character":"🌘","syllables":5,"types":[]},"waning_gibbous_moon":{"character":"🌖","syllables":5,"types":[]},"warning":{"character":"⚠️","syllables":2,"types":["noun","adjective"]},"watch":{"character":"⌚️","syllables":1,"types":["verb-intransitive","verb-transitive","noun","phrasal-verb","idiom"]},"water_buffalo":{"character":"🐃","syllables":5,"types":[]},"watermelon":{"character":"🍉","syllables":4,"types":["noun"]},"wave":{"character":"👋","syllables":1,"types":["verb-intransitive","verb-transitive","noun","phrasal-verb"]},"wavy_dash":{"character":"〰","syllables":3,"types":[]},"waxing_crescent_moon":{"character":"🌒","syllables":5,"types":[]},"waxing_gibbous_moon":{"character":"🌔","syllables":5,"types":[]},"wc":{"character":"🚾","syllables":2,"types":[]},"weary":{"character":"😩","syllables":2,"types":["adjective","verb-transitive"]},"wedding":{"character":"💒","syllables":2,"types":["noun"]},"whale":{"character":"🐳","syllables":1,"types":["noun","verb-intransitive","verb-transitive"]},"whale2":{"character":"🐋","syllables":2,"types":[]},"wheelchair":{"character":"♿️","syllables":2,"types":["noun"]},"white_check_mark":{"character":"✅","syllables":3,"types":[]},"white_circle":{"character":"⚪","syllables":3,"types":[]},"white_flower":{"character":"💮","syllables":3,"types":[]},"white_large_square":{"character":"◻️","syllables":3,"types":[]},"white_square_button":{"character":"🔳","syllables":4,"types":[]},"wind_chime":{"character":"🎐","syllables":2,"types":[]},"wine_glass":{"character":"🍷","syllables":2,"types":[]},"wink":{"character":"😉","syllables":1,"types":["verb-intransitive","verb-transitive","noun","phrasal-verb"]},"wolf":{"character":"🐺","syllables":1,"types":["noun","verb-transitive","idiom"]},"woman":{"character":"👩","syllables":2,"types":["noun","idiom"]},"womans_clothes":{"character":"👚","syllables":3,"types":[]},"womans_hat":{"character":"👒","syllables":3,"types":[]},"womens":{"character":"🚺","syllables":2,"types":[]},"worried":{"character":"😟","syllables":2,"types":["adjective","verb"]},"wrench":{"character":"🔧","syllables":1,"types":["noun","verb-transitive","verb-intransitive"]},"x":{"character":"❌","syllables":1,"types":["noun","verb-transitive",null]},"yellow_heart":{"character":"💛","syllables":3,"types":[]},"yen":{"character":"💴","syllables":1,"types":["noun","verb-intransitive"]},"yum":{"character":"😋","syllables":1,"types":["interjection"]},"zap":{"character":"⚡️","syllables":1,"types":["verb-transitive","verb-intransitive","noun","interjection"]},"zero":{"character":"0️⃣","syllables":2,"types":["noun","adjective","verb-transitive","phrasal-verb"]},"zzz":{"character":"💤","syllables":0,"types":["interjection","verb"]}};
 }));
 
-},{}],88:[function(require,module,exports){
+},{}],89:[function(require,module,exports){
 
 function getStack(err) {
   if(err.stack && err.name && err.message)
@@ -5401,7 +5454,7 @@ var explain = module.exports = function (err, message) {
 
 
 
-},{}],89:[function(require,module,exports){
+},{}],90:[function(require,module,exports){
 module.exports = function h (tag, attrs, content) {
   if(Array.isArray(attrs)) content = attrs, attrs = {}
   var el = document.createElement(tag)
@@ -5416,7 +5469,7 @@ module.exports = function h (tag, attrs, content) {
 
 
 
-},{}],90:[function(require,module,exports){
+},{}],91:[function(require,module,exports){
 /**
  * Print a human readable timestamp to the terminal
  * given a number representing seconds
@@ -5457,7 +5510,7 @@ function human(seconds) {
   return util.format('0 seconds %s', suffix);
 }
 
-},{"util":422}],91:[function(require,module,exports){
+},{"util":422}],92:[function(require,module,exports){
 var h = require('hyperscript')
 var pull = require('pull-stream')
 
@@ -5517,7 +5570,7 @@ module.exports = function combobox(opt) {
 
 
 
-},{"hyperscript":98,"pull-stream":195}],92:[function(require,module,exports){
+},{"hyperscript":99,"pull-stream":196}],93:[function(require,module,exports){
 var h = require('hyperscript')
 
 module.exports = function (img, selection_canvas, onCrop) {
@@ -5645,7 +5698,7 @@ module.exports = function (img, selection_canvas, onCrop) {
 }
 
 
-},{"hyperscript":93}],93:[function(require,module,exports){
+},{"hyperscript":94}],94:[function(require,module,exports){
 var split = require('browser-split')
 var ClassList = require('class-list')
 require('html-element')
@@ -5796,7 +5849,7 @@ function isArray (arr) {
   return Object.prototype.toString.call(arr) == '[object Array]'
 }
 
-},{"browser-split":57,"class-list":61,"html-element":299}],94:[function(require,module,exports){
+},{"browser-split":58,"class-list":62,"html-element":299}],95:[function(require,module,exports){
 var h = require('hscrpt')
 
 function select (ready) {
@@ -5827,7 +5880,7 @@ module.exports.asDataURL = function (onFile) {
 
 
 
-},{"hscrpt":89}],95:[function(require,module,exports){
+},{"hscrpt":90}],96:[function(require,module,exports){
 var h = require('hyperscript')
 
 function width (el) {
@@ -5873,9 +5926,9 @@ module.exports = function () {
 
 
 
-},{"hyperscript":96}],96:[function(require,module,exports){
-arguments[4][93][0].apply(exports,arguments)
-},{"browser-split":57,"class-list":61,"dup":93,"html-element":299}],97:[function(require,module,exports){
+},{"hyperscript":97}],97:[function(require,module,exports){
+arguments[4][94][0].apply(exports,arguments)
+},{"browser-split":58,"class-list":62,"dup":94,"html-element":299}],98:[function(require,module,exports){
 
 function create (tag, classname, children) {
   var el = document.createElement(tag)
@@ -5944,7 +5997,7 @@ module.exports = function (steps) {
 
 
 
-},{}],98:[function(require,module,exports){
+},{}],99:[function(require,module,exports){
 var split = require('browser-split')
 var ClassList = require('class-list')
 
@@ -6106,7 +6159,7 @@ function isArray (arr) {
 
 
 
-},{"browser-split":57,"class-list":61,"html-element":299}],99:[function(require,module,exports){
+},{"browser-split":58,"class-list":62,"html-element":299}],100:[function(require,module,exports){
 var h = require('hyperscript')
 
 /*
@@ -6217,7 +6270,7 @@ module.exports = function (onSelect) {
 
 
 
-},{"./menu":100,"./util":102,"hyperscript":101}],100:[function(require,module,exports){
+},{"./menu":101,"./util":103,"hyperscript":102}],101:[function(require,module,exports){
 var h = require('hyperscript')
 var u = require('./util')
 var each = u.each
@@ -6337,9 +6390,9 @@ module.exports = function (list, onSelect) {
 
 
 
-},{"./util":102,"hyperscript":101}],101:[function(require,module,exports){
-arguments[4][93][0].apply(exports,arguments)
-},{"browser-split":57,"class-list":61,"dup":93,"html-element":299}],102:[function(require,module,exports){
+},{"./util":103,"hyperscript":102}],102:[function(require,module,exports){
+arguments[4][94][0].apply(exports,arguments)
+},{"browser-split":58,"class-list":62,"dup":94,"html-element":299}],103:[function(require,module,exports){
 
 exports.each = function each(list, iter) {
   for(var i = 0; i < list.length; i++)
@@ -6354,7 +6407,7 @@ exports.find = function find(list, test) {
 }
 
 
-},{}],103:[function(require,module,exports){
+},{}],104:[function(require,module,exports){
 
 
 module.exports = function (buf) {
@@ -6366,7 +6419,7 @@ module.exports = function (buf) {
   return buf
 }
 
-},{}],104:[function(require,module,exports){
+},{}],105:[function(require,module,exports){
 
 var indexOf = [].indexOf;
 
@@ -6377,7 +6430,7 @@ module.exports = function(arr, obj){
   }
   return -1;
 };
-},{}],105:[function(require,module,exports){
+},{}],106:[function(require,module,exports){
 if (typeof Object.create === 'function') {
   // implementation from standard node.js 'util' module
   module.exports = function inherits(ctor, superCtor) {
@@ -6402,7 +6455,7 @@ if (typeof Object.create === 'function') {
   }
 }
 
-},{}],106:[function(require,module,exports){
+},{}],107:[function(require,module,exports){
 var ip = exports,
     Buffer = require('buffer').Buffer,
     os = require('os');
@@ -6784,7 +6837,7 @@ function _normalizeFamily(family) {
   return family ? family.toLowerCase() : 'ipv4';
 }
 
-},{"buffer":326,"os":377}],107:[function(require,module,exports){
+},{"buffer":326,"os":377}],108:[function(require,module,exports){
 (function (process){
 // https://github.com/electron/electron/issues/2288
 function isElectron() {
@@ -6809,7 +6862,7 @@ function isElectron() {
 module.exports = isElectron;
 
 }).call(this,require('_process'))
-},{"_process":385}],108:[function(require,module,exports){
+},{"_process":385}],109:[function(require,module,exports){
 (function(root) {
 
   function isValidDomain(v) {
@@ -6832,7 +6885,7 @@ module.exports = isElectron;
   }
 
 })(this);
-},{}],109:[function(require,module,exports){
+},{}],110:[function(require,module,exports){
 (function webpackUniversalModuleDefinition(root, factory) {
 	if(typeof exports === 'object' && typeof module === 'object')
 		module.exports = factory();
@@ -7231,7 +7284,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /******/ ])
 });
 ;
-},{}],110:[function(require,module,exports){
+},{}],111:[function(require,module,exports){
 function isArray(obj) {
   return Object.prototype.toString.call(obj) === '[object Array]'
 }
@@ -7312,7 +7365,7 @@ KVGraph.prototype.reduceRight = function (fn) {
 
 module.exports = KVGraph
 
-},{}],111:[function(require,module,exports){
+},{}],112:[function(require,module,exports){
 function isObject (o) {
   return o && 'object' === typeof o && !Array.isArray(o)
 }
@@ -7370,7 +7423,7 @@ exports.each = each
 exports.map = map
 exports.paths = paths
 
-},{}],112:[function(require,module,exports){
+},{}],113:[function(require,module,exports){
 var pull = require('pull-stream/pull')
 var pullFilter = require('pull-stream/throughs/filter')
 var pullFlatten = require('pull-stream/throughs/flatten')
@@ -7437,7 +7490,7 @@ exports.reduce = function (q, cb) {
 
 
 
-},{"./make":113,"pull-sink-through":194,"pull-stream/pull":196,"pull-stream/sinks/reduce":204,"pull-stream/throughs/filter":215,"pull-stream/throughs/flatten":216,"pull-stream/throughs/map":218}],113:[function(require,module,exports){
+},{"./make":114,"pull-sink-through":195,"pull-stream/pull":197,"pull-stream/sinks/reduce":205,"pull-stream/throughs/filter":216,"pull-stream/throughs/flatten":217,"pull-stream/throughs/map":219}],114:[function(require,module,exports){
 var u = require('./util')
 
 function isBasicMap (rule) {
@@ -7631,7 +7684,7 @@ function make (rule) {
 module.exports = make
 
 
-},{"./simple/maps":114,"./simple/reduces":115,"./util":116,"binary-search":56,"typewiselite":275}],114:[function(require,module,exports){
+},{"./simple/maps":115,"./simple/reduces":116,"./util":117,"binary-search":57,"typewiselite":276}],115:[function(require,module,exports){
 'use strict'
 
 var u = require('../util')
@@ -7686,7 +7739,7 @@ exports.get = function (a, path) {
 }
 
 
-},{"../util":116}],115:[function(require,module,exports){
+},{"../util":117}],116:[function(require,module,exports){
 
 exports.count = function (a, b) {
   return (a||0)+1
@@ -7718,7 +7771,7 @@ exports.collect = function (a, b) {
 
 
 
-},{}],116:[function(require,module,exports){
+},{}],117:[function(require,module,exports){
 'use strict'
 
 function isString(s) { return 'string' === typeof s }
@@ -7893,7 +7946,7 @@ exports.LO = null
 
 
 
-},{}],117:[function(require,module,exports){
+},{}],118:[function(require,module,exports){
 (function (process){
 var path = require('path');
 var fs = require('fs');
@@ -7995,7 +8048,7 @@ mkdirP.sync = function sync (p, opts, made) {
 };
 
 }).call(this,require('_process'))
-},{"_process":385,"fs":280,"path":382}],118:[function(require,module,exports){
+},{"_process":385,"fs":280,"path":382}],119:[function(require,module,exports){
 // If `Date.now()` is invoked twice quickly, it's possible to get two
 // identical time stamps. To avoid generation duplications, subsequent
 // calls are manually ordered to force uniqueness.
@@ -8042,7 +8095,7 @@ function timestamp() {
   return adjusted
 }
 
-},{}],119:[function(require,module,exports){
+},{}],120:[function(require,module,exports){
 module.exports = function(allopts) {
   var n = 0, m = 0, _cb, results = [], _err;
   function o (k, d) { return allopts && allopts[k] !== void 0 ? allopts[k] : d }
@@ -8090,7 +8143,7 @@ module.exports = function(allopts) {
   }
 }
 
-},{}],120:[function(require,module,exports){
+},{}],121:[function(require,module,exports){
 var assert = require('assert')
 var separator = '~', escape = '!'
 var SE = require('separator-escape')(separator, escape)
@@ -8196,7 +8249,7 @@ module.exports = function (ary, wrap) {
 
 
 
-},{"assert":295,"separator-escape":242}],121:[function(require,module,exports){
+},{"assert":295,"separator-escape":243}],122:[function(require,module,exports){
 var compose = require('./compose')
 var isArray = Array.isArray
 
@@ -8251,7 +8304,7 @@ module.exports = function (plugs, wrap) {
 }
 
 
-},{"./compose":120}],122:[function(require,module,exports){
+},{"./compose":121}],123:[function(require,module,exports){
 var net
 try {
   net = require('net')
@@ -8314,7 +8367,7 @@ module.exports = function (opts) {
 
 
 
-},{"net":280,"stream-to-pull-stream":265}],123:[function(require,module,exports){
+},{"net":280,"stream-to-pull-stream":266}],124:[function(require,module,exports){
 var socks = require('socks');
 var toPull = require('stream-to-pull-stream')
 
@@ -8410,7 +8463,7 @@ module.exports = function (opts) {
 
 
 
-},{"socks":299,"stream-to-pull-stream":265}],124:[function(require,module,exports){
+},{"socks":299,"stream-to-pull-stream":266}],125:[function(require,module,exports){
 (function (Buffer){
 var SHS = require('secret-handshake')
 var pull = require('pull-stream')
@@ -8481,7 +8534,7 @@ module.exports = function (opts) {
 
 
 }).call(this,require("buffer").Buffer)
-},{"buffer":326,"pull-stream":195,"secret-handshake":239}],125:[function(require,module,exports){
+},{"buffer":326,"pull-stream":196,"secret-handshake":240}],126:[function(require,module,exports){
 (function (Buffer){
 var WS = require('pull-ws')
 var URL = require('url')
@@ -8550,7 +8603,7 @@ module.exports = function (opts) {
 
 
 }).call(this,require("buffer").Buffer)
-},{"buffer":326,"pull-stream/pull":196,"pull-ws":230,"url":418}],126:[function(require,module,exports){
+},{"buffer":326,"pull-stream/pull":197,"pull-ws":231,"url":418}],127:[function(require,module,exports){
 'use strict';
 var EventEmitter = require('events').EventEmitter
 var u = require('./util')
@@ -8603,7 +8656,7 @@ module.exports = function (path, remoteApi, _remoteCall) {
 }
 
 
-},{"./util":132,"events":362,"explain-error":88}],127:[function(require,module,exports){
+},{"./util":133,"events":362,"explain-error":89}],128:[function(require,module,exports){
 'use strict'
 var PSC          = require('packet-stream-codec')
 var u            = require('./util')
@@ -8689,7 +8742,7 @@ module.exports = function (remoteApi, localApi, codec) {
 }
 
 
-},{"./api":126,"./local-api":128,"./stream":131,"./util":132,"packet-stream-codec":137}],128:[function(require,module,exports){
+},{"./api":127,"./local-api":129,"./stream":132,"./util":133,"packet-stream-codec":138}],129:[function(require,module,exports){
 
 var Permissions  = require('./permissions')
 var u            = require('./util')
@@ -8732,7 +8785,7 @@ function createLocalCall(local, localApi, perms) {
 
 
 
-},{"./permissions":129,"./util":132}],129:[function(require,module,exports){
+},{"./permissions":130,"./util":133}],130:[function(require,module,exports){
 'use strict';
 var u = require('./util')
 
@@ -8844,7 +8897,7 @@ module.exports = function (opts) {
 
 
 
-},{"./util":132}],130:[function(require,module,exports){
+},{"./util":133}],131:[function(require,module,exports){
 'use strict'
 var pull = require('pull-stream')
 // wrap pull streams around packet-stream's weird streams.
@@ -8926,7 +8979,7 @@ module.exports.sink = function (s, done) {
 
 module.exports.duplex = module.exports
 
-},{"pull-stream":195}],131:[function(require,module,exports){
+},{"pull-stream":196}],132:[function(require,module,exports){
 'use strict';
 var PacketStream = require('packet-stream')
 var pull         = require('pull-stream')
@@ -9077,7 +9130,7 @@ module.exports = function initStream (localCall, codec, onClose) {
 
 
 
-},{"./pull-weird":130,"./util":132,"explain-error":88,"packet-stream":138,"pull-goodbye":148,"pull-stream":195}],132:[function(require,module,exports){
+},{"./pull-weird":131,"./util":133,"explain-error":89,"packet-stream":139,"pull-goodbye":149,"pull-stream":196}],133:[function(require,module,exports){
 'use strict';
 var pull = require('pull-stream')
 
@@ -9223,7 +9276,7 @@ exports.pipeToStream = function (type, _stream, stream) {
 }
 
 
-},{"pull-stream":195}],133:[function(require,module,exports){
+},{"pull-stream":196}],134:[function(require,module,exports){
 
 var os = require('os')
 var ip = require('ip')
@@ -9292,7 +9345,7 @@ if(!module.parent) {
   console.log(module.exports.all)
 }
 
-},{"ip":106,"os":377}],134:[function(require,module,exports){
+},{"ip":107,"os":377}],135:[function(require,module,exports){
 
 module.exports = function (filter) {
   var value = null, listeners = [], oncers = []
@@ -9348,7 +9401,7 @@ module.exports = function (filter) {
 
 
 
-},{}],135:[function(require,module,exports){
+},{}],136:[function(require,module,exports){
 
 module.exports = function openExternal (url) {
   var _r = require //fool browserify
@@ -9378,7 +9431,7 @@ module.exports.isExternal = function isExternal (url, location) {
 
 
 
-},{}],136:[function(require,module,exports){
+},{}],137:[function(require,module,exports){
 (function (process){
 'use strict';
 var os = require('os');
@@ -9406,7 +9459,7 @@ function homedir() {
 module.exports = typeof os.homedir === 'function' ? os.homedir : homedir;
 
 }).call(this,require('_process'))
-},{"_process":385,"os":377}],137:[function(require,module,exports){
+},{"_process":385,"os":377}],138:[function(require,module,exports){
 (function (Buffer){
 
 var Through = require('pull-through')
@@ -9541,7 +9594,7 @@ exports.decode = decode
 
 
 }).call(this,require("buffer").Buffer)
-},{"buffer":326,"pull-reader":189,"pull-through":226}],138:[function(require,module,exports){
+},{"buffer":326,"pull-reader":190,"pull-through":227}],139:[function(require,module,exports){
 function flat(err) {
   if(!err) return err
   if(err === true) return true
@@ -9843,7 +9896,7 @@ PacketStreamSubstream.prototype.destroy = function (err) {
   }
 }
 
-},{}],139:[function(require,module,exports){
+},{}],140:[function(require,module,exports){
 (function (Buffer){
 
 var sodium = require('chloride')
@@ -9923,7 +9976,7 @@ exports.multibox_open = function (ctxt, sk, max) { //, groups...
 
 
 }).call(this,require("buffer").Buffer)
-},{"buffer":326,"chloride":60}],140:[function(require,module,exports){
+},{"buffer":326,"chloride":61}],141:[function(require,module,exports){
 (function (Buffer){
 'use strict'
 var sodium = require('chloride')
@@ -10073,7 +10126,7 @@ exports.createDecryptStream = function (key, nonce) {
 }
 
 }).call(this,require("buffer").Buffer)
-},{"buffer":326,"chloride":60,"increment-buffer":103,"pull-reader":189,"pull-through":226,"split-buffer":247}],141:[function(require,module,exports){
+},{"buffer":326,"chloride":61,"increment-buffer":104,"pull-reader":190,"pull-through":227,"split-buffer":248}],142:[function(require,module,exports){
 var noop = function () {}
 
 function abortAll(ary, abort, cb) {
@@ -10116,7 +10169,7 @@ module.exports = function (streams) {
 
 
 
-},{}],142:[function(require,module,exports){
+},{}],143:[function(require,module,exports){
 
 var Source = require('./source')
 var Sink = require('./sink')
@@ -10139,14 +10192,14 @@ module.exports = function () {
 
 }
 
-},{"./sink":144,"./source":145}],143:[function(require,module,exports){
+},{"./sink":145,"./source":146}],144:[function(require,module,exports){
 
 exports.source = require('./source')
 exports.through = require('./through')
 exports.sink = require('./sink')
 exports.duplex = require('./duplex')
 
-},{"./duplex":142,"./sink":144,"./source":145,"./through":146}],144:[function(require,module,exports){
+},{"./duplex":143,"./sink":145,"./source":146,"./through":147}],145:[function(require,module,exports){
 module.exports = function (stream) {
   var read, started = false, id = Math.random()
 
@@ -10167,7 +10220,7 @@ module.exports = function (stream) {
   return consume
 }
 
-},{}],145:[function(require,module,exports){
+},{}],146:[function(require,module,exports){
 
 module.exports = function () {
   var _read, _cb, abortCb, _end
@@ -10199,7 +10252,7 @@ module.exports = function () {
 }
 
 
-},{}],146:[function(require,module,exports){
+},{}],147:[function(require,module,exports){
 
 module.exports = function () {
   var read, reader, cb, abort, stream
@@ -10229,7 +10282,7 @@ module.exports = function () {
   return delayed
 }
 
-},{}],147:[function(require,module,exports){
+},{}],148:[function(require,module,exports){
 
 module.exports = function endable (goodbye) {
   var ended, waiting, sentEnd
@@ -10257,7 +10310,7 @@ module.exports = function endable (goodbye) {
 }
 
 
-},{}],148:[function(require,module,exports){
+},{}],149:[function(require,module,exports){
 
 var endable = require('./endable')
 var pull = require('pull-stream')
@@ -10282,7 +10335,7 @@ module.exports = function (stream, goodbye) {
 
 }
 
-},{"./endable":147,"pull-stream":149}],149:[function(require,module,exports){
+},{"./endable":148,"pull-stream":150}],150:[function(require,module,exports){
 'use strict'
 
 var sources  = require('./sources')
@@ -10301,7 +10354,7 @@ for(var k in sinks)
   exports[k] = sinks[k]
 
 
-},{"./pull":150,"./sinks":155,"./sources":162,"./throughs":171}],150:[function(require,module,exports){
+},{"./pull":151,"./sinks":156,"./sources":163,"./throughs":172}],151:[function(require,module,exports){
 'use strict'
 
 module.exports = function pull (a) {
@@ -10352,7 +10405,7 @@ module.exports = function pull (a) {
   return read
 }
 
-},{}],151:[function(require,module,exports){
+},{}],152:[function(require,module,exports){
 'use strict'
 
 var reduce = require('./reduce')
@@ -10364,7 +10417,7 @@ module.exports = function collect (cb) {
   }, [], cb)
 }
 
-},{"./reduce":158}],152:[function(require,module,exports){
+},{"./reduce":159}],153:[function(require,module,exports){
 'use strict'
 
 var reduce = require('./reduce')
@@ -10375,7 +10428,7 @@ module.exports = function concat (cb) {
   }, '', cb)
 }
 
-},{"./reduce":158}],153:[function(require,module,exports){
+},{"./reduce":159}],154:[function(require,module,exports){
 'use strict'
 
 module.exports = function drain (op, done) {
@@ -10425,7 +10478,7 @@ module.exports = function drain (op, done) {
   return sink
 }
 
-},{}],154:[function(require,module,exports){
+},{}],155:[function(require,module,exports){
 'use strict'
 
 function id (e) { return e }
@@ -10455,7 +10508,7 @@ module.exports = function find (test, cb) {
 
 
 
-},{"../util/prop":178,"./drain":153}],155:[function(require,module,exports){
+},{"../util/prop":179,"./drain":154}],156:[function(require,module,exports){
 'use strict'
 
 module.exports = {
@@ -10469,7 +10522,7 @@ module.exports = {
 }
 
 
-},{"./collect":151,"./concat":152,"./drain":153,"./find":154,"./log":156,"./on-end":157,"./reduce":158}],156:[function(require,module,exports){
+},{"./collect":152,"./concat":153,"./drain":154,"./find":155,"./log":157,"./on-end":158,"./reduce":159}],157:[function(require,module,exports){
 'use strict'
 
 var drain = require('./drain')
@@ -10480,7 +10533,7 @@ module.exports = function log (done) {
   }, done)
 }
 
-},{"./drain":153}],157:[function(require,module,exports){
+},{"./drain":154}],158:[function(require,module,exports){
 'use strict'
 
 var drain = require('./drain')
@@ -10489,7 +10542,7 @@ module.exports = function onEnd (done) {
   return drain(null, done)
 }
 
-},{"./drain":153}],158:[function(require,module,exports){
+},{"./drain":154}],159:[function(require,module,exports){
 'use strict'
 
 var drain = require('./drain')
@@ -10513,7 +10566,7 @@ module.exports = function reduce (reducer, acc, cb ) {
     return sink
 }
 
-},{"./drain":153}],159:[function(require,module,exports){
+},{"./drain":154}],160:[function(require,module,exports){
 'use strict'
 
 module.exports = function count (max) {
@@ -10528,7 +10581,7 @@ module.exports = function count (max) {
 
 
 
-},{}],160:[function(require,module,exports){
+},{}],161:[function(require,module,exports){
 'use strict'
 //a stream that ends immediately.
 module.exports = function empty () {
@@ -10537,7 +10590,7 @@ module.exports = function empty () {
   }
 }
 
-},{}],161:[function(require,module,exports){
+},{}],162:[function(require,module,exports){
 'use strict'
 //a stream that errors immediately.
 module.exports = function error (err) {
@@ -10547,7 +10600,7 @@ module.exports = function error (err) {
 }
 
 
-},{}],162:[function(require,module,exports){
+},{}],163:[function(require,module,exports){
 'use strict'
 module.exports = {
   keys: require('./keys'),
@@ -10559,7 +10612,7 @@ module.exports = {
   error: require('./error')
 }
 
-},{"./count":159,"./empty":160,"./error":161,"./infinite":163,"./keys":164,"./once":165,"./values":166}],163:[function(require,module,exports){
+},{"./count":160,"./empty":161,"./error":162,"./infinite":164,"./keys":165,"./once":166,"./values":167}],164:[function(require,module,exports){
 'use strict'
 module.exports = function infinite (generate) {
   generate = generate || Math.random
@@ -10571,7 +10624,7 @@ module.exports = function infinite (generate) {
 
 
 
-},{}],164:[function(require,module,exports){
+},{}],165:[function(require,module,exports){
 'use strict'
 var values = require('./values')
 module.exports = function (object) {
@@ -10580,7 +10633,7 @@ module.exports = function (object) {
 
 
 
-},{"./values":166}],165:[function(require,module,exports){
+},{"./values":167}],166:[function(require,module,exports){
 'use strict'
 var abortCb = require('../util/abort-cb')
 
@@ -10598,7 +10651,7 @@ module.exports = function once (value, onAbort) {
 
 
 
-},{"../util/abort-cb":177}],166:[function(require,module,exports){
+},{"../util/abort-cb":178}],167:[function(require,module,exports){
 'use strict'
 var abortCb = require('../util/abort-cb')
 
@@ -10623,7 +10676,7 @@ module.exports = function values (array, onAbort) {
   }
 }
 
-},{"../util/abort-cb":177}],167:[function(require,module,exports){
+},{"../util/abort-cb":178}],168:[function(require,module,exports){
 'use strict'
 
 function id (e) { return e }
@@ -10668,7 +10721,7 @@ module.exports = function asyncMap (map) {
 
 
 
-},{"../util/prop":178}],168:[function(require,module,exports){
+},{"../util/prop":179}],169:[function(require,module,exports){
 'use strict'
 
 var tester = require('../util/tester')
@@ -10679,7 +10732,7 @@ module.exports = function filterNot (test) {
   return filter(function (data) { return !test(data) })
 }
 
-},{"../util/tester":179,"./filter":169}],169:[function(require,module,exports){
+},{"../util/tester":180,"./filter":170}],170:[function(require,module,exports){
 'use strict'
 
 var tester = require('../util/tester')
@@ -10705,7 +10758,7 @@ module.exports = function filter (test) {
 }
 
 
-},{"../util/tester":179}],170:[function(require,module,exports){
+},{"../util/tester":180}],171:[function(require,module,exports){
 'use strict'
 
 var values = require('../sources/values')
@@ -10754,7 +10807,7 @@ module.exports = function flatten () {
 }
 
 
-},{"../sources/once":165,"../sources/values":166}],171:[function(require,module,exports){
+},{"../sources/once":166,"../sources/values":167}],172:[function(require,module,exports){
 'use strict'
 
 module.exports = {
@@ -10772,7 +10825,7 @@ module.exports = {
 
 
 
-},{"./async-map":167,"./filter":169,"./filter-not":168,"./flatten":170,"./map":172,"./non-unique":173,"./take":174,"./through":175,"./unique":176}],172:[function(require,module,exports){
+},{"./async-map":168,"./filter":170,"./filter-not":169,"./flatten":171,"./map":173,"./non-unique":174,"./take":175,"./through":176,"./unique":177}],173:[function(require,module,exports){
 'use strict'
 
 function id (e) { return e }
@@ -10797,7 +10850,7 @@ module.exports = function map (mapper) {
   }
 }
 
-},{"../util/prop":178}],173:[function(require,module,exports){
+},{"../util/prop":179}],174:[function(require,module,exports){
 'use strict'
 
 var unique = require('./unique')
@@ -10807,7 +10860,7 @@ module.exports = function nonUnique (field) {
   return unique(field, true)
 }
 
-},{"./unique":176}],174:[function(require,module,exports){
+},{"./unique":177}],175:[function(require,module,exports){
 'use strict'
 
 //read a number of items and then stop.
@@ -10850,7 +10903,7 @@ module.exports = function take (test, opts) {
   }
 }
 
-},{}],175:[function(require,module,exports){
+},{}],176:[function(require,module,exports){
 'use strict'
 
 //a pass through stream that doesn't change the value.
@@ -10875,7 +10928,7 @@ module.exports = function through (op, onEnd) {
   }
 }
 
-},{}],176:[function(require,module,exports){
+},{}],177:[function(require,module,exports){
 'use strict'
 
 function id (e) { return e }
@@ -10895,7 +10948,7 @@ module.exports = function unique (field, invert) {
 }
 
 
-},{"../util/prop":178,"./filter":169}],177:[function(require,module,exports){
+},{"../util/prop":179,"./filter":170}],178:[function(require,module,exports){
 module.exports = function abortCb(cb, abort, onAbort) {
   cb(abort)
   onAbort && onAbort(abort === true ? null: abort)
@@ -10903,7 +10956,7 @@ module.exports = function abortCb(cb, abort, onAbort) {
 }
 
 
-},{}],178:[function(require,module,exports){
+},{}],179:[function(require,module,exports){
 module.exports = function prop (key) {
   return key && (
     'string' == typeof key
@@ -10914,7 +10967,7 @@ module.exports = function prop (key) {
   )
 }
 
-},{}],179:[function(require,module,exports){
+},{}],180:[function(require,module,exports){
 var prop = require('./prop')
 
 function id (e) { return e }
@@ -10927,7 +10980,7 @@ module.exports = function tester (test) {
   )
 }
 
-},{"./prop":178}],180:[function(require,module,exports){
+},{"./prop":179}],181:[function(require,module,exports){
 var Reader = require('pull-reader')
 var Writer = require('pull-pushable')
 var cat = require('pull-cat')
@@ -10978,7 +11031,7 @@ module.exports = function (opts, _cb) {
   }
 }
 
-},{"pull-cat":141,"pull-pair":185,"pull-pushable":188,"pull-reader":189}],181:[function(require,module,exports){
+},{"pull-cat":142,"pull-pair":186,"pull-pushable":189,"pull-reader":190}],182:[function(require,module,exports){
 var hash = require('../')
 
 module.exports = function (onEnd) {
@@ -10987,7 +11040,7 @@ module.exports = function (onEnd) {
   })
 }
 
-},{"../":182}],182:[function(require,module,exports){
+},{"../":183}],183:[function(require,module,exports){
 var crypto = require('crypto')
 
 module.exports = function (type, encoding, onEnd) {
@@ -11011,7 +11064,7 @@ module.exports = function (type, encoding, onEnd) {
   return hasher
 }
 
-},{"crypto":334}],183:[function(require,module,exports){
+},{"crypto":334}],184:[function(require,module,exports){
 
 
 /*
@@ -11147,7 +11200,7 @@ module.exports = function (ary) {
 }
 
 
-},{}],184:[function(require,module,exports){
+},{}],185:[function(require,module,exports){
 (function (global){
 var noop = function () {}
 
@@ -11186,7 +11239,7 @@ module.exports = function (next) {
 
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}],185:[function(require,module,exports){
+},{}],186:[function(require,module,exports){
 'use strict'
 
 //a pair of pull streams where one drains from the other
@@ -11218,7 +11271,7 @@ module.exports = function () {
 }
 
 
-},{}],186:[function(require,module,exports){
+},{}],187:[function(require,module,exports){
 module.exports = function (map, width) {
   var reading = false, abort
   return function (read) {
@@ -11285,7 +11338,7 @@ module.exports = function (map, width) {
 }
 
 
-},{}],187:[function(require,module,exports){
+},{}],188:[function(require,module,exports){
 
 
 module.exports = function (onPause) {
@@ -11322,7 +11375,7 @@ module.exports = function (onPause) {
 
 
 
-},{}],188:[function(require,module,exports){
+},{}],189:[function(require,module,exports){
 module.exports = pullPushable
 
 function pullPushable (separated, onClose) {
@@ -11411,7 +11464,7 @@ function pullPushable (separated, onClose) {
   }
 }
 
-},{}],189:[function(require,module,exports){
+},{}],190:[function(require,module,exports){
 'use strict'
 var State = require('./state')
 
@@ -11535,7 +11588,7 @@ module.exports = function (timeout) {
 
 
 
-},{"./state":190}],190:[function(require,module,exports){
+},{"./state":191}],191:[function(require,module,exports){
 (function (Buffer){
 
 module.exports = function () {
@@ -11612,7 +11665,7 @@ module.exports = function () {
 
 
 }).call(this,require("buffer").Buffer)
-},{"buffer":326}],191:[function(require,module,exports){
+},{"buffer":326}],192:[function(require,module,exports){
 
 var defer = require('pull-defer')
 
@@ -11695,7 +11748,7 @@ module.exports = function (connect, factor, max) {
 
 
 
-},{"pull-defer":143}],192:[function(require,module,exports){
+},{"pull-defer":144}],193:[function(require,module,exports){
 var pull = require('pull-stream')
 var Pause = require('pull-pause')
 var Obv = require('obv')
@@ -11821,7 +11874,7 @@ function append(scroller, list, el, isPrepend, isSticky) {
 
 
 
-},{"./utils":193,"obv":134,"pull-pause":187,"pull-stream":195}],193:[function(require,module,exports){
+},{"./utils":194,"obv":135,"pull-pause":188,"pull-stream":196}],194:[function(require,module,exports){
 
 function assertScrollable(scroller) {
   var f = overflow(scroller)
@@ -11885,7 +11938,7 @@ function isBottom (scroller, buffer) {
 
 
 
-},{}],194:[function(require,module,exports){
+},{}],195:[function(require,module,exports){
 
 module.exports = function (create) {
   var reader = null
@@ -11912,7 +11965,7 @@ module.exports = function (create) {
 
 
 
-},{}],195:[function(require,module,exports){
+},{}],196:[function(require,module,exports){
 'use strict'
 
 var sources  = require('./sources')
@@ -11933,67 +11986,67 @@ for(var k in sinks)
   exports[k] = sinks[k]
 
 
-},{"./pull":196,"./sinks":201,"./sources":208,"./throughs":217}],196:[function(require,module,exports){
-arguments[4][150][0].apply(exports,arguments)
-},{"dup":150}],197:[function(require,module,exports){
+},{"./pull":197,"./sinks":202,"./sources":209,"./throughs":218}],197:[function(require,module,exports){
 arguments[4][151][0].apply(exports,arguments)
-},{"./reduce":204,"dup":151}],198:[function(require,module,exports){
+},{"dup":151}],198:[function(require,module,exports){
 arguments[4][152][0].apply(exports,arguments)
-},{"./reduce":204,"dup":152}],199:[function(require,module,exports){
+},{"./reduce":205,"dup":152}],199:[function(require,module,exports){
 arguments[4][153][0].apply(exports,arguments)
-},{"dup":153}],200:[function(require,module,exports){
+},{"./reduce":205,"dup":153}],200:[function(require,module,exports){
 arguments[4][154][0].apply(exports,arguments)
-},{"../util/prop":224,"./drain":199,"dup":154}],201:[function(require,module,exports){
+},{"dup":154}],201:[function(require,module,exports){
 arguments[4][155][0].apply(exports,arguments)
-},{"./collect":197,"./concat":198,"./drain":199,"./find":200,"./log":202,"./on-end":203,"./reduce":204,"dup":155}],202:[function(require,module,exports){
+},{"../util/prop":225,"./drain":200,"dup":155}],202:[function(require,module,exports){
 arguments[4][156][0].apply(exports,arguments)
-},{"./drain":199,"dup":156}],203:[function(require,module,exports){
+},{"./collect":198,"./concat":199,"./drain":200,"./find":201,"./log":203,"./on-end":204,"./reduce":205,"dup":156}],203:[function(require,module,exports){
 arguments[4][157][0].apply(exports,arguments)
-},{"./drain":199,"dup":157}],204:[function(require,module,exports){
+},{"./drain":200,"dup":157}],204:[function(require,module,exports){
 arguments[4][158][0].apply(exports,arguments)
-},{"./drain":199,"dup":158}],205:[function(require,module,exports){
+},{"./drain":200,"dup":158}],205:[function(require,module,exports){
 arguments[4][159][0].apply(exports,arguments)
-},{"dup":159}],206:[function(require,module,exports){
+},{"./drain":200,"dup":159}],206:[function(require,module,exports){
 arguments[4][160][0].apply(exports,arguments)
 },{"dup":160}],207:[function(require,module,exports){
 arguments[4][161][0].apply(exports,arguments)
 },{"dup":161}],208:[function(require,module,exports){
 arguments[4][162][0].apply(exports,arguments)
-},{"./count":205,"./empty":206,"./error":207,"./infinite":209,"./keys":210,"./once":211,"./values":212,"dup":162}],209:[function(require,module,exports){
+},{"dup":162}],209:[function(require,module,exports){
 arguments[4][163][0].apply(exports,arguments)
-},{"dup":163}],210:[function(require,module,exports){
+},{"./count":206,"./empty":207,"./error":208,"./infinite":210,"./keys":211,"./once":212,"./values":213,"dup":163}],210:[function(require,module,exports){
 arguments[4][164][0].apply(exports,arguments)
-},{"./values":212,"dup":164}],211:[function(require,module,exports){
+},{"dup":164}],211:[function(require,module,exports){
 arguments[4][165][0].apply(exports,arguments)
-},{"../util/abort-cb":223,"dup":165}],212:[function(require,module,exports){
+},{"./values":213,"dup":165}],212:[function(require,module,exports){
 arguments[4][166][0].apply(exports,arguments)
-},{"../util/abort-cb":223,"dup":166}],213:[function(require,module,exports){
+},{"../util/abort-cb":224,"dup":166}],213:[function(require,module,exports){
 arguments[4][167][0].apply(exports,arguments)
-},{"../util/prop":224,"dup":167}],214:[function(require,module,exports){
+},{"../util/abort-cb":224,"dup":167}],214:[function(require,module,exports){
 arguments[4][168][0].apply(exports,arguments)
-},{"../util/tester":225,"./filter":215,"dup":168}],215:[function(require,module,exports){
+},{"../util/prop":225,"dup":168}],215:[function(require,module,exports){
 arguments[4][169][0].apply(exports,arguments)
-},{"../util/tester":225,"dup":169}],216:[function(require,module,exports){
+},{"../util/tester":226,"./filter":216,"dup":169}],216:[function(require,module,exports){
 arguments[4][170][0].apply(exports,arguments)
-},{"../sources/once":211,"../sources/values":212,"dup":170}],217:[function(require,module,exports){
+},{"../util/tester":226,"dup":170}],217:[function(require,module,exports){
 arguments[4][171][0].apply(exports,arguments)
-},{"./async-map":213,"./filter":215,"./filter-not":214,"./flatten":216,"./map":218,"./non-unique":219,"./take":220,"./through":221,"./unique":222,"dup":171}],218:[function(require,module,exports){
+},{"../sources/once":212,"../sources/values":213,"dup":171}],218:[function(require,module,exports){
 arguments[4][172][0].apply(exports,arguments)
-},{"../util/prop":224,"dup":172}],219:[function(require,module,exports){
+},{"./async-map":214,"./filter":216,"./filter-not":215,"./flatten":217,"./map":219,"./non-unique":220,"./take":221,"./through":222,"./unique":223,"dup":172}],219:[function(require,module,exports){
 arguments[4][173][0].apply(exports,arguments)
-},{"./unique":222,"dup":173}],220:[function(require,module,exports){
+},{"../util/prop":225,"dup":173}],220:[function(require,module,exports){
 arguments[4][174][0].apply(exports,arguments)
-},{"dup":174}],221:[function(require,module,exports){
+},{"./unique":223,"dup":174}],221:[function(require,module,exports){
 arguments[4][175][0].apply(exports,arguments)
 },{"dup":175}],222:[function(require,module,exports){
 arguments[4][176][0].apply(exports,arguments)
-},{"../util/prop":224,"./filter":215,"dup":176}],223:[function(require,module,exports){
+},{"dup":176}],223:[function(require,module,exports){
 arguments[4][177][0].apply(exports,arguments)
-},{"dup":177}],224:[function(require,module,exports){
+},{"../util/prop":225,"./filter":216,"dup":177}],224:[function(require,module,exports){
 arguments[4][178][0].apply(exports,arguments)
 },{"dup":178}],225:[function(require,module,exports){
 arguments[4][179][0].apply(exports,arguments)
-},{"./prop":224,"dup":179}],226:[function(require,module,exports){
+},{"dup":179}],226:[function(require,module,exports){
+arguments[4][180][0].apply(exports,arguments)
+},{"./prop":225,"dup":180}],227:[function(require,module,exports){
 var looper = require('looper')
 
 module.exports = function (writer, ender) {
@@ -12064,7 +12117,7 @@ module.exports = function (writer, ender) {
 }
 
 
-},{"looper":227}],227:[function(require,module,exports){
+},{"looper":228}],228:[function(require,module,exports){
 
 var looper = module.exports = function (fun) {
   (function next () {
@@ -12080,7 +12133,7 @@ var looper = module.exports = function (fun) {
   })()
 }
 
-},{}],228:[function(require,module,exports){
+},{}],229:[function(require,module,exports){
 'use strict';
 
 //load websocket library if we are not in the browser
@@ -12120,7 +12173,7 @@ module.exports = function (addr, opts) {
 
 module.exports.connect = module.exports
 
-},{"./duplex":229,"./web-socket":234,"./ws-url":235}],229:[function(require,module,exports){
+},{"./duplex":230,"./web-socket":235,"./ws-url":236}],230:[function(require,module,exports){
 var source = require('./source')
 var sink = require('./sink')
 
@@ -12145,7 +12198,7 @@ function duplex (ws, opts) {
 };
 
 
-},{"./sink":232,"./source":233}],230:[function(require,module,exports){
+},{"./sink":233,"./source":234}],231:[function(require,module,exports){
 var exports = module.exports = require('./duplex')
 
 exports.source = require('./source');
@@ -12153,7 +12206,7 @@ exports.sink = require('./sink');
 exports.createServer = require('./server')
 exports.connect = require('./client')
 
-},{"./client":228,"./duplex":229,"./server":299,"./sink":232,"./source":233}],231:[function(require,module,exports){
+},{"./client":229,"./duplex":230,"./server":299,"./sink":233,"./source":234}],232:[function(require,module,exports){
 module.exports = function(socket, callback) {
   var remove = socket && (socket.removeEventListener || socket.removeListener);
 
@@ -12186,7 +12239,7 @@ module.exports = function(socket, callback) {
   socket.addEventListener('error', handleErr);
 };
 
-},{}],232:[function(require,module,exports){
+},{}],233:[function(require,module,exports){
 (function (process){
 var ready = require('./ready');
 
@@ -12244,7 +12297,7 @@ module.exports = function(socket, opts) {
 }
 
 }).call(this,require('_process'))
-},{"./ready":231,"_process":385}],233:[function(require,module,exports){
+},{"./ready":232,"_process":385}],234:[function(require,module,exports){
 (function (Buffer){
 /**
   ### `source(socket)`
@@ -12326,11 +12379,11 @@ module.exports = function(socket, cb) {
 };
 
 }).call(this,require("buffer").Buffer)
-},{"buffer":326}],234:[function(require,module,exports){
+},{"buffer":326}],235:[function(require,module,exports){
 
 module.exports = 'undefined' === typeof WebSocket ? require('ws') : WebSocket
 
-},{"ws":299}],235:[function(require,module,exports){
+},{"ws":299}],236:[function(require,module,exports){
 var rurl = require('relative-url')
 var map = {http:'ws', https:'wss'}
 var def = 'ws'
@@ -12340,7 +12393,7 @@ module.exports = function (url, location) {
 
 
 
-},{"relative-url":237}],236:[function(require,module,exports){
+},{"relative-url":238}],237:[function(require,module,exports){
 
 // when this is loaded into the browser, 
 // just use the defaults...
@@ -12349,7 +12402,7 @@ module.exports = function (name, defaults) {
   return defaults
 }
 
-},{}],237:[function(require,module,exports){
+},{}],238:[function(require,module,exports){
 
 //normalize a ws url.
 var URL = require('url')
@@ -12447,7 +12500,7 @@ module.exports = function (url, location, protocolMap, defaultProtocol) {
 
 
 
-},{"url":418}],238:[function(require,module,exports){
+},{"url":418}],239:[function(require,module,exports){
 (function (Buffer){
 'use strict'
 var sodium      = require('chloride')
@@ -12642,7 +12695,7 @@ exports.toKeys = function (keys) {
 
 
 }).call(this,require("buffer").Buffer)
-},{"buffer":326,"chloride":60}],239:[function(require,module,exports){
+},{"buffer":326,"chloride":61}],240:[function(require,module,exports){
 'use strict'
 module.exports = require('./protocol')(require('./crypto'))
 
@@ -12655,7 +12708,7 @@ module.exports = require('./protocol')(require('./crypto'))
 
 
 
-},{"./crypto":238,"./protocol":240}],240:[function(require,module,exports){
+},{"./crypto":239,"./protocol":241}],241:[function(require,module,exports){
 (function (Buffer){
 var pull = require('pull-stream')
 var boxes = require('pull-box-stream')
@@ -12821,7 +12874,7 @@ module.exports = function (stateless) {
 
 
 }).call(this,{"isBuffer":require("../../../../../usr/lib/node_modules/browserify/node_modules/is-buffer/index.js")})
-},{"../../../../../usr/lib/node_modules/browserify/node_modules/is-buffer/index.js":373,"./random":241,"pull-box-stream":140,"pull-handshake":180,"pull-stream":195}],241:[function(require,module,exports){
+},{"../../../../../usr/lib/node_modules/browserify/node_modules/is-buffer/index.js":373,"./random":242,"pull-box-stream":141,"pull-handshake":181,"pull-stream":196}],242:[function(require,module,exports){
 (function (Buffer){
 'use strict'
 var cl = require('chloride')
@@ -12833,7 +12886,7 @@ module.exports = function (bytes) {
 }
 
 }).call(this,require("buffer").Buffer)
-},{"buffer":326,"chloride":60}],242:[function(require,module,exports){
+},{"buffer":326,"chloride":61}],243:[function(require,module,exports){
 
 //module.exports = function (sep, esc) {
 //  sep = sep || ','
@@ -12884,7 +12937,7 @@ module.exports = function (sep, esc) {
 
 
 
-},{}],243:[function(require,module,exports){
+},{}],244:[function(require,module,exports){
 // A simple mime database.
 var types;
 module.exports = function setup(defaultMime) {
@@ -13085,7 +13138,7 @@ types = {
   zip: "application/zip"
 };
 
-},{}],244:[function(require,module,exports){
+},{}],245:[function(require,module,exports){
 (function (Buffer){
 
 var tweetnacl = require('tweetnacl/nacl-fast')
@@ -13191,7 +13244,7 @@ exports.randombytes = function (buf) {
 
 
 }).call(this,require("buffer").Buffer)
-},{"buffer":326,"ed2curve":86,"sha.js/sha256":246,"tweetnacl-auth":273,"tweetnacl/nacl-fast":274}],245:[function(require,module,exports){
+},{"buffer":326,"ed2curve":87,"sha.js/sha256":247,"tweetnacl-auth":274,"tweetnacl/nacl-fast":275}],246:[function(require,module,exports){
 (function (Buffer){
 // prototype class for hash functions
 function Hash (blockSize, finalSize) {
@@ -13264,7 +13317,7 @@ Hash.prototype._update = function () {
 module.exports = Hash
 
 }).call(this,require("buffer").Buffer)
-},{"buffer":326}],246:[function(require,module,exports){
+},{"buffer":326}],247:[function(require,module,exports){
 (function (Buffer){
 /**
  * A JavaScript implementation of the Secure Hash Algorithm, SHA-256, as defined
@@ -13402,7 +13455,7 @@ Sha256.prototype._hash = function () {
 module.exports = Sha256
 
 }).call(this,require("buffer").Buffer)
-},{"./hash":245,"buffer":326,"inherits":105}],247:[function(require,module,exports){
+},{"./hash":246,"buffer":326,"inherits":106}],248:[function(require,module,exports){
 
 module.exports = function split (data, max) {
 
@@ -13421,7 +13474,7 @@ module.exports = function split (data, max) {
 }
 
 
-},{}],248:[function(require,module,exports){
+},{}],249:[function(require,module,exports){
 'use strict'
 var pull = require('pull-stream')
 var cat = require('pull-cat')
@@ -13497,7 +13550,7 @@ module.exports = function getAvatar(sbot, source, dest, cb) {
 
 
 
-},{"pull-cat":141,"pull-stream":195,"ssb-msgs":261,"ssb-ref":262}],249:[function(require,module,exports){
+},{"pull-cat":142,"pull-stream":196,"ssb-msgs":262,"ssb-ref":263}],250:[function(require,module,exports){
 (function (Buffer){
 var cont = require('cont')
 var util = require('./util')
@@ -13570,7 +13623,7 @@ module.exports = function (ssb, keys, opts) {
 
 
 }).call(this,{"isBuffer":require("../../../../../usr/lib/node_modules/browserify/node_modules/is-buffer/index.js")})
-},{"../../../../../usr/lib/node_modules/browserify/node_modules/is-buffer/index.js":373,"./queue":250,"./util":251,"cont":62,"ssb-keys":253}],250:[function(require,module,exports){
+},{"../../../../../usr/lib/node_modules/browserify/node_modules/is-buffer/index.js":373,"./queue":251,"./util":252,"cont":63,"ssb-keys":254}],251:[function(require,module,exports){
 
 
 module.exports = function (async) {
@@ -13604,7 +13657,7 @@ module.exports = function (async) {
 
 
 
-},{}],251:[function(require,module,exports){
+},{}],252:[function(require,module,exports){
 (function (Buffer){
 var ssbKeys = require('ssb-keys')
 var timestamp = require('monotonic-timestamp')
@@ -13769,7 +13822,7 @@ exports.isInvalid = function (pub, msg, previous, sign_cap) {
 
 
 }).call(this,require("buffer").Buffer)
-},{"buffer":326,"monotonic-timestamp":118,"ssb-keys":253,"ssb-ref":262}],252:[function(require,module,exports){
+},{"buffer":326,"monotonic-timestamp":119,"ssb-keys":254,"ssb-ref":263}],253:[function(require,module,exports){
 var defaultRef = 'refs/heads/master'
 
 function compareRefs(a, b) {
@@ -13923,7 +13976,7 @@ module.exports = function mergeRepo(states, msg) {
   return obj
 }
 
-},{}],253:[function(require,module,exports){
+},{}],254:[function(require,module,exports){
 (function (Buffer){
 'use strict'
 var sodium     = require('chloride')
@@ -14087,7 +14140,7 @@ exports.unbox = function (boxed, keys) {
 
 
 }).call(this,require("buffer").Buffer)
-},{"./sodium":255,"./storage":256,"./util":257,"buffer":326,"chloride":60,"private-box":139}],254:[function(require,module,exports){
+},{"./sodium":256,"./storage":257,"./util":258,"buffer":326,"chloride":61,"private-box":140}],255:[function(require,module,exports){
 'use strict'
 var u = require('./util')
 
@@ -14126,7 +14179,7 @@ module.exports = function (generate) {
 
 
 
-},{"./util":257}],255:[function(require,module,exports){
+},{"./util":258}],256:[function(require,module,exports){
 (function (Buffer){
 'use strict'
 var sodium = require('chloride')
@@ -14165,7 +14218,7 @@ module.exports = {
 
 
 }).call(this,require("buffer").Buffer)
-},{"buffer":326,"chloride":60}],256:[function(require,module,exports){
+},{"buffer":326,"chloride":61}],257:[function(require,module,exports){
 'use strict'
 var fs         = require('fs')
 var mkdirp     = require('mkdirp')
@@ -14288,7 +14341,7 @@ module.exports = function (generate) {
   return exports
 }
 
-},{"./local-storage":254,"./util":257,"fs":280,"mkdirp":117,"path":382}],257:[function(require,module,exports){
+},{"./local-storage":255,"./util":258,"fs":280,"mkdirp":118,"path":382}],258:[function(require,module,exports){
 (function (Buffer){
 'use strict'
 var cl     = require('chloride')
@@ -14337,7 +14390,7 @@ exports.toBuffer = function (buf) {
 }
 
 }).call(this,require("buffer").Buffer)
-},{"buffer":326,"chloride":60}],258:[function(require,module,exports){
+},{"buffer":326,"chloride":61}],259:[function(require,module,exports){
 'use strict'
 var emojiNamedCharacters = require('emoji-named-characters')
 var marked = require('ssb-marked')
@@ -14490,7 +14543,7 @@ function renderEmoji (size) {
 
 
 
-},{"emoji-named-characters":87,"ssb-marked":259,"ssb-msgs":261,"ssb-ref":262}],259:[function(require,module,exports){
+},{"emoji-named-characters":88,"ssb-marked":260,"ssb-msgs":262,"ssb-ref":263}],260:[function(require,module,exports){
 (function (global){
 /**
  * marked - a markdown parser
@@ -15904,7 +15957,7 @@ if (typeof module !== 'undefined' && typeof exports === 'object') {
 }());
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}],260:[function(require,module,exports){
+},{}],261:[function(require,module,exports){
 var ref = require('ssb-ref')
 var marked = require('ssb-marked')
 function noop(){}
@@ -15988,7 +16041,7 @@ module.exports = function (text, opts) {
 }
 
 
-},{"ssb-marked":259,"ssb-ref":262}],261:[function(require,module,exports){
+},{"ssb-marked":260,"ssb-ref":263}],262:[function(require,module,exports){
 var ref = require('ssb-ref')
 
 function isObject (o) { return o && 'object' === typeof o }
@@ -16146,7 +16199,7 @@ exports.relationsTo = function (msgA, msgB) {
   })
   return rels
 }
-},{"ssb-ref":262}],262:[function(require,module,exports){
+},{"ssb-ref":263}],263:[function(require,module,exports){
 var isDomain = require('is-valid-domain')
 var ip = require('ip')
 
@@ -16382,7 +16435,7 @@ exports.extract =
   }
 
 
-},{"ip":263,"is-valid-domain":108}],263:[function(require,module,exports){
+},{"ip":264,"is-valid-domain":109}],264:[function(require,module,exports){
 'use strict';
 
 var ip = exports;
@@ -16800,7 +16853,7 @@ ip.fromLong = function(ipl) {
       (ipl & 255) );
 };
 
-},{"buffer":326,"os":377}],264:[function(require,module,exports){
+},{"buffer":326,"os":377}],265:[function(require,module,exports){
 var isMsg = require('ssb-ref').isMsg
 
 function links (obj, each) {
@@ -16918,7 +16971,7 @@ exports.roots = roots
 exports.ancestors = ancestors
 
 
-},{"ssb-ref":262}],265:[function(require,module,exports){
+},{"ssb-ref":263}],266:[function(require,module,exports){
 (function (process){
 var pull = require('pull-stream/pull')
 var looper = require('looper')
@@ -17159,9 +17212,9 @@ exports.transform = function (stream) {
 
 
 }).call(this,require('_process'))
-},{"_process":385,"looper":266,"pull-stream/pull":196}],266:[function(require,module,exports){
-arguments[4][227][0].apply(exports,arguments)
-},{"dup":227}],267:[function(require,module,exports){
+},{"_process":385,"looper":267,"pull-stream/pull":197}],267:[function(require,module,exports){
+arguments[4][228][0].apply(exports,arguments)
+},{"dup":228}],268:[function(require,module,exports){
 
 function whitespace (s) {
   return /\S/.test(s)
@@ -17200,7 +17253,7 @@ exports.replace = function replace (value, text, i, bound) {
 }
 
 
-},{}],268:[function(require,module,exports){
+},{}],269:[function(require,module,exports){
 'use strict'
 var h = require('hyperscript')
 var wordBoundary = /\s/
@@ -17442,9 +17495,9 @@ function adjustPosition() {
 }
 
 
-},{"./bounds":267,"./suggester":270,"hyperscript":269,"textarea-caret-position":272}],269:[function(require,module,exports){
-arguments[4][93][0].apply(exports,arguments)
-},{"browser-split":57,"class-list":61,"dup":93,"html-element":299}],270:[function(require,module,exports){
+},{"./bounds":268,"./suggester":271,"hyperscript":270,"textarea-caret-position":273}],270:[function(require,module,exports){
+arguments[4][94][0].apply(exports,arguments)
+},{"browser-split":58,"class-list":62,"dup":94,"html-element":299}],271:[function(require,module,exports){
 
 function isObject (o) {
   return o && 'object' === typeof o
@@ -17510,7 +17563,7 @@ module.exports = function (choices) {
 
 
 
-},{}],271:[function(require,module,exports){
+},{}],272:[function(require,module,exports){
 /*
  * TextNodeSeacher
  * Copyright (c) 2015 Charles Lehner
@@ -17762,7 +17815,7 @@ else if (global)
 	global.TextNodeSearcher = TextNodeSearcher;
 }(this));
 
-},{}],272:[function(require,module,exports){
+},{}],273:[function(require,module,exports){
 /* jshint browser: true */
 
 // The properties that we copy into a mirrored div.
@@ -17894,7 +17947,7 @@ CaretCoordinates.prototype.get = function(positionLeft, positionRight) {
 module.exports = CaretCoordinates;
 
 
-},{}],273:[function(require,module,exports){
+},{}],274:[function(require,module,exports){
 (function(root, f) {
   'use strict';
   if (typeof module !== 'undefined' && module.exports) module.exports = f(require('tweetnacl'));
@@ -17943,7 +17996,7 @@ module.exports = CaretCoordinates;
 
 }));
 
-},{"tweetnacl":274}],274:[function(require,module,exports){
+},{"tweetnacl":275}],275:[function(require,module,exports){
 (function(nacl) {
 'use strict';
 
@@ -20333,7 +20386,7 @@ nacl.setPRNG = function(fn) {
 
 })(typeof module !== 'undefined' && module.exports ? module.exports : (self.nacl = self.nacl || {}));
 
-},{"crypto":299}],275:[function(require,module,exports){
+},{"crypto":299}],276:[function(require,module,exports){
 (function (Buffer){
 function inequality (a, b) {
   return a === b ? 0 : a < b ? -1 : 1
@@ -20394,7 +20447,7 @@ module.exports.equal = function (a, b) {
 }
 
 }).call(this,{"isBuffer":require("../../../../../usr/lib/node_modules/browserify/node_modules/is-buffer/index.js")})
-},{"../../../../../usr/lib/node_modules/browserify/node_modules/is-buffer/index.js":373}],276:[function(require,module,exports){
+},{"../../../../../usr/lib/node_modules/browserify/node_modules/is-buffer/index.js":373}],277:[function(require,module,exports){
 module.exports = function (b, width) {
   width = width || 16
   var canvas = document.createElement('canvas')
@@ -20431,7 +20484,7 @@ module.exports = function (b, width) {
 }
 
 
-},{}],277:[function(require,module,exports){
+},{}],278:[function(require,module,exports){
 'use strict'
 var pull = require('pull-stream')
 var ssbHash = require('pull-hash/ext/ssb')
@@ -20476,7 +20529,7 @@ module.exports = function fixAddBlob(add) {
 }
 
 
-},{"multicb":119,"pull-hash/ext/ssb":181,"pull-stream":195}],278:[function(require,module,exports){
+},{"multicb":120,"pull-hash/ext/ssb":182,"pull-stream":196}],279:[function(require,module,exports){
 (function (process,Buffer){
 'use strict'
 var path        = require('path')
@@ -20506,10 +20559,10 @@ function toSodiumKeys(keys) {
   }
 }
 
-//load cap from config instead!
-var cap = 'EVRctE2Iv8GrO/BpQCF34e2FMPsDJot9x0j846LjVtc='
+//var cap = 'EVRctE2Iv8GrO/BpQCF34e2FMPsDJot9x0j846LjVtc='
 
-var createConfig = require('../ssb-config/inject')
+var createConfig = require('../../config/inject')
+
 
 module.exports = function (keys, opts, cb) {
   var config
@@ -20588,79 +20641,7 @@ module.exports = function (keys, opts, cb) {
 
 
 }).call(this,require('_process'),require("buffer").Buffer)
-},{"../ssb-config/inject":279,"./blobs":277,"_process":385,"buffer":326,"explain-error":88,"fs":280,"multiserver":121,"multiserver/plugins/net":122,"multiserver/plugins/onion":123,"multiserver/plugins/shs":124,"multiserver/plugins/ws":125,"muxrpc":127,"path":382,"pull-stream":195,"ssb-keys":253}],279:[function(require,module,exports){
-var path = require('path')
-var home = require('os-homedir')
-
-var nonPrivate = require('non-private-ip')
-var merge = require('deep-extend')
-
-var RC = require('rc')
-
-var SEC = 1e3
-var MIN = 60*SEC
-
-module.exports = function (name, override) {
-  name = name || 'decent'
-  var HOME = home() || 'browser' //most probably browser
-  return RC(name || 'decent', merge({
-    //just use an ipv4 address by default.
-    //there have been some reports of seemingly non-private
-    //ipv6 addresses being returned and not working.
-    //https://github.com/ssbc/scuttlebot/pull/102
-    party: true,
-    host: nonPrivate.v4 || '',
-    port: 3333,
-    timeout: 0,
-    pub: true,
-    local: true,
-    friends: {
-      dunbar: 150,
-      hops: 3
-    },
-    ws: {
-      port: 3939
-    },
-    gossip: {
-      connections: 3
-    },
-    path: path.join(HOME, '.' + name),
-    timers: {
-      connection: 0,
-      reconnect: 5*SEC,
-      ping: 5*MIN,
-      handshake: 5*SEC
-    },
-    //change these to make a test network that will not connect to the main network.
-    caps: {
-      //this is the key for accessing the ssb protocol.
-      //this will be updated whenever breaking changes are made.
-      //(see secret-handshake paper for a full explaination)
-      //(generated by crypto.randomBytes(32).toString('base64'))
-      shs: 'EVRctE2Iv8GrO/BpQCF34e2FMPsDJot9x0j846LjVtc=',
-
-      //used to sign messages
-      sign: null
-    },
-    master: [],
-    logging: { level: 'notice' },
-    party: true //disable quotas
-  }, override || {}))
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-},{"deep-extend":80,"non-private-ip":133,"os-homedir":136,"path":382,"rc":236}],280:[function(require,module,exports){
+},{"../../config/inject":56,"./blobs":278,"_process":385,"buffer":326,"explain-error":89,"fs":280,"multiserver":122,"multiserver/plugins/net":123,"multiserver/plugins/onion":124,"multiserver/plugins/shs":125,"multiserver/plugins/ws":126,"muxrpc":128,"path":382,"pull-stream":196,"ssb-keys":254}],280:[function(require,module,exports){
 
 },{}],281:[function(require,module,exports){
 var asn1 = exports;
@@ -37403,10 +37384,10 @@ exports.write = function (buffer, value, offset, isLE, mLen, nBytes) {
 }
 
 },{}],371:[function(require,module,exports){
-arguments[4][104][0].apply(exports,arguments)
-},{"dup":104}],372:[function(require,module,exports){
 arguments[4][105][0].apply(exports,arguments)
-},{"dup":105}],373:[function(require,module,exports){
+},{"dup":105}],372:[function(require,module,exports){
+arguments[4][106][0].apply(exports,arguments)
+},{"dup":106}],373:[function(require,module,exports){
 /**
  * Determine if an object is Buffer
  *
@@ -41332,8 +41313,8 @@ module.exports = ripemd160
 
 }).call(this,require("buffer").Buffer)
 },{"buffer":326}],408:[function(require,module,exports){
-arguments[4][245][0].apply(exports,arguments)
-},{"buffer":326,"dup":245}],409:[function(require,module,exports){
+arguments[4][246][0].apply(exports,arguments)
+},{"buffer":326,"dup":246}],409:[function(require,module,exports){
 var exports = module.exports = function SHA (algorithm) {
   algorithm = algorithm.toLowerCase()
 
@@ -41606,8 +41587,8 @@ module.exports = Sha224
 
 }).call(this,require("buffer").Buffer)
 },{"./hash":408,"./sha256":413,"buffer":326,"inherits":372}],413:[function(require,module,exports){
-arguments[4][246][0].apply(exports,arguments)
-},{"./hash":408,"buffer":326,"dup":246,"inherits":372}],414:[function(require,module,exports){
+arguments[4][247][0].apply(exports,arguments)
+},{"./hash":408,"buffer":326,"dup":247,"inherits":372}],414:[function(require,module,exports){
 (function (Buffer){
 var inherits = require('inherits')
 var SHA512 = require('./sha512')

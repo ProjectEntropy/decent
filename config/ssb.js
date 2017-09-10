@@ -10,8 +10,8 @@ var SEC = 1e3
 var MIN = 60*SEC
 
 module.exports = function (name, override) {
-  //name = name || 'ssb'
-  name = name || 'decent'
+  name = name || 'ssb'
+  //name = name || 'decent'
   var HOME = home() || 'browser' //most probably browser
   return RC(name, merge({
     //just use an ipv4 address by default.
@@ -19,7 +19,7 @@ module.exports = function (name, override) {
     //ipv6 addresses being returned and not working.
     //https://github.com/ssbc/scuttlebot/pull/102
     host: nonPrivate.v4 || '',
-    port: 3333,
+    port: 8008,
     timeout: 0,
     pub: true,
     local: true,
@@ -28,7 +28,7 @@ module.exports = function (name, override) {
       hops: 3
     },
     ws: {
-      port: 3939
+      port: 8989
     },
     gossip: {
       connections: 3
@@ -41,8 +41,8 @@ module.exports = function (name, override) {
       handshake: 5*SEC
     },
     caps: { 
-      shs: 'EVRctE2Iv8GrO/BpQCF34e2FMPsDJot9x0j846LjVtc=',
-      //shs: '1KHLiKZvAvjbY1ziZEHMXawbCEIM6qwjCDm3VYRan/s=',
+      //shs: 'EVRctE2Iv8GrO/BpQCF34e2FMPsDJot9x0j846LjVtc=',
+      shs: '1KHLiKZvAvjbY1ziZEHMXawbCEIM6qwjCDm3VYRan/s=',
       sign: null
     },
     master: [],

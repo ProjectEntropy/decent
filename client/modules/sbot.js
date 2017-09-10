@@ -3,7 +3,7 @@ var ssbKeys = require('ssb-keys')
 var ref = require('ssb-ref')
 var Reconnect = require('pull-reconnect')
 var path = require('path')
-var config = require('../../plugins/ssb-config/inject')(process.env.ssb_appname)
+var config = require('../../config/inject')(process.env.ssb_appname)
 config.keys = ssbKeys.loadOrCreateSync(path.join(config.path, 'secret'))
 
 function Hash (onHash) {
@@ -21,9 +21,9 @@ function Hash (onHash) {
   })
 }
 
-var createClient = require('../../plugins/ssb-client')
+var createClient = require('../../plugins/client')
 
-var createConfig = require('../../plugins/ssb-config/inject')
+var createConfig = require('../../config/inject')
 
 var createFeed   = require('ssb-feed')
 var keys = require('../keys')
