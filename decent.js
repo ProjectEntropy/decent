@@ -18,7 +18,7 @@ var i = argv.indexOf('--')
 var conf = argv.slice(i+1)
 argv = ~i ? argv.slice(0, i) : argv
 
-var config = require('./plugins/ssb-config/inject')(process.env.ssb_appname, minimist(conf))
+var config = require('./config/inject')(process.env.ssb_appname, minimist(conf))
 
 var keys = ssbKeys.loadOrCreateSync(path.join(config.path, 'secret'))
 
@@ -41,7 +41,7 @@ if (argv[0] == 'server') {
     .use(require('./plugins/private'))
     .use(require('ssb-query'))
     .use(require('ssb-links'))
-    .use(require('./plugins/ssb-ws'))
+    .use(require('./plugins/ws'))
     .use(require('ssb-ebt'))
 
   // add third-party plugins
@@ -74,7 +74,7 @@ if (argv[0] == 'server') {
   }
 
   // connect
-  require('./plugins/ssb-client')(keys, {
+  require('./plugins/client')(keys, {
     manifest: manifest,
     port: config.port,
     host: config.host||'localhost',

@@ -9,8 +9,7 @@ var mdm = require('mdmanifest')
 var valid = require('../lib/validators')
 var apidoc = require('../lib/apidocs').invite
 var ref = require('ssb-ref')
-
-var ssbClient = require('./ssb-client')
+var ssbClient = require('./client')
 
 // invite plugin
 // adds methods for producing invite-codes,
