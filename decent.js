@@ -12,7 +12,7 @@ var manifestFile = path.join(config.path, 'manifest.json')
 
 var createSbot = require('./lib')
   .use(require('./plugins/master'))
-  .use(require('./plugins/gossip'))
+  .use(require('./plugins/moderngossip'))
   .use(require('./plugins/replicate'))
   .use(require('ssb-friends'))
   .use(require('ssb-blobs'))
