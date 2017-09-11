@@ -87,7 +87,7 @@ exports.create = function (api) {
     tabs.select(0)
 
     //handle link clicks
-    window.onclick = function (ev) {
+    tabs.onclick = function (ev) {
       var link = ancestor(ev.target)
       if(!link) return
       var path = link.hash.substring(1)
