@@ -3,7 +3,7 @@ var serve = require('ecstatic');
 var client = require('./plugins/client')
 var h = require('hyperscript')
 
-exports.serve = function() {
+exports.init = function() {
 
   host = 'http://localhost:3001'
   title = 'decent'

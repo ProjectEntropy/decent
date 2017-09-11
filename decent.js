@@ -43,9 +43,7 @@ if (argv[0] == 'server') {
     .use(require('ssb-links'))
     .use(require('./plugins/ws'))
     .use(require('ssb-ebt'))
-
-  // add third-party plugins
-
+    .use(require('./serve'))
   // start server
 
   config.keys = keys
@@ -53,9 +51,6 @@ if (argv[0] == 'server') {
 
   // write RPC manifest to ~/.ssb/manifest.json
   fs.writeFileSync(manifestFile, JSON.stringify(server.getManifest(), null, 2))
-
-  var lite = require('./serve')
-  lite.serve()
 
 } else {
 
