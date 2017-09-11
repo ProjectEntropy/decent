@@ -3,13 +3,13 @@ body, input, button, p, li, h1, h2, h3, h4, h5, h6, textarea {
 }
 
 a:link, a:visited, a:active {
-  color: #0088cc;
+  color: #333;
   text-decoration: underline;
 }
 
 a:hover,
 a:focus {
-  color: #005580;
+  color: black;
 }
 
 * {
@@ -126,30 +126,28 @@ pre {
 }
 
 input, textarea {
-  border: 1px solid #ccc;
-  border-radius: .5em;
+  border: 1px solid #eee;
 }
 
 textarea {
   font-size: 1em;
-  padding: .5em;
-  margin-top: 1em;
 }
 
 /* messages */
 
 .message {
+  border: 1px solid #eee;
   position: relative;
   flex-basis: 0;
   padding: .5em;
-  border: 1px solid #eee;
-  margin-top: -1px;
-  border-radius: 5px;
-  background: #f5f5f5;
+  margin-top: .2em;
+  background: white;
 }
 
-.message:hover {
-  background: white;
+.message_content {
+  margin-top: 5px;
+  border-top: 1px solid #eee;
+  padding-top: 3px;
 }
 
 .message_content--mini div > span {
@@ -157,7 +155,7 @@ textarea {
 }
 
 .message_meta {
-  float: right;
+  margin-left: auto;
 }
 
 .message_meta > * {
@@ -329,7 +327,7 @@ textarea {
   width: 1em;
   height: 1em;
   margin: .5em;
-  background: #08c;
+  background: green;
 }
 
 .error {
