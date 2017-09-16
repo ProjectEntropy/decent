@@ -59,7 +59,6 @@ exports.create = function (api) {
 
    
     accessories = h('div.row.compose__controls',
-      api.avatar_link(id, api.avatar_image(me, 'tiny')),
       api.file_input(function (file) {
         files.push(file)
         filesById[file.link] = file

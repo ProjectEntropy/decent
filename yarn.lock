@@ -13,8 +13,8 @@ abstract-leveldown@~0.12.1:
     xtend "~3.0.0"
 
 abstract-leveldown@~2.6.0, abstract-leveldown@~2.6.1:
-  version "2.6.2"
-  resolved "https://registry.yarnpkg.com/abstract-leveldown/-/abstract-leveldown-2.6.2.tgz#e374c2a0fa036b88822bc1c51949119b11980590"
+  version "2.6.3"
+  resolved "https://registry.yarnpkg.com/abstract-leveldown/-/abstract-leveldown-2.6.3.tgz#1c5e8c6a5ef965ae8c35dfb3a8770c476b82c4b8"
   dependencies:
     xtend "~4.0.0"
 
@@ -26,8 +26,8 @@ ajv@^4.9.1:
     json-stable-stringify "^1.0.1"
 
 aligned-block-file@^1.1.0:
-  version "1.1.1"
-  resolved "https://registry.yarnpkg.com/aligned-block-file/-/aligned-block-file-1.1.1.tgz#5b33915b180d3211c05177de2eb3a8563dcecc74"
+  version "1.1.2"
+  resolved "https://registry.yarnpkg.com/aligned-block-file/-/aligned-block-file-1.1.2.tgz#4a9168d5fefe5e2f525949dc55a4aa09903b32d4"
   dependencies:
     hashlru "^2.1.0"
     int53 "^0.2.4"
@@ -556,8 +556,8 @@ errno@~0.1.1:
     prr "~0.0.0"
 
 es-abstract@^1.5.0:
-  version "1.8.1"
-  resolved "https://registry.yarnpkg.com/es-abstract/-/es-abstract-1.8.1.tgz#fd85a3bdfa67786ce7be7e1584678e119cd70c04"
+  version "1.8.2"
+  resolved "https://registry.yarnpkg.com/es-abstract/-/es-abstract-1.8.2.tgz#25103263dc4decbda60e0c737ca32313518027ee"
   dependencies:
     es-to-primitive "^1.1.1"
     function-bind "^1.1.1"
@@ -1241,7 +1241,13 @@ level-codec@~7.0.0:
   version "7.0.1"
   resolved "https://registry.yarnpkg.com/level-codec/-/level-codec-7.0.1.tgz#341f22f907ce0f16763f24bddd681e395a0fb8a7"
 
-level-errors@^1.0.3, level-errors@~1.0.3:
+level-errors@^1.0.3:
+  version "1.1.1"
+  resolved "https://registry.yarnpkg.com/level-errors/-/level-errors-1.1.1.tgz#52fdc2dbbaf395cf767db843929a38b7015678d2"
+  dependencies:
+    errno "~0.1.1"
+
+level-errors@~1.0.3:
   version "1.0.5"
   resolved "https://registry.yarnpkg.com/level-errors/-/level-errors-1.0.5.tgz#83dbfb12f0b8a2516bdc9a31c4876038e227b859"
   dependencies:
@@ -1578,8 +1584,8 @@ node-gyp-build@^3.0.0:
   resolved "https://registry.yarnpkg.com/node-gyp-build/-/node-gyp-build-3.2.2.tgz#f78a9f84834b1dbd293b0719fee48635d2789c27"
 
 node-pre-gyp@^0.6.36:
-  version "0.6.36"
-  resolved "https://registry.yarnpkg.com/node-pre-gyp/-/node-pre-gyp-0.6.36.tgz#db604112cb74e0d477554e9b505b17abddfab786"
+  version "0.6.37"
+  resolved "https://registry.yarnpkg.com/node-pre-gyp/-/node-pre-gyp-0.6.37.tgz#3c872b236b2e266e4140578fe1ee88f693323a05"
   dependencies:
     mkdirp "^0.5.1"
     nopt "^4.0.1"
@@ -1588,6 +1594,7 @@ node-pre-gyp@^0.6.36:
     request "^2.81.0"
     rimraf "^2.6.1"
     semver "^5.3.0"
+    tape "^4.6.3"
     tar "^2.2.1"
     tar-pack "^3.4.0"
 
@@ -2059,8 +2066,8 @@ pull-stream@^2.28.3:
     pull-core "~1.1.0"
 
 pull-stream@^3.0.1, pull-stream@^3.1.0, pull-stream@^3.2.3, pull-stream@^3.3.0, pull-stream@^3.4.0, pull-stream@^3.4.2, pull-stream@^3.4.3, pull-stream@^3.4.5, pull-stream@^3.5.0, pull-stream@^3.6.0:
-  version "3.6.0"
-  resolved "https://registry.yarnpkg.com/pull-stream/-/pull-stream-3.6.0.tgz#59d033a6815d4e3097d47c3d2b1893a9e58a2351"
+  version "3.6.1"
+  resolved "https://registry.yarnpkg.com/pull-stream/-/pull-stream-3.6.1.tgz#c5c2ae4a51246efeebcc65c0412a3d725a92ce00"
 
 pull-stream@~2.18.2:
   version "2.18.3"
@@ -2111,10 +2118,11 @@ pull-write@^1.0.2, pull-write@^1.1.0, pull-write@^1.1.1:
     pull-stream "^3.4.5"
 
 pull-ws@^3.2.7:
-  version "3.2.9"
-  resolved "https://registry.yarnpkg.com/pull-ws/-/pull-ws-3.2.9.tgz#8a90502a41d9058fcb3096ad4823a0f189d613ba"
+  version "3.2.10"
+  resolved "https://registry.yarnpkg.com/pull-ws/-/pull-ws-3.2.10.tgz#f7252c87f762a8276dd7c711e73bbcf93dbac549"
   dependencies:
     relative-url "^1.0.2"
+    safe-buffer "^5.1.1"
     ws "^1.1.0"
 
 pump@^1.0.0, pump@^1.0.1:
@@ -2313,8 +2321,8 @@ resumer@~0.0.0:
     through "~2.3.4"
 
 rimraf@2, rimraf@^2.4.2, rimraf@^2.5.1, rimraf@^2.6.1:
-  version "2.6.1"
-  resolved "https://registry.yarnpkg.com/rimraf/-/rimraf-2.6.1.tgz#c2338ec643df7a1b7fe5c54fa86f57428a55f33d"
+  version "2.6.2"
+  resolved "https://registry.yarnpkg.com/rimraf/-/rimraf-2.6.2.tgz#2ed8150d24a16ea8651e6d6ef0f47c4158ce7a36"
   dependencies:
     glob "^7.0.5"
 
@@ -2328,7 +2336,7 @@ rimraf@~2.4.0:
   dependencies:
     glob "^6.0.1"
 
-safe-buffer@^5.0.1, safe-buffer@~5.1.0, safe-buffer@~5.1.1:
+safe-buffer@^5.0.1, safe-buffer@^5.1.1, safe-buffer@~5.1.0, safe-buffer@~5.1.1:
   version "5.1.1"
   resolved "https://registry.yarnpkg.com/safe-buffer/-/safe-buffer-5.1.1.tgz#893312af69b2123def71f57889001671eeb2c853"
 
@@ -2537,8 +2545,8 @@ ssb-feed@^2.2.1:
     ssb-ref "^2.0.0"
 
 ssb-friends@^2.2.2:
-  version "2.2.2"
-  resolved "https://registry.yarnpkg.com/ssb-friends/-/ssb-friends-2.2.2.tgz#c55410c842dc0bf5b703a93de7402a3be6983ec0"
+  version "2.2.3"
+  resolved "https://registry.yarnpkg.com/ssb-friends/-/ssb-friends-2.2.3.tgz#4f6cccb2cc939d1407f29f9f4ea27ed380a82c60"
   dependencies:
     flumeview-reduce "^1.3.0"
     graphreduce "^3.0.3"

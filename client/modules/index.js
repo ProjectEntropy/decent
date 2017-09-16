@@ -18,6 +18,7 @@ module.exports = {
   "feed.js":  require('./feed.js'),
   "follow.js":  require('./follow.js'),
   "invite.js":  require('./invite.js'),
+  "theme.js": require('./theme.js'),
   "star.js":  require('./star.js'),
   "markdown.js":  require('./markdown.js'),
   "message-link.js":  require('./message-link.js'),
@@ -43,8 +44,6 @@ module.exports = {
   "git.js":  require('./git.js'),
   "key.js":  require('./key.js'),
   "notifications.js":  require('./notifications.js'),
-  "search.js": require('./search'),
-  "split.js":  require('./split.js'),
-  "writer.js":  require('./writer.js')
+  "search.js": require('./search')
 }
 
