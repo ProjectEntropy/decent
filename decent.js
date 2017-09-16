@@ -10,6 +10,7 @@ var createHash   = require('multiblob/util').createHash
 var minimist     = require('minimist')
 var muxrpcli     = require('muxrpcli')
 var cmdAliases   = require('./lib/cli-cmd-aliases')
+var ProgressBar  = require('./lib/progress')
 
 //get config as cli options after --, options before that are
 //options to the command.

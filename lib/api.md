@@ -352,3 +352,8 @@ Outputs information in the following form:
 
 
 
+## status: sync
+
+returns an object reflecting the status of various ssb operations,
+such as db read activity, connection statuses, etc, etc. The purpose is to provide
+
