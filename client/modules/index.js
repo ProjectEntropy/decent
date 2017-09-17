@@ -1,5 +1,6 @@
 module.exports = {
   "app.js":  require('./app.js'),
+  "theme.js": require('./theme.js'),
   "blob-url.js":  require('./blob-url.js'),
   "crypto.js":  require('./crypto.js'),
   "file-input.js":  require('./file-input.js'),
@@ -18,7 +19,6 @@ module.exports = {
   "feed.js":  require('./feed.js'),
   "follow.js":  require('./follow.js'),
   "invite.js":  require('./invite.js'),
-  "theme.js": require('./theme.js'),
   "star.js":  require('./star.js'),
   "markdown.js":  require('./markdown.js'),
   "message-link.js":  require('./message-link.js'),
