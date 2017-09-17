@@ -10,9 +10,12 @@ exports.gives = {
 exports.create = function (api) {
   return {
     screen_view: function (path, sbot) {
-      if (localStorage.style === null) {
-        localStorage.style = '.screen {background: red;}'
+      var defaultTheme = require('../theme.css.json')
+      console.log(defaultTheme) 
+      if (localStorage.style == null) {
+        localStorage.style = defaultTheme
       }
+
       document.head.appendChild(h('style', localStorage.style))
 
       if(path === 'Theme') {
@@ -22,16 +25,28 @@ exports.create = function (api) {
           {style: {'overflow':'auto'}},
           h('div.scroller__wrapper',
             h('div.column.scroller__content',
-              theme,
-              h('button', {onclick: function (e){
-                if(theme.value) {
-                  localStorage.style = theme.value 
+              h('div.message',
+                h('h1', 'Theme'),
+                h('p', {innerHTML: 'Style your client using cascading style sheets (css) in the textarea below. Your styles will be saved into <code>localStorage.style</code>. Use the reset button below if you get too creative.'}),
+                theme,
+                h('br'),
+                h('button', {onclick: function (e){
+                  if(theme.value) {
+                    localStorage.style = theme.value 
+                    e.preventDefault()
+                    alert('Theme updated')
+                  }
+                  location.hash = ""
+                  location.reload()
+                }}, 'Save'),
+                h('button', {onclick: function (e){
+                  delete localStorage.style
                   e.preventDefault()
-                  alert('Theme updated')
-                }
-                location.hash = ""
-                location.reload()
-              }}, 'Save')
+                  alert('Reset to default theme')
+                  location.hash = ""
+                  location.reload()
+                }}, 'Reset')
+              )
             )
           )
         )
