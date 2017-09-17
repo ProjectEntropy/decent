@@ -74,7 +74,8 @@ exports.create = function (api) {
       label.textContent = you_follow ? 'Unfollow' : 'Follow'
     }
 
-    return h('a', {href:'#', onclick: function () {
+    return h('a', {href:'#', onclick: function (e) {
+        e.preventDefault()
         api.message_confirm({
           type: 'contact',
           contact: id,
@@ -84,7 +85,7 @@ exports.create = function (api) {
           you_follow = msg.value.content.following
           update()
         })
-      }}, h('br'), h('button', label))
+      }}, h('button', label))
   }
   return exports
 }

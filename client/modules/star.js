@@ -57,7 +57,8 @@ exports.create = function (api) {
   exports.message_action = function (msg, sbot) {
     var star = api.emoji_url('star')
     if(msg.value.content.type !== 'vote')
-      return h('a.dig', {href: '#', onclick: function () {
+      return h('a.dig', {href: '#', onclick: function (e) {
+        e.preventDefault()
         var dig = {
           type: 'vote',
           vote: { link: msg.key, value: 1, expression: 'Star' }

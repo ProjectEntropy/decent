@@ -25,7 +25,8 @@ exports.create = function (api) {
   }
  
   exports.avatar_action = function (id) {
-    return h('a', {href:'#', onclick: function () {
+    return h('a', {href:'#', onclick: function (e) {
+      e.preventDefault()
       api.message_confirm({
         type: 'nudge',
         id: id
