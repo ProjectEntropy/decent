@@ -1,32 +1,34 @@
 var h = require('hyperscript')
 
-function idLink (id) {
-  return h('a', {href:'#'+id}, id.substring(0, 10)+'...')
-}
-
 exports.needs = {
+  avatar_name: 'first',
+  avatar_link: 'first',
   blob_url: 'first'
 }
 
-exports.gives = 'message_content'
+exports.gives = { 
+  message_content: true,
+  message_content_mini: true
+}
 
 exports.create = function (api) {
-  return function (msg) {
+  var exports = {}
+ 
+  exports.message_content =
+  exports.message_content_mini = function (msg) {
     if(msg.value.content.type == 'about') {
       var about = msg.value.content
       var id = msg.value.content.about
-      return h('p', 
-        about.about === msg.value.author
-          ? h('span', 'self-identifies ')
-          : h('span', 'identifies ', idLink(id)),
-        ' as ',
-        h('a', {href:"#"+about.about},
-          about.name || null,
-          about.image
-          ? h('img.avatar--large', {src: api.blob_url(about.image)})
-          : null
-        )
-      )
-    } 
+      if (msg.value.content.name) {
+        return h('span', ' names themselves ', about.name)
+      }
+      if (msg.value.content.image) {
+        return h('span', ' identifies as ', h('img.avatar--thumbnail', {src: api.blob_url(about.image)}))
+      }
+      if (msg.value.content.loc) {
+        return h('span', ' lives in ', about.loc)
+      }
+    }
   }
+  return exports
 }

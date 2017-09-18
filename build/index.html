@@ -172,35 +172,37 @@ module.exports={
 },{}],6:[function(require,module,exports){
 var h = require('hyperscript')
 
-function idLink (id) {
-  return h('a', {href:'#'+id}, id.substring(0, 10)+'...')
-}
-
 exports.needs = {
+  avatar_name: 'first',
+  avatar_link: 'first',
   blob_url: 'first'
 }
 
-exports.gives = 'message_content'
+exports.gives = { 
+  message_content: true,
+  message_content_mini: true
+}
 
 exports.create = function (api) {
-  return function (msg) {
+  var exports = {}
+ 
+  exports.message_content =
+  exports.message_content_mini = function (msg) {
     if(msg.value.content.type == 'about') {
       var about = msg.value.content
       var id = msg.value.content.about
-      return h('p', 
-        about.about === msg.value.author
-          ? h('span', 'self-identifies ')
-          : h('span', 'identifies ', idLink(id)),
-        ' as ',
-        h('a', {href:"#"+about.about},
-          about.name || null,
-          about.image
-          ? h('img.avatar--large', {src: api.blob_url(about.image)})
-          : null
-        )
-      )
-    } 
+      if (msg.value.content.name) {
+        return h('span', ' names themselves ', about.name)
+      }
+      if (msg.value.content.image) {
+        return h('span', ' identifies as ', h('img.avatar--thumbnail', {src: api.blob_url(about.image)}))
+      }
+      if (msg.value.content.loc) {
+        return h('span', ' lives in ', about.loc)
+      }
+    }
   }
+  return exports
 }
 
 },{"hyperscript":99}],7:[function(require,module,exports){
@@ -493,6 +495,7 @@ exports.needs = {
   avatar_image: 'first',
   avatar_name: 'first',
   avatar_action: 'map',
+  sbot_query: 'first'
 }
 
 exports.gives = 'avatar_profile'
@@ -502,8 +505,9 @@ exports.create = function (api) {
     return h('div.column',
       h('div.message',
         api.avatar_image(id, 'profile'), 
-        api.avatar_name(id), 
-        h('pre', h('code', id))
+        api.avatar_name(id),
+        h('pre', h('code', id)),
+        h('a', {href: '#Edit'}, 'Edit profile')
       ),
       h('div.message',
         api.avatar_action(id)
@@ -909,6 +913,66 @@ module.exports = {
 
 
 },{"../keys":3,"ssb-keys":255,"ssb-ref":264}],18:[function(require,module,exports){
+var h = require('hyperscript')
+var u = require('../util')
+var pull = require('pull-stream')
+var Scroller = require('pull-scroll')
+var id = require('../keys').id
+
+exports.needs = {
+  message_confirm: 'first',
+}
+
+exports.gives = {
+  screen_view: true
+}
+
+exports.create = function (api) {
+  return {
+    screen_view: function (path, sbot) {
+      if(path === 'Edit') {
+        var nameInput = h('input', {placeholder: 'New name'})
+
+        var locInput = h('input', {placeholder: 'New location'})
+
+        var div = h('div.column.scroller', {style: 'overflow: auto;'},
+          h('div.scroller__wrapper',
+            h('div.column.scroller__content',
+              h('div.message',
+                h('h1', 'Edit profile'),
+                nameInput,
+                h('button', 'Preview', {onclick: function () {
+                  if(nameInput.value) {
+                    api.message_confirm({
+                      type: 'about',
+                      about: id,
+                      name: nameInput.value || undefined
+                    })
+                  }
+                }}),
+                h('br'),
+                locInput,
+                h('button', 'Preview', {onclick: function () {
+                  if(locInput.value) {
+                    api.message_confirm({
+                      type: 'about',
+                      about: id,
+                      loc: locInput.value || undefined
+                    })
+                  }
+                }})
+              )
+            )
+          )
+        )
+        return div
+      }
+    }
+  }
+}
+
+
+},{"../keys":3,"../util":55,"hyperscript":99,"pull-scroll":193,"pull-stream":196}],19:[function(require,module,exports){
 var emojis = require('emoji-named-characters')
 var emojiNames = Object.keys(emojis)
 
@@ -928,7 +992,7 @@ exports.create = function (api) {
 }
 
 
-},{"emoji-named-characters":88}],19:[function(require,module,exports){
+},{"emoji-named-characters":88}],20:[function(require,module,exports){
 var ref = require('ssb-ref')
 var Scroller = require('pull-scroll')
 var h = require('hyperscript')
@@ -982,7 +1046,7 @@ exports.create = function (api) {
 }
 
 
-},{"../util":55,"hyperscript":99,"pull-scroll":193,"pull-stream":196,"ssb-ref":264}],20:[function(require,module,exports){
+},{"../util":55,"hyperscript":99,"pull-scroll":193,"pull-stream":196,"ssb-ref":264}],21:[function(require,module,exports){
 (function (Buffer){
 var u = require('../util')
 var h = require('hyperscript')
@@ -1023,7 +1087,7 @@ module.exports = {
 
 
 }).call(this,require("buffer").Buffer)
-},{"../util":55,"buffer":327,"hyperscript":99,"pull-stream":196,"simple-mime":245,"split-buffer":249}],21:[function(require,module,exports){
+},{"../util":55,"buffer":327,"hyperscript":99,"pull-stream":196,"simple-mime":245,"split-buffer":249}],22:[function(require,module,exports){
 var h = require('hyperscript')
 var u = require('../util')
 var pull = require('pull-stream')
@@ -1116,7 +1180,7 @@ exports.create = function (api) {
   return exports
 }
 
-},{"../keys":3,"../util":55,"hyperscript":99,"pull-stream":196}],22:[function(require,module,exports){
+},{"../keys":3,"../util":55,"hyperscript":99,"pull-stream":196}],23:[function(require,module,exports){
 var h = require('hyperscript')
 var pull = require('pull-stream')
 var paramap = require('pull-paramap')
@@ -1609,51 +1673,7 @@ exports.create = function (api) {
 
 
 
-},{"../keys":3,"human-time":91,"hypercombo":92,"hyperscript":99,"kvgraph":111,"pull-cat":142,"pull-paramap":187,"pull-stream":196,"ssb-git/merge":254}],23:[function(require,module,exports){
-(function (process){
-var h = require('hyperscript')
-var u = require('../util')
-var pull = require('pull-stream')
-var Scroller = require('pull-scroll')
-var id = require('../keys').id
-
-exports.needs = {
-  publish: 'first',
-  avatar_edit: 'first'
-}
-
-exports.gives = {
-  screen_view: true
-}
-
-exports.create = function (api) {
-  return {
-    screen_view: function (path, sbot) {
-      if(path === 'Identify') {
-        if(process.title === 'browser') {
-          var identify = h('input.identify', {placeholder: 'Your Name', name: 'namespace'})
-          var div = h('div.column.scroller', {style: 'overflow: auto;'},
-            h('div.scroller__wrapper',
-              h('div.column.scroller__content',
-                  h('h1', 'You\'re in! Now, you need a name'),
-                  h('p', {innerHTML: '<p>You\'ve just generated a new public/private keypair: <pre><code>' + localStorage['browser/.decent/secret'] + '</code></pre> You\'re the only person with access to the private key. If you want to hang onto this identity, save this key somewhere safe.<hr />'}),
-                  h('p', {innerHTML: 'Right now, you\'re only identified by your public key: <code>' + id + '</code></p><p>Start by giving yourself a name:'},
-                  api.avatar_edit(id),
-                  h('p', {innerHTML: 'Once you\'re done, navigate to <a href="./index.html">your feed</a>.'})
-                )
-              )
-            )
-          )
-          return div
-        }
-      }
-    }
-  }
-}
-
-
-}).call(this,require('_process'))
-},{"../keys":3,"../util":55,"_process":386,"hyperscript":99,"pull-scroll":193,"pull-stream":196}],24:[function(require,module,exports){
+},{"../keys":3,"human-time":91,"hypercombo":92,"hyperscript":99,"kvgraph":111,"pull-cat":142,"pull-paramap":187,"pull-stream":196,"ssb-git/merge":254}],24:[function(require,module,exports){
 module.exports = {
   "app.js":  require('./app.js'),
   "theme.js": require('./theme.js'),
@@ -1680,7 +1700,7 @@ module.exports = {
   "message-link.js":  require('./message-link.js'),
   "message-name.js":  require('./message-name.js'),
   "message.js":  require('./message.js'),
-  "identify.js": require('./identify.js'),
+  "edit.js": require('./edit.js'),
   "names.js":  require('./names.js'),
   "raw.js":  require('./raw.js'),
   "post.js":  require('./post.js'),
@@ -1704,7 +1724,7 @@ module.exports = {
 }
 
 
-},{"./about.js":6,"./app.js":7,"./avatar-edit.js":8,"./avatar-image.js":9,"./avatar-link.js":10,"./avatar-name.js":11,"./avatar-profile.js":12,"./avatar.js":13,"./blob-url.js":14,"./channel.js":15,"./compose.js":16,"./crypto.js":17,"./emoji.js":18,"./feed.js":19,"./file-input.js":20,"./follow.js":21,"./git.js":22,"./identify.js":23,"./invite.js":25,"./key.js":26,"./markdown.js":27,"./menu.js":28,"./message-confirm.js":29,"./message-link.js":30,"./message-name.js":31,"./message.js":32,"./names.js":33,"./network.js":34,"./notifications.js":35,"./nudge.js":36,"./post.js":37,"./private.js":38,"./pub.js":39,"./public.js":40,"./raw.js":41,"./relationships.js":42,"./sbot.js":43,"./search":45,"./search-box.js":44,"./star.js":46,"./suggest-emoji.js":47,"./suggest-mentions.js":48,"./tabs.js":49,"./theme.js":50,"./thread.js":51,"./timestamp.js":52}],25:[function(require,module,exports){
+},{"./about.js":6,"./app.js":7,"./avatar-edit.js":8,"./avatar-image.js":9,"./avatar-link.js":10,"./avatar-name.js":11,"./avatar-profile.js":12,"./avatar.js":13,"./blob-url.js":14,"./channel.js":15,"./compose.js":16,"./crypto.js":17,"./edit.js":18,"./emoji.js":19,"./feed.js":20,"./file-input.js":21,"./follow.js":22,"./git.js":23,"./invite.js":25,"./key.js":26,"./markdown.js":27,"./menu.js":28,"./message-confirm.js":29,"./message-link.js":30,"./message-name.js":31,"./message.js":32,"./names.js":33,"./network.js":34,"./notifications.js":35,"./nudge.js":36,"./post.js":37,"./private.js":38,"./pub.js":39,"./public.js":40,"./raw.js":41,"./relationships.js":42,"./sbot.js":43,"./search":45,"./search-box.js":44,"./star.js":46,"./suggest-emoji.js":47,"./suggest-mentions.js":48,"./tabs.js":49,"./theme.js":50,"./thread.js":51,"./timestamp.js":52}],25:[function(require,module,exports){
 (function (process){
 'use strict'
 var ref = require('ssb-ref')
@@ -4037,7 +4057,7 @@ exports.create = function () {
 }
 
 },{"human-time":91,"hyperscript":99}],53:[function(require,module,exports){
-module.exports="\n.navbar {\n  background: #fff;\n  width: 100%;\n  position: fixed;\n  z-index: 1000;\n  margin: 0;\n  padding-top: .6em;\n  padding-bottom: .2em;\n  left: 0; right: 0;\n  top: 0;\n}\n\n.navbar .internal {\n  max-width: 620px; \n  margin-left: auto;\n  margin-right: auto;\n}\n\n.navbar li {\n  float: left;\n  padding-left: 1em;\n  list-style-type: none;\n}\n\n* {\n  word-wrap: break-word;\n}\n\npre {\n    height: auto;\n    max-height: 200px;\n    overflow: auto;\n    background-color: #eeeeee;\n    word-break: normal !important;\n    word-wrap: normal !important;\n    white-space: pre !important;\n}\n\nh1, h2, h3, h4, h5, h6 {\n  font-size: 1.2em;\n  margin-top: .35ex;\n}\n\np {\n  margin-top: .35ex;\n}\n\nhr {\n  border: solid #eee;\n  clear: both;\n  border-width: 1px 0 0;\n  height: 0;\n  margin-bottom: .9em;\n}\n\n.screen {\n  width: 100%;\n  position: absolute;\n  top: 2.5em; bottom: 0;\n  left: 0; right: 0;\n  overflow-y: hidden;\n}\n\n.column {\n  display: flex;\n  flex-direction: column;\n  min-height:0px;\n}\n\n.row {\n  display: flex;\n  flex-direction: row;\n  min-height:0px;\n}\n\n.end {\n  justify-content: flex-end;\n}\n\n.wrap {\n  display: flex;\n  flex-direction: row;\n  flex-wrap: wrap;\n}\n\n.no-shrink {\n  flex-shrink: 0;\n}\n\n.expand {\n  justify-content: space-between;\n}\n\n.scroll-y {\n  overflow-y: auto;\n  min-height: 0px;\n}\n\n.scroll-x {\n  overflow-x: auto;\n  min-width: 0px;\n}\n\npre {\n  white-space: pre-wrap;\n  word-wrap: break-word;\n}\n\n.wide {\n  width: 100%;\n}\n\n/* scrolling feeds, threads */\n\n.scroller {\n  width: 100%;\n  flex: 1;\n}\n\n.scroller__content {\n  width: 100%;\n}\n\n.scroller__wrapper {\n  margin-left: auto;\n  margin-right: auto;\n}\n\n/* compose */\n\n.compose {\n  margin-top: .5em;\n}\n\n.theme {\n  height: 20em;\n  width: 100%;\n}\n\ntextarea {\n  font-size: 1em;\n  margin: 0;\n}\n\n/* messages */\n\n.message {\n  position: relative;\n  flex-basis: 0;\n}\n\n.message_content {\n  margin-top: 5px;\n  padding-top: 3px;\n}\n\n.message_content--mini div > span {\n  display: inline-block;\n}\n\n.message_meta {\n  margin-left: auto;\n}\n\n.message_meta > * {\n  margin-left: .5ex;\n}\n\n.message_actions {\n  float: right;\n}\n\n.message img {\n  max-width: 100%;\n}\n\n.message > .title > .avatar {\n  margin-left: 0;\n}\n\n.message_content {\n  padding: .5ex;\n}\n\n.actions > :not(:last-child) {\n  border-right: 2px solid #eee;\n  padding-right: 5px;\n}\n\n.emoji {\n  height: 1em;\n  width: 1em;\n  vertical-align: top;\n}\n\n\n/* -- suggest box */\n\n.suggest-box > * {\n  display: block;\n}\n\n.suggest-box ul {\n  padding: 0;\n  list-style-type: none;\n  padding-left: 0;\n  margin: 0;\n}\n\n.suggest-box .selected {\n  background: #ddd;\n}\n\n.suggest-box {\n  width: max-content;\n  background: white;\n}\n\n/* emoji */\n.suggest-box img {\n  height: 20px;\n  width: 20px;\n}\n\n/* avatar */\n\n.avatar--profile {\n  width: 5em;\n  height: 5em;\n  float: left;\n}\n\n.avatar--full {\n  width: 100%;\n}\n\n.avatar--large {\n  width: 3.5em;\n  height: 3.5em;\n}\n\n.avatar--thumbnail {\n  width: 2.5em;\n  height: 2.5em;\n  float: left;\n  margin-right: .5ex;\n}\n\n.avatar--tiny {\n  width: 26px;\n  height: 26px;\n}\n\n.avatar--fullsize {\n  width: 50%;\n  border-radius: 5px;\n}\n\n.profile {\n  padding: .5ex;\n}\n\n.profile__info {\n  margin-left: .5em;\n}\n\n/* lightbox - used in message-confirm */\n\n.lightbox {\n  overflow: auto;\n  margin-top: 3em;\n  margin-bottom: 3em;\n  width: 90%;\n  max-width: 600px;\n  z-index: 5;\n}\n\n/* searchprompt */\n\n.searchprompt {\n  margin-top: 1px;\n  margin-bottom: 1px;\n  float: left;\n  padding: .5em;\n  width: 85%;\n}\n\n.header__search {\n  position: absolute;\n  bottom: .5em;\n  left: .5em;\n}\n\n.header__profile {\n  margin: .7em;\n}\n\n/* TextNodeSearcher highlights */\n\n.highlight {\n  background: yellow;\n}\n\n/* avatar editor */\n\n.hypercrop__canvas {\n  width: 100%;\n}\n\n/* gitssb */\n\n.git-table-wrapper {\n  max-height: 12em;\n  overflow: auto;\n  word-break: break-all;\n  margin: 1em 0;\n}\n\n.git-table-wrapper table {\n  width: 100%;\n}\n\n/* --- network status --- */\n\n.status {\n  width: 1em;\n  height: 1em;\n  margin: .5em;\n  background: green;\n}\n\n.error {\n  background: red;\n}\n\n/* progress bar */\n\n.hyperprogress__bar {\n  background: darkgrey;\n}\n.hyperprogress__liquid {\n  background: lightblue;\n}\n\n\n"
+module.exports="\n.navbar {\n  background: #fff;\n  width: 100%;\n  position: fixed;\n  z-index: 1000;\n  margin: 0;\n  padding-top: .6em;\n  padding-bottom: .2em;\n  left: 0; right: 0;\n  top: 0;\n}\n\n.navbar .internal {\n  max-width: 620px; \n  margin-left: auto;\n  margin-right: auto;\n}\n\n.navbar li {\n  float: left;\n  padding-left: 1em;\n  list-style-type: none;\n}\n\n* {\n  word-wrap: break-word;\n}\n\npre {\n    height: auto;\n    max-height: 200px;\n    overflow: auto;\n    background-color: #eeeeee;\n    word-break: normal !important;\n    word-wrap: normal !important;\n    white-space: pre !important;\n}\n\nh1, h2, h3, h4, h5, h6 {\n  font-size: 1.2em;\n  margin-top: .35ex;\n}\n\np {\n  margin-top: .35ex;\n}\n\nhr {\n  border: solid #eee;\n  clear: both;\n  border-width: 1px 0 0;\n  height: 0;\n  margin-bottom: .9em;\n}\n\n.screen {\n  width: 100%;\n  position: absolute;\n  top: 2.5em; bottom: 0;\n  left: 0; right: 0;\n  overflow-y: hidden;\n}\n\n.column {\n  display: flex;\n  flex-direction: column;\n  min-height:0px;\n}\n\n.row {\n  display: flex;\n  flex-direction: row;\n  min-height:0px;\n}\n\n.end {\n  justify-content: flex-end;\n}\n\n.wrap {\n  display: flex;\n  flex-direction: row;\n  flex-wrap: wrap;\n}\n\n.no-shrink {\n  flex-shrink: 0;\n}\n\n.expand {\n  justify-content: space-between;\n}\n\n.scroll-y {\n  overflow-y: auto;\n  min-height: 0px;\n}\n\n.scroll-x {\n  overflow-x: auto;\n  min-width: 0px;\n}\n\npre {\n  white-space: pre-wrap;\n  word-wrap: break-word;\n}\n\n.wide {\n  width: 100%;\n}\n\n/* scrolling feeds, threads */\n\n.scroller {\n  width: 100%;\n  flex: 1;\n}\n\n.scroller__content {\n  width: 100%;\n}\n\n.scroller__wrapper {\n  margin-left: auto;\n  margin-right: auto;\n}\n\n/* compose */\n\n.compose {\n  margin-top: .5em;\n}\n\n.theme {\n  height: 20em;\n  width: 100%;\n}\n\ntextarea {\n  font-size: 1em;\n  margin: 0;\n}\n\n/* messages */\n\n.message {\n  position: relative;\n  flex-basis: 0;\n}\n\n.message_content {\n  margin-top: 5px;\n  padding-top: 3px;\n}\n\n.message_content--mini div > span {\n  display: inline-block;\n}\n\n.message_meta {\n  margin-left: auto;\n}\n\n.message_meta > * {\n  margin-left: .5ex;\n}\n\n.message_actions {\n  float: right;\n}\n\n.message img {\n  max-width: 100%;\n}\n\n.message > .title > .avatar {\n  margin-left: 0;\n}\n\n.message_content {\n  padding: .5ex;\n}\n\n.actions > :not(:last-child) {\n  border-right: 2px solid #eee;\n  padding-right: 5px;\n}\n\n.emoji {\n  height: 1em;\n  width: 1em;\n  vertical-align: top;\n}\n\n\n/* -- suggest box */\n\n.suggest-box > * {\n  display: block;\n}\n\n.suggest-box ul {\n  padding: 0;\n  list-style-type: none;\n  padding-left: 0;\n  margin: 0;\n}\n\n.suggest-box .selected {\n  background: #ddd;\n}\n\n.suggest-box {\n  width: max-content;\n  background: white;\n}\n\n/* emoji */\n.suggest-box img {\n  height: 20px;\n  width: 20px;\n}\n\n/* avatar */\n\n.avatar--profile {\n  width: 5em;\n  height: 5em;\n  vertical-align: top;\n}\n\n.avatar--full {\n  width: 100%;\n}\n\n.avatar--large {\n  width: 3.5em;\n  height: 3.5em;\n}\n\n.avatar--thumbnail {\n  width: 2.5em;\n  height: 2.5em;\n  vertical-align: top;\n  margin-right: .5ex;\n}\n\n.avatar--tiny {\n  width: 26px;\n  height: 26px;\n}\n\n.avatar--fullsize {\n  width: 50%;\n  border-radius: 5px;\n}\n\n.profile {\n  padding: .5ex;\n}\n\n.profile__info {\n  margin-left: .5em;\n}\n\n/* lightbox - used in message-confirm */\n\n.lightbox {\n  overflow: auto;\n  margin-top: 3em;\n  margin-bottom: 3em;\n  width: 90%;\n  max-width: 600px;\n  z-index: 5;\n}\n\n/* searchprompt */\n\n.searchprompt {\n  margin-top: 1px;\n  margin-bottom: 1px;\n  float: left;\n  padding: .5em;\n  width: 85%;\n}\n\n.header__search {\n  position: absolute;\n  bottom: .5em;\n  left: .5em;\n}\n\n.header__profile {\n  margin: .7em;\n}\n\n/* TextNodeSearcher highlights */\n\n.highlight {\n  background: yellow;\n}\n\n/* avatar editor */\n\n.hypercrop__canvas {\n  width: 100%;\n}\n\n/* gitssb */\n\n.git-table-wrapper {\n  max-height: 12em;\n  overflow: auto;\n  word-break: break-all;\n  margin: 1em 0;\n}\n\n.git-table-wrapper table {\n  width: 100%;\n}\n\n/* --- network status --- */\n\n.status {\n  width: 1em;\n  height: 1em;\n  margin: .5em;\n  background: green;\n}\n\n.error {\n  background: red;\n}\n\n/* progress bar */\n\n.hyperprogress__bar {\n  background: darkgrey;\n}\n.hyperprogress__liquid {\n  background: lightblue;\n}\n\n\n"
 },{}],54:[function(require,module,exports){
 module.exports="body, input, button, p, li, h1, h2, h3, h4, h5, h6, textarea {\n  font-family: \"Source Sans Pro\", sans-serif;\n}\n\na:link, a:visited, a:active {\n  color: #333;\n  text-decoration: underline;\n}\n\na:hover,\na:focus {\n  color: black;\n}\n\n.navbar {\n  background: #eee;\n  background: linear-gradient(#fff, #eee);\n  border-bottom: 1px solid #ddd;\n}\n\n.screen {\n  background: #f5f5f5;\n}\n\n.scroller__wrapper {\n  max-width: 580px;\n}\n\ninput, textarea {\n  border: 1px solid #eee;\n}\n\n.message {\n  border: 1px solid #eee;\n  padding: .5em;\n  margin-top: .2em;\n  background: white;\n}\n\n.message_content {\n  border-top: 1px solid #eee;\n}\n"
 },{}],55:[function(require,module,exports){

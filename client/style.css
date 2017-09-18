@@ -228,7 +228,7 @@ textarea {
 .avatar--profile {
   width: 5em;
   height: 5em;
-  float: left;
+  vertical-align: top;
 }
 
 .avatar--full {
@@ -243,7 +243,7 @@ textarea {
 .avatar--thumbnail {
   width: 2.5em;
   height: 2.5em;
-  float: left;
+  vertical-align: top;
   margin-right: .5ex;
 }
 

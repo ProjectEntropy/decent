@@ -24,7 +24,7 @@ module.exports = {
   "message-link.js":  require('./message-link.js'),
   "message-name.js":  require('./message-name.js'),
   "message.js":  require('./message.js'),
-  "identify.js": require('./identify.js'),
+  "edit.js": require('./edit.js'),
   "names.js":  require('./names.js'),
   "raw.js":  require('./raw.js'),
   "post.js":  require('./post.js'),

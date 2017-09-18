@@ -1,0 +1,58 @@
+var h = require('hyperscript')
+var u = require('../util')
+var pull = require('pull-stream')
+var Scroller = require('pull-scroll')
+var id = require('../keys').id
+
+exports.needs = {
+  message_confirm: 'first',
+}
+
+exports.gives = {
+  screen_view: true
+}
+
+exports.create = function (api) {
+  return {
+    screen_view: function (path, sbot) {
+      if(path === 'Edit') {
+        var nameInput = h('input', {placeholder: 'New name'})
+
+        var locInput = h('input', {placeholder: 'New location'})
+
+        var div = h('div.column.scroller', {style: 'overflow: auto;'},
+          h('div.scroller__wrapper',
+            h('div.column.scroller__content',
+              h('div.message',
+                h('h1', 'Edit profile'),
+                nameInput,
+                h('button', 'Preview', {onclick: function () {
+                  if(nameInput.value) {
+                    api.message_confirm({
+                      type: 'about',
+                      about: id,
+                      name: nameInput.value || undefined
+                    })
+                  }
+                }}),
+                h('br'),
+                locInput,
+                h('button', 'Preview', {onclick: function () {
+                  if(locInput.value) {
+                    api.message_confirm({
+                      type: 'about',
+                      about: id,
+                      loc: locInput.value || undefined
+                    })
+                  }
+                }})
+              )
+            )
+          )
+        )
+        return div
+      }
+    }
+  }
+}
+
