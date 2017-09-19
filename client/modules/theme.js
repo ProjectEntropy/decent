@@ -11,7 +11,6 @@ exports.create = function (api) {
   return {
     screen_view: function (path, sbot) {
       var defaultTheme = require('../theme.css.json')
-      console.log(defaultTheme) 
       if (localStorage.style == null) {
         localStorage.style = defaultTheme
       }

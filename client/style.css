@@ -228,16 +228,9 @@ textarea {
 .avatar--profile {
   width: 5em;
   height: 5em;
+  float: left;
+  margin-right: 5px;
   vertical-align: top;
-}
-
-.avatar--full {
-  width: 100%;
-}
-
-.avatar--large {
-  width: 3.5em;
-  height: 3.5em;
 }
 
 .avatar--thumbnail {
@@ -250,11 +243,6 @@ textarea {
 .avatar--tiny {
   width: 26px;
   height: 26px;
-}
-
-.avatar--fullsize {
-  width: 50%;
-  border-radius: 5px;
 }
 
 .profile {
