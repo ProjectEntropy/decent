@@ -3,6 +3,7 @@ var u = require('../util')
 var pull = require('pull-stream')
 var Scroller = require('pull-scroll')
 var id = require('../keys').id
+var ref = require('ssb-ref')
 
 exports.needs = {
   message_confirm: 'first',
@@ -19,6 +20,8 @@ exports.create = function (api) {
         var nameInput = h('input', {placeholder: 'New name'})
 
         var locInput = h('input', {placeholder: 'New location'})
+
+        var imgInput = h('input', {placeholder: 'New blob url for avatar image'})
 
         var div = h('div.column.scroller', {style: 'overflow: auto;'},
           h('div.scroller__wrapper',
@@ -44,6 +47,19 @@ exports.create = function (api) {
                       about: id,
                       loc: locInput.value || undefined
                     })
+                  }
+                }}),
+                h('br'),
+                imgInput,
+                h('button', 'Preview', {onclick: function () {
+                  if(imgInput.value) {
+                    if (ref.isBlobId(imgInput.value)) {
+                      api.message_confirm({
+                        type: 'about',
+                        about: id,
+                        image: imgInput.value || undefined
+                      })
+                    } else { alert('The link you uploaded is not a blob, please use a valid blob id. - Example: &G7v7pgTXYfr4bTF7FB/qLiScmFIIOccsTV3Pp6bURB0=.sha256. - To upload a blob: write a normal message, upload a file, and publish. Square photos are best for avatar images.')}
                   }
                 }})
               )
