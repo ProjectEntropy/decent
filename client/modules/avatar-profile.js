@@ -1,5 +1,6 @@
 var h = require('hyperscript')
 var pull = require('pull-stream')
+var self_id = require('../keys')
 
 exports.needs = {
   avatar_image: 'first',
@@ -15,6 +16,12 @@ exports.create = function (api) {
   return function (id) {
     var loco = h('p', '')
     var desc = h('p', '')
+
+    var edit = h('p', '')
+
+    if (self_id = id) {
+      edit.appendChild(h('span'), h('a', {href: '#Edit'}, 'Edit profile'))
+    }
 
     pull(api.sbot_query({query: [{$filter: { value: { author: id, content: {type: 'about', loc: {"$truthy": true}}}}}], limit: 1, reverse: true}),
     pull.drain(function (data){
@@ -37,7 +44,7 @@ exports.create = function (api) {
         loco,
         desc,
         h('pre', h('code', id)),
-        h('a', {href: '#Edit'}, 'Edit profile')
+        edit
       ),
       h('div.message',
         api.avatar_action(id)
