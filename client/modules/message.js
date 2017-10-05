@@ -28,7 +28,7 @@ exports.create = function (api) {
         h('div.message_meta', api.message_meta(msg))
       )
     )
-    div.setAttribute('tabindex', '0')
+    // div.setAttribute('tabindex', '0')
     return div
   }
 
@@ -84,7 +84,7 @@ exports.create = function (api) {
     )
 
     // ); hyperscript does not seem to set attributes correctly.
-    msg.setAttribute('tabindex', '0')
+    //msg.setAttribute('tabindex', '0')
 
     return msg
   }

@@ -21,7 +21,7 @@ exports.gives = {
 }
 
 exports.create = function (api) {
-  function unbox() {
+  /*function unbox() {
     return pull(
       pull.map(function (msg) {
         return msg.value && 'string' === typeof msg.value.content ?
@@ -29,7 +29,7 @@ exports.create = function (api) {
       }),
       pull.filter(Boolean)
     )
-  }
+  }*/
 
   function notifications(ourIds) {
 
@@ -136,7 +136,7 @@ exports.create = function (api) {
 
         pull(
           u.next(api.sbot_log, {old: false, limit: 100}),
-          unbox(),
+          //unbox(),
           notifications(ids),
           pull.filter(),
           Scroller(div, content, api.message_render, true, false)
@@ -144,7 +144,7 @@ exports.create = function (api) {
 
         pull(
           u.next(api.sbot_log, {reverse: true, limit: 100, live: false}),
-          unbox(),
+          //unbox(),
           notifications(ids),
           pull.filter(),
           pull.take(function (msg) {
