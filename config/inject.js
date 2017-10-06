@@ -4,6 +4,10 @@ var home = require('os-homedir')
 var nonPrivate = require('non-private-ip')
 var merge = require('deep-extend')
 
+var id = require('ssb-keys')
+
+console.log(id)
+
 var RC = require('rc')
 
 var SEC = 1e3
@@ -28,7 +32,8 @@ module.exports = function (name, override) {
       hops: 3
     },
     ws: {
-      port: 3939
+      port: 3939,
+      remote: 'ws://decent.evbogue.com:3939~shs:hvITDG3iM3iJEy91XmlBKKf4VHgzU+0LLH/VD+AVhOE='
     },
     gossip: {
       connections: 3
