@@ -37,7 +37,6 @@ module.exports = {
   "channel.js":  require('./channel.js'),
   "emoji.js":  require('./emoji.js'),
   "nudge.js":  require('./nudge.js'),
-  "suggest-emoji.js":  require('./suggest-emoji.js'),
   "key.js":  require('./key.js'),
   "notifications.js":  require('./notifications.js'),
   "search.js": require('./search')

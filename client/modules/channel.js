@@ -8,12 +8,14 @@ exports.needs = {
   message_render: 'first',
   message_compose: 'first',
   sbot_log: 'first',
-  sbot_query: 'first',
+  sbot_query: 'first'
 }
 
 exports.gives = {
-  message_meta: true, screen_view: true,
-  connection_status: true, suggest_search: true
+  message_meta: true, 
+  screen_view: true,
+  connection_status: true, 
+  suggest_search: true
 }
 
 exports.create = function (api) {
