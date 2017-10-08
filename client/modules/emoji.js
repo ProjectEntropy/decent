@@ -8,12 +8,21 @@ exports.needs = {
 exports.gives = { 
   emoji_names: true, 
   emoji_url: true,
-  suggest_mentions: true
+  //suggest_mentions: true
 }
 
 exports.create = function (api) {
-  return {
-    suggest_mentions: function (word) {
+  return { 
+
+    emoji_names: function () {
+      return emojiNames
+    },
+    emoji_url: function (emoji) {
+      return emoji in emojis &&
+        api.blob_url(emoji).replace(/\/blobs\/get/, '/img/emoji') + '.png'
+    },
+
+   /* suggest_mentions: function (word) {
       return function (cb) {
         if (word[0] !== ':' || word.length < 2) return cb()
         word = word.substr(1)
@@ -29,14 +38,7 @@ exports.create = function (api) {
           }
         }))
       }
-    },
-    emoji_names: function () {
-      return emojiNames
-    },
-    emoji_url: function (emoji) {
-      return emoji in emojis &&
-        api.blob_url(emoji).replace(/\/blobs\/get/, '/img/emoji') + '.png'
-    }
+    }*/
   }
 }
 

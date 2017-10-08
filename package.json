@@ -1,6 +1,6 @@
 {
   "name": "decent",
-  "version": "3.5.0",
+  "version": "3.5.1",
   "description": "A decent(tralized) network for communication and development",
   "scripts": {
     "start": "node decent server",
