@@ -13,7 +13,6 @@ module.exports = {
   "avatar-name.js":  require('./avatar-name.js'),
   "avatar-profile.js":  require('./avatar-profile.js'),
   "avatar.js":  require('./avatar.js'),
-  "emoji.js":  require('./emoji.js'),
   "compose.js":  require('./compose.js'),
   "feed.js":  require('./feed.js'),
   "follow.js":  require('./follow.js'),
@@ -36,7 +35,9 @@ module.exports = {
   "thread.js":  require('./thread.js'),
   "timestamp.js":  require('./timestamp.js'),
   "channel.js":  require('./channel.js'),
+  "emoji.js":  require('./emoji.js'),
   "nudge.js":  require('./nudge.js'),
+  "suggest-emoji.js":  require('./suggest-emoji.js'),
   "key.js":  require('./key.js'),
   "notifications.js":  require('./notifications.js'),
   "search.js": require('./search')

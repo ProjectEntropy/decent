@@ -7,8 +7,6 @@ function isImage (filename) {
 exports.needs = {
   sbot_links2: 'first',
   blob_url: 'first',
-  emoji_names: 'first',
-  emoji_url: 'first',
   signified: 'first',
   builtin_tabs: 'map'
 }
@@ -23,24 +21,6 @@ exports.create = function (api) {
   return {
     suggest_mentions: function (word) {
       return function (cb) {
-        //emoji
-
-        if (word[0] !== ':' || word.length < 2) return cb()
-        word = word.substr(1)
-        if (word[word.length-1] === ':') word = word.substr(0, word.length-1)
-        cb(null, api.emoji_names().filter(function (name) {
-          return name.substr(0, word.length) === word
-        }).slice(0, 50).map(function (emoji) {
-          return {
-            image: api.emoji_url(emoji),
-            title: emoji,
-            subtitle: emoji,
-            value: ':' + emoji + ':'
-          }
-        }))
-
-
-        // names, repos, etc
         if(!/^[%&@]\w/.test(word)) return cb()
 
         api.signified(word, function (err, names) {
