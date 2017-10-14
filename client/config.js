@@ -3,11 +3,11 @@ var config = require('./../config/inject.js')(process.env.ssb_appname)
 var URL = require('url')
 
 module.exports = function () {
-  //var remote = 'undefined' === typeof localStorage
-  //  ? null //'ws://localhost:8989~shs:' + require('./keys')
-  //  : localStorage.remote
+  var remote = 'undefined' === typeof localStorage
+    ? null //'ws://localhost:8989~shs:' + require('./keys')
+    : localStorage.remote
 
-  var remote = config.ws.remote
+  //var remote = config.ws.remote
 
   //TODO: use _several_ remotes, so if one goes down,
   //      you can still communicate via another...
