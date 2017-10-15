@@ -5,8 +5,7 @@ module.exports = {
   needs: {
     screen_view: 'first',
     avatar_name: 'first',
-    avatar_image: 'first',
-    search_box: 'first'
+    avatar_image: 'first'
   },
   gives: 'app',
 

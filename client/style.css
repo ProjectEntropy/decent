@@ -266,8 +266,8 @@ textarea {
 
 /* searchprompt */
 
-.search input {
-  margin-left: .5em;
+form.search {
+  float: right;
 }
 
 .header__profile {
