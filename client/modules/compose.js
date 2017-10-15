@@ -5,11 +5,8 @@ var suggest = require('suggest-box')
 var mentions = require('ssb-mentions')
 var lightbox = require('hyperlightbox')
 var cont = require('cont')
-var me = require('../keys').id
 
 exports.needs = {
-  avatar_image: 'first',
-  avatar_link: 'first',
   suggest_mentions: 'map',
   publish: 'first',
   message_content: 'first',
@@ -39,26 +36,20 @@ exports.create = function (api) {
 
     if(!opts) opts = {}
     opts.prepublish = opts.prepublish || id
+
     var accessories
     meta = meta || {}
     if(!meta.type) throw new Error('message must have type')
 
     var publishBtn = h('button.compose__button', 'Preview', {onclick: publish})
 
-    var channel = h('input', {
-      placeholder: '#channel',
-      value: meta.channel ? `#${meta.channel}` : '',
-      disabled: meta.channel ? true : false,
-      title: meta.channel ? 'Reply is in same channel as original message' : '',
-    })
-
     var ta = h('textarea', {
       placeholder: opts.placeholder || 'Write a message',
       style: {height: opts.shrink === false ? '200px' : ''}
     })
 
-   
     accessories = h('div.row.compose__controls',
+      {style: {display: 'none'}},
       api.file_input(function (file) {
         files.push(file)
         filesById[file.link] = file
@@ -66,7 +57,7 @@ exports.create = function (api) {
         ta.value += embed + '['+file.name+']('+file.link+')'
         console.log('added:', file)
       }),
-    publishBtn/*, api.avatar_link(me, api.avatar_image(me, 'tiny'))*/)
+    publishBtn)
 
 
     if(opts.shrink !== false) {
@@ -81,12 +72,9 @@ exports.create = function (api) {
       ta.addEventListener('blur', function () {
         if(ta.value) return
         ta.style.height = '50px'
+        accessories.style.display = 'none'
       })
     }
-
-    ta.addEventListener('keydown', function (ev) {
-      if(ev.keyCode === 13 && ev.ctrlKey) publish()
-    })
 
     var files = []
     var filesById = {}
@@ -98,8 +86,6 @@ exports.create = function (api) {
         content = JSON.parse(ta.value)
       } catch (err) {
         meta.text = ta.value
-        meta.channel = (channel.value.startsWith('#') ?
-          channel.value.substr(1).trim() : channel.value.trim()) || null
         meta.mentions = mentions(ta.value).map(function (mention) {
           // merge markdown-detected mention with file info
           var file = filesById[mention.link]
@@ -135,7 +121,6 @@ exports.create = function (api) {
       h('div.compose', 
         h('div.column', 
           ta, 
-          //channel,
           accessories 
         )
       )
