@@ -70,7 +70,7 @@ function fallback(reader) {
 
 exports.create = function (api) {
   return function (path) {
-    if(path[0] === '?' || '##') {
+    if((path[0] === '?') || (path[1] === '#')) {
       console.log('SEARCHING for ' + path)
       var queryStr = path
       if (queryStr[0] === '?') {
