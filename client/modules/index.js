@@ -34,7 +34,6 @@ module.exports = {
   "suggest-mentions.js":  require('./suggest-mentions.js'),
   "thread.js":  require('./thread.js'),
   "timestamp.js":  require('./timestamp.js'),
-  "channel.js":  require('./channel.js'),
   "emoji.js":  require('./emoji.js'),
   "nudge.js":  require('./nudge.js'),
   "suggest-emoji.js":  require('./suggest-emoji.js'),
