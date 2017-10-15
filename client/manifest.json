@@ -74,5 +74,8 @@
     "read": "source",
     "dump": "source"
   },
-  "ws": {}
+  "ws": {},
+  "fulltext": {
+    "search": "source"
+  }
 }

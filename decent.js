@@ -45,6 +45,8 @@ if (argv[0] == 'server') {
     .use(require('./plugins/ws'))
     .use(require('ssb-ebt'))
     .use(require('./serve'))
+    .use(require('ssb-fulltext'))
+
   // start server
 
   config.keys = keys
