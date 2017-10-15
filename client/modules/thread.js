@@ -68,7 +68,7 @@ exports.create = function (api) {
         {style: {'overflow-y': 'auto'}},
         h('div.scroller__wrapper',
           content,
-          api.message_compose(meta, {shrink: false, placeholder: 'Write a reply'})
+          api.message_compose(meta, {placeholder: 'Write a reply'})
         )
       )
 
