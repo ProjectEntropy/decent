@@ -70,7 +70,7 @@ function fallback(reader) {
 
 exports.create = function (api) {
   return function (path) {
-    if(path[0] === '?' || '##') {
+    if(path[0] === '?') {
       console.log('SEARCHING for ' + path)
       var queryStr = path
       if (queryStr[0] === '?') {
@@ -110,11 +110,11 @@ exports.create = function (api) {
         return el
       }
 
-      pull(
+      /*pull(
         api.sbot_log({old: false}),
         pull.filter(matchesQuery),
         Scroller(div, content, renderMsg, true, false)
-      )
+      )*/
 
       pull(
         u.next(api.sbot_fulltext_search, {query: queryStr, reverse: true, limit: 500, live: false}),

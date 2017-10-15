@@ -266,18 +266,8 @@ textarea {
 
 /* searchprompt */
 
-.searchprompt {
-  margin-top: 1px;
-  margin-bottom: 1px;
-  float: left;
-  padding: .5em;
-  width: 85%;
-}
-
-.header__search {
-  position: absolute;
-  bottom: .5em;
-  left: .5em;
+.search input {
+  margin-left: .5em;
 }
 
 .header__profile {
