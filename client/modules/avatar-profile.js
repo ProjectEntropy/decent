@@ -23,8 +23,8 @@ exports.create = function (api) {
     console.log('self_id is: ' + self_id.id)
 
     if (id == self_id.id) {
-      edit = h('p', h('a', {href: '#Edit'}, 'Edit profile'))
-    } 
+      edit = h('p', h('a', {href: '#Edit'}, h('button.btn.btn-primary', 'Edit profile')))
+    } else { edit = api.avatar_action(id)}
 
     pull(api.sbot_query({query: [{$filter: { value: { author: id, content: {type: 'about', loc: {"$truthy": true}}}}}], limit: 1, reverse: true}),
     pull.drain(function (data){
@@ -48,10 +48,10 @@ exports.create = function (api) {
         desc,
         h('pre', h('code', id)),
         edit
-      ),
+      )/*,
       h('div.message',
         api.avatar_action(id)
-      )
+      )*/
     )
   }
 }

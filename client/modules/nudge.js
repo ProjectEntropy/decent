@@ -31,7 +31,7 @@ exports.create = function (api) {
         type: 'nudge',
         id: id
       })
-    }}, h('button', 'Nudge'))
+    }}, h('button.btn', 'Nudge'))
   }
 
   return exports

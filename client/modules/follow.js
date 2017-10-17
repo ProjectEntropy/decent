@@ -85,7 +85,7 @@ exports.create = function (api) {
           you_follow = msg.value.content.following
           update()
         })
-      }}, h('button', label))
+      }}, h('button.btn', label))
   }
   return exports
 }

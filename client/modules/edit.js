@@ -29,7 +29,7 @@ exports.create = function (api) {
               h('div.message',
                 h('h1', 'Edit profile'),
                 nameInput,
-                h('button', 'Preview', {onclick: function () {
+                h('button.btn.btn-primary', 'Preview', {onclick: function () {
                   if(nameInput.value) {
                     api.message_confirm({
                       type: 'about',
@@ -40,7 +40,7 @@ exports.create = function (api) {
                 }}),
                 h('br'),
                 locInput,
-                h('button', 'Preview', {onclick: function () {
+                h('button.btn.btn-primary', 'Preview', {onclick: function () {
                   if(locInput.value) {
                     api.message_confirm({
                       type: 'about',
@@ -51,7 +51,7 @@ exports.create = function (api) {
                 }}),
                 h('br'),
                 imgInput,
-                h('button', 'Preview', {onclick: function () {
+                h('button.btn.btn-primary', 'Preview', {onclick: function () {
                   if(imgInput.value) {
                     if (ref.isBlobId(imgInput.value)) {
                       api.message_confirm({
