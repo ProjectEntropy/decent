@@ -16,12 +16,15 @@ exports.create = function (api) {
   return function (id) {
     var loco = h('p', '')
     var desc = h('p', '')
+ 
+    var edit
 
-    var edit = h('p', '')
+    console.log('id is: ' + id)
+    console.log('self_id is: ' + self_id.id)
 
-    if (self_id = id) {
-      edit.appendChild(h('span'), h('a', {href: '#Edit'}, 'Edit profile'))
-    }
+    if (id == self_id.id) {
+      edit = h('p', h('a', {href: '#Edit'}, 'Edit profile'))
+    } 
 
     pull(api.sbot_query({query: [{$filter: { value: { author: id, content: {type: 'about', loc: {"$truthy": true}}}}}], limit: 1, reverse: true}),
     pull.drain(function (data){
