@@ -274,7 +274,7 @@ textarea:focus, {
   float: right;
 }
 
-.message img:not(.emoji):not(.avatar--thumbnail) {
+.message img:not(.emoji):not(.avatar--thumbnail):not(.avatar--profile) {
   max-width: 97%;
   border: 1px solid #ccc;
   padding: 4px;
