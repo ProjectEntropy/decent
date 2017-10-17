@@ -41,15 +41,17 @@ module.exports = {
           h('li', h('a', {href: '#Direct'}, 'Direct')),
           h('li', h('a', {href: '#Mentions'}, 'Mentions')),
           //h('li', h('a', {href: '#Theme'}, 'Theme')),
-          h('li', h('a', {href: '#Key'}, 'Key')),
-          h('form.search', { onsubmit: function (e) {
+          h('li', h('a', {href: '#Key'}, 'Key'))
+
+          //search doesn't work if key is different in lite client
+          /*h('form.search', { onsubmit: function (e) {
               //if (err) throw err 
               window.location.hash = '?' + search.value
               e.preventDefault()
             }},
             search,
             h('button', 'Search')
-          )
+          )*/
         )
       ))
     }
