@@ -38,7 +38,7 @@ module.exports = {
           h('li', h('a', {href: '#' + id}, api.avatar_image(id, 'tiny'))),
           h('li', h('a', {href: '#' + id}, api.avatar_name(id))),
           h('li', h('a', {href: '#'}, 'Public')),
-          h('li', h('a', {href: '#Direct'}, 'Direct')),
+          h('li', h('a', {href: '#Private'}, 'Private')),
           h('li', h('a', {href: '#Mentions'}, 'Mentions')),
           h('li', h('a', {href: '#Key'}, 'Key'))
 

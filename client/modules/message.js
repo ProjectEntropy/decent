@@ -23,7 +23,7 @@ exports.create = function (api) {
 
   function mini(msg, el) {
     var div = h('div.message.message--mini',
-      h('div.title.row',
+      h('div.row',
         h('div.avatar', api.avatar_link(msg.value.author, api.avatar_name(msg.value.author), ''), h('span.message_content', el)),
         h('div.message_meta', api.message_meta(msg))
       )

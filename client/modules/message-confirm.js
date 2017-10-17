@@ -29,12 +29,12 @@ exports.create = function (api) {
       }
     }
 
-    var okay = h('button', 'Publish', {onclick: function () {
+    var okay = h('button.btn.btn-primary', 'Publish', {onclick: function () {
       lb.remove()
       api.publish(content, cb)
     }})
 
-    var cancel = h('button', 'Cancel', {onclick: function () {
+    var cancel = h('button.btn', 'Cancel', {onclick: function () {
       lb.remove()
       cb(null)
     }})

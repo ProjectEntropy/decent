@@ -9,7 +9,8 @@ module.exports = {
   gives: 'file_input',
   create: function (api) {
     return function FileInput(onAdded) {
-      return h('input', { type: 'file',
+      return h('label.btn', 'Upload file',
+        h('input', { type: 'file', hidden: true,
         onchange: function (ev) {
           var file = ev.target.files[0]
           if (!file) return
@@ -30,7 +31,7 @@ module.exports = {
           }
           reader.readAsArrayBuffer(file)
         }
-      })
+      }))
     }
   }
 }

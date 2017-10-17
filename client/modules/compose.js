@@ -41,7 +41,7 @@ exports.create = function (api) {
     meta = meta || {}
     if(!meta.type) throw new Error('message must have type')
 
-    var publishBtn = h('button.compose__button', 'Preview', {onclick: publish})
+    var publishBtn = h('button.btn.btn-success.right', 'Preview', {onclick: publish})
 
     var ta = h('textarea', {
       placeholder: opts.placeholder || 'Write a message',
@@ -49,6 +49,7 @@ exports.create = function (api) {
     })
 
     accessories = h('div.row.compose__controls',
+      publishBtn,
       {style: {display: 'none'}},
       api.file_input(function (file) {
         files.push(file)
@@ -56,8 +57,8 @@ exports.create = function (api) {
         var embed = file.type.indexOf('image/') === 0 ? '!' : ''
         ta.value += embed + '['+file.name+']('+file.link+')'
         console.log('added:', file)
-      }),
-    publishBtn)
+      })
+    )
 
 
     if(opts.shrink !== false) {
