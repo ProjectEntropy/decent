@@ -1,6 +1,5 @@
 module.exports = {
   "app.js":  require('./app.js'),
-  "theme.js": require('./theme.js'),
   "blob-url.js":  require('./blob-url.js'),
   "crypto.js":  require('./crypto.js'),
   "file-input.js":  require('./file-input.js'),

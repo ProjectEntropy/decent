@@ -40,7 +40,6 @@ module.exports = {
           h('li', h('a', {href: '#'}, 'Public')),
           h('li', h('a', {href: '#Direct'}, 'Direct')),
           h('li', h('a', {href: '#Mentions'}, 'Mentions')),
-          //h('li', h('a', {href: '#Theme'}, 'Theme')),
           h('li', h('a', {href: '#Key'}, 'Key'))
 
           //search doesn't work if key is different in lite client
