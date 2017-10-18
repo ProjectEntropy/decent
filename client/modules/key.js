@@ -12,8 +12,8 @@ exports.create = function (api) {
     screen_view: function (path, sbot) {
       if(path === 'Key') {
         if(process.title === 'browser') {
-          var importKey = h('textarea.import', {placeholder: 'import an existing public/private key', name: 'textarea'})
-          var importRemote = h('input.import', {placeholder: 'import an existing remote', name: 'textarea'})
+          var importKey = h('textarea.import', {placeholder: 'Import your Decent public/private key', name: 'textarea', style: 'width: 97%; height: 100px;'})
+          var importRemote = h('textarea.import', {placeholder: 'Import a new Decent websocket remote', name: 'textarea', style: 'width: 97%;'})
           var content = h('div.column.scroller__content')
           var div = h('div.column.scroller',
             {style: {'overflow':'auto'}},
@@ -21,8 +21,8 @@ exports.create = function (api) {
               h('div.column.scroller__content',
                 h('div.message',
                   h('h1', 'Your Key'),
-                  h('p', {innerHTML: 'Your secret key is: <pre><code>' + localStorage['browser/.decent/secret'] + '</code></pre>'},
-                    h('button', {onclick: function (e){
+                  h('p', {innerHTML: 'Your Decent public/private key is: <pre><code>' + localStorage['browser/.decent/secret'] + '</code></pre>'},
+                    h('button.btn.btn-danger', {onclick: function (e){
                       localStorage['browser/.decent/secret'] = ''
                       alert('Your public/private key has been deleted')
                       e.preventDefault()
@@ -31,8 +31,8 @@ exports.create = function (api) {
                     }}, 'Delete Key')
                   ),
                   h('hr'),
-                  h('p', {innerHTML: 'Your remote pub is: <pre>' + localStorage.remote + '</pre>'},
-                    h('button', {onclick: function (e){
+                  h('p', {innerHTML: 'Your Decent websocket remote is: <pre>' + localStorage.remote + '</pre>'},
+                    h('button.btn.btn-danger', {onclick: function (e){
                       localStorage.remote = ''
                       alert('Your remote pub has been deleted')
                       e.preventDefault()
@@ -41,19 +41,19 @@ exports.create = function (api) {
                     }}, 'Delete Pub')
                   ),
                   h('hr'),
-                  h('form.column',
+                  h('form',
                     importKey,
                     importRemote,
-                    h('button', {onclick: function (e){
+                    h('button.btn.btn-success', {onclick: function (e){
                       if(importKey.value) {
                         localStorage['browser/.decent/secret'] = importKey.value.replace(/\s+/g, ' ')
                         e.preventDefault()
-                        alert('Your key has been updated')
+                        alert('Your public/private key has been updated')
                       }
                       if(importRemote.value) {
                         localStorage.remote = importRemote.value
                         e.preventDefault()
-                        alert('Your remote pub has been updated')
+                        alert('Your websocket remote has been updated')
                       }
                       location.hash = ""
                       location.reload()
