@@ -21,6 +21,8 @@ exports.create = function (api) {
 
         var locInput = h('input', {placeholder: 'New location'})
 
+        var descInput = h('textarea', {placeholder: 'New description', style: 'width: 100%;'})
+
         var imgInput = h('input', {placeholder: 'New blob url for avatar image'})
 
         var div = h('div.column.scroller', {style: 'overflow: auto;'},
@@ -46,6 +48,17 @@ exports.create = function (api) {
                       type: 'about',
                       about: id,
                       loc: locInput.value || undefined
+                    })
+                  }
+                }}),
+                h('br'),
+                descInput,
+                h('button.btn.btn-primary', 'Preview', {onclick: function (){
+                  if(descInput.value) {
+                    api.message_confirm({
+                      type: 'about',
+                      about: id,
+                      description: descInput.value || undefined      
                     })
                   }
                 }}),

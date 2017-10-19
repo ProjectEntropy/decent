@@ -26,7 +26,10 @@ exports.create = function (api) {
         return h('span', ' identifies as ', h('img.avatar--thumbnail', {src: api.blob_url(about.image)}))
       }
       if (msg.value.content.loc) {
-        return h('span', ' lives in ', about.loc)
+        return h('span', h('strong', 'Location: '), about.loc)
+      }
+      if (msg.value.content.description) {
+        return h('span', h('strong', 'Description: '), about.description)
       }
     }
   }
