@@ -22,9 +22,7 @@ exports.create = function (api) {
 
         var locInput = h('input', {placeholder: 'New location'})
 
-        var descInput = h('textarea', {placeholder: 'New description', style: 'width: 100%;'})
-
-        var imgInput = h('input', {placeholder: 'New blob url for avatar image'})
+        var descInput = h('textarea', {placeholder: 'New description', style: 'width: 97%;'})
 
         var div = h('div.column.scroller', {style: 'overflow: auto;'},
           h('div.scroller__wrapper',
@@ -41,7 +39,7 @@ exports.create = function (api) {
                     })
                   }
                 }}),
-                h('br'),
+                h('hr'),
                 locInput,
                 h('button.btn.btn-primary', 'Preview', {onclick: function () {
                   if(locInput.value) {
@@ -52,7 +50,7 @@ exports.create = function (api) {
                     })
                   }
                 }}),
-                h('br'),
+                h('hr'),
                 descInput,
                 h('button.btn.btn-primary', 'Preview', {onclick: function (){
                   if(descInput.value) {
@@ -63,19 +61,7 @@ exports.create = function (api) {
                     })
                   }
                 }}),
-                h('br'),
-                imgInput,
-                h('button.btn.btn-primary', 'Preview', {onclick: function () {
-                  if(imgInput.value) {
-                    if (ref.isBlobId(imgInput.value)) {
-                      api.message_confirm({
-                        type: 'about',
-                        about: id,
-                        image: imgInput.value || undefined
-                      })
-                    } else { alert('The link you uploaded is not a blob, please use a valid blob id. - Example: &G7v7pgTXYfr4bTF7FB/qLiScmFIIOccsTV3Pp6bURB0=.sha256. - To upload a blob: write a normal message, upload a file, and publish. Square photos are best for avatar images.')}
-                  }
-                }}),
+                h('hr'),
                 api.avatar_edit 
               )
             )
