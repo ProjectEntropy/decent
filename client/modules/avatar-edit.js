@@ -45,7 +45,7 @@ exports.create = function (api) {
     return h('div.row.profile',
       lb,
       img,
-      h('div.column.profile__info',
+      h('div',
         h('strong', name),
         hyperfile.asDataURL(function (data) {
           var el = crop(data, function (err, data) {
@@ -73,7 +73,7 @@ exports.create = function (api) {
           })
           lb.show(el)
         }),
-        h('button', 'update', {onclick: function () {
+        h('button.btn.btn-primary', 'Preview', {onclick: function () {
           if(selected)
             api.message_confirm({
               type: 'about',
