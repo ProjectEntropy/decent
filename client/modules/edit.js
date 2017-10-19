@@ -7,6 +7,7 @@ var ref = require('ssb-ref')
 
 exports.needs = {
   message_confirm: 'first',
+  avatar_edit: 'first'
 }
 
 exports.gives = {
@@ -74,7 +75,8 @@ exports.create = function (api) {
                       })
                     } else { alert('The link you uploaded is not a blob, please use a valid blob id. - Example: &G7v7pgTXYfr4bTF7FB/qLiScmFIIOccsTV3Pp6bURB0=.sha256. - To upload a blob: write a normal message, upload a file, and publish. Square photos are best for avatar images.')}
                   }
-                }})
+                }}),
+                api.avatar_edit 
               )
             )
           )

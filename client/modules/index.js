@@ -7,6 +7,7 @@ module.exports = {
   "sbot.js": require('./sbot.js'),
   "about.js":  require('./about.js'),
   "avatar-image.js":  require('./avatar-image.js'),
+  "avatar-edit.js":  require('./avatar-edit.js'),
   "avatar-link.js":  require('./avatar-link.js'),
   "avatar-name.js":  require('./avatar-name.js'),
   "avatar-profile.js":  require('./avatar-profile.js'),
