@@ -6,8 +6,7 @@ var TextNodeSearcher = require('text-node-searcher')
 
 exports.needs = {
   message_render: 'first',
-  sbot_log: 'first',
-  sbot_fulltext_search: 'first'
+  sbot_log: 'first'
 }
 
 exports.gives = 'screen_view'
@@ -32,7 +31,8 @@ function searchFilter(terms) {
     return c && (
       msg.key == terms[0] ||
       andSearch(terms.map(function (term) {
-        return new RegExp('\\b'+term+'\\b', 'i')
+        return new RegExp(term, 'i')
+        // return new RegExp('\\b'+term+'\\b', 'i')
       }), [c.text, c.name, c.title])
     )
   }
@@ -44,45 +44,23 @@ function createOrRegExp(ary) {
   }).join('|'), 'i')
 }
 
-function highlight(el, query) {
+/*function highlight(el, query) {
   var searcher = new TextNodeSearcher({container: el})
   searcher.query = query
   searcher.highlight()
   return el
-}
-
-function fallback(reader) {
-  var fallbackRead
-  return function (read) {
-    return function (abort, cb) {
-      read(abort, function next(end, data) {
-        if (end && reader && (fallbackRead = reader(end))) {
-          reader = null
-          read = fallbackRead
-          read(abort, next)
-        } else {
-          cb(end, data)
-        }
-      })
-    }
-  }
-}
+}*/
 
 exports.create = function (api) {
+
   return function (path) {
-    if((path[0] === '?') || (path[1] === '#')) {
-      console.log('SEARCHING for ' + path)
-      var queryStr = path
-      if (queryStr[0] === '?') {
-        queryStr = queryStr.substring(1).trim()
-      }
-      console.log(path)
-      console.log(queryStr)
-      var query = queryStr.split(whitespace)
+    if((path[0] === '?') || (path[0] === '#')) {
+      if (path[0] === '?') { 
+      var query = path.substr(1).trim().split(whitespace)
+      } else { var query = path.split(whitespace)}
       var _matches = searchFilter(query)
 
       var total = 0, matches = 0
-      var usingLinearSearch = false
 
       var header = h('div.search_header', '')
       var content = h('div.column.scroller__content')
@@ -98,35 +76,25 @@ exports.create = function (api) {
         total++
         var m = _matches(data)
         if(m) matches++
-        if(usingLinearSearch) {
-          header.textContent = 'searched:'+total+', found:'+matches
-        }
+        //header.textContent = 'searched:'+total+', found:'+matches
         return m
       }
 
       function renderMsg(msg) {
         var el = api.message_render(msg)
-        highlight(el, createOrRegExp(query))
+        //highlight(el, createOrRegExp(query))
         return el
       }
 
-      /*pull(
+      pull(
         api.sbot_log({old: false}),
         pull.filter(matchesQuery),
         Scroller(div, content, renderMsg, true, false)
-      )*/
+      )
 
       pull(
-        u.next(api.sbot_fulltext_search, {query: queryStr, reverse: true, limit: 500, live: false}),
-        fallback(function (err) {
-          if (/^no source/.test(err.message)) {
-            usingLinearSearch = true
-            return pull(
-              u.next(api.sbot_log, {reverse: true, limit: 500, live: false}),
-              pull.filter(matchesQuery)
-            )
-          }
-        }),
+        u.next(api.sbot_log, {reverse: true, limit: 500, live: false}),
+        pull.filter(matchesQuery),
         Scroller(div, content, renderMsg, false, false)
       )
 

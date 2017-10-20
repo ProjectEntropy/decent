@@ -19,7 +19,6 @@ module.exports = {
 
       var view = api.screen_view(hash() || 'Public')
 
-
       var screen = h('div.screen.column', view)
 
       window.onhashchange = function (ev) {
@@ -31,7 +30,7 @@ module.exports = {
 
       document.body.appendChild(screen)
 
-      var search = h('input')
+      var search = h('input.search', {placeholder: 'Search'})
 
       document.body.appendChild(h('div.navbar',
         h('div.internal', 
@@ -40,17 +39,15 @@ module.exports = {
           h('li', h('a', {href: '#'}, 'Public')),
           h('li', h('a', {href: '#Private'}, 'Private')),
           h('li', h('a', {href: '#Mentions'}, 'Mentions')),
-          h('li', h('a', {href: '#Key'}, 'Key'))
-
-          //search doesn't work if key is different in lite client
-          /*h('form.search', { onsubmit: function (e) {
+          h('li', h('a', {href: '#Key'}, 'Key')),
+          h('form.search', { onsubmit: function (e) {
               //if (err) throw err 
               window.location.hash = '?' + search.value
               e.preventDefault()
             }},
             search,
-            h('button', 'Search')
-          )*/
+            h('button.btn.btn-primary', 'Search')
+          )
         )
       ))
     }
