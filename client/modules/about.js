@@ -3,7 +3,8 @@ var h = require('hyperscript')
 exports.needs = {
   avatar_name: 'first',
   avatar_link: 'first',
-  blob_url: 'first'
+  blob_url: 'first',
+  markdown: 'first'
 }
 
 exports.gives = { 
@@ -29,7 +30,7 @@ exports.create = function (api) {
         return h('span', h('strong', 'Location: '), about.loc)
       }
       if (msg.value.content.description) {
-        return h('span', h('strong', 'Description: '), about.description)
+        return h('span', h('strong', 'Description: '), api.markdown(about.description))
       }
     }
   }
