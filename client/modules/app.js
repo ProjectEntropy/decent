@@ -46,7 +46,7 @@ module.exports = {
               e.preventDefault()
             }},
             search,
-            h('button.btn.btn-primary', 'Search')
+            h('button.btn.btn-primary.btn-search', 'Search')
           )
         )
       ))

@@ -15,11 +15,18 @@ exports.gives = {
 exports.create = function (api) {
   var exports = {}
  
-  exports.message_content =
+  exports.message_content = function (msg) {
+    if(msg.value.content.type == 'about') {
+      var about = msg.value.content
+      if (msg.value.content.description) {
+        return h('span', api.markdown('**Description:** ' + about.description))
+      }
+    }
+  }
   exports.message_content_mini = function (msg) {
     if(msg.value.content.type == 'about') {
       var about = msg.value.content
-      var id = msg.value.content.about
+      // var id = msg.value.content.about
       if (msg.value.content.name) {
         return h('span', ' names themselves ', about.name)
       }
@@ -28,9 +35,6 @@ exports.create = function (api) {
       }
       if (msg.value.content.loc) {
         return h('span', h('strong', 'Location: '), about.loc)
-      }
-      if (msg.value.content.description) {
-        return h('span', h('strong', 'Description: '), api.markdown(about.description))
       }
     }
   }
