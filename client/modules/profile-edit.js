@@ -18,9 +18,9 @@ exports.create = function (api) {
     screen_view: function (path, sbot) {
       if(path === 'Edit') {
         var identify = h('input.identify', {placeholder: 'Your Name', name: 'namespace'})
-        var div = h('div.scroller__wrapper',
-          h('div.column.scroller__content', {style: 'margin-top: 25%;'},
-            h('div.message',
+        var div = h('div.col-md-12',
+          h('div.row.scroller__content', {style: 'margin-top: 25%;'},
+            h('div.card.message',
               h('h1', 'Edit Your Profile'),
               h('form',
                 identify,

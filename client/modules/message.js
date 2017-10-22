@@ -8,6 +8,7 @@ exports.needs = {
   avatar: 'first',
   avatar_name: 'first',
   avatar_link: 'first',
+  avatar_image_link: 'first',
   message_meta: 'map',
   message_action: 'map',
   message_link: 'first'
@@ -22,10 +23,12 @@ function message_content_mini_fallback(msg)  {
 exports.create = function (api) {
 
   function mini(msg, el) {
-    var div = h('div.message.message--mini',
-      h('div.row',
-        h('div.avatar', api.avatar_link(msg.value.author, api.avatar_name(msg.value.author), ''), h('span.message_content', el)),
-        h('div.message_meta', api.message_meta(msg))
+    var div = h('div.media.message.message--mini',
+      h('div.media-body.w-100',
+        h('h6.mt-0', api.avatar_link(msg.value.author, api.avatar_name(msg.value.author)),
+        h('span.font-weight-light.text-muted.float-right', api.message_meta(msg))),
+        el
+
       )
     )
     // div.setAttribute('tabindex', '0')
@@ -52,24 +55,27 @@ exports.create = function (api) {
 
     var backlinks = h('div.backlinks')
     if(links.length)
-      backlinks.appendChild(h('label', 'backlinks:', 
+      backlinks.appendChild(h('label', 'backlinks:',
         h('div', links.map(function (key) {
           return api.message_link(key)
         }))
       ))
 
-    var msg = h('div.message',
-      h('div.title.row',
-        h('div.avatar', api.avatar(msg.value.author, 'thumbnail')),
-        h('div.message_meta', api.message_meta(msg))
-      ),
-      h('div.message_content', el),
-      h('div.message_actions',
-        h('div.actions', api.message_action(msg),
+    var msg = h('div.media.w-100',
+      h('div.col-sm-2.rounded', api.avatar_image_link(msg.value.author, 'img-fluid.thumbnail')),
+      h('div.media-body.col-sm-10',
+        h('h6.mt-0', api.avatar_link(msg.value.author, api.avatar_name(msg.value.author)),
+        h('small.font-weight-light.text-muted.float-right', api.message_meta(msg))),
+
+        h('div.message_content', el),
+        h('div.small.w-100.message_actions.text-right.pull-right',
+          api.message_action(msg),
           h('a', {href: '#' + msg.key}, 'Reply')
-        )
+        ),
+        backlinks,
       ),
-      backlinks,
+
+
       {onkeydown: function (ev) {
         //on enter, hit first meta.
         if(ev.keyCode == 13) {
@@ -89,5 +95,3 @@ exports.create = function (api) {
     return msg
   }
 }
-
-

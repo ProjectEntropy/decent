@@ -19,7 +19,8 @@ module.exports = {
 
       var view = api.screen_view(hash() || 'Public')
 
-      var screen = h('div.screen.column', view)
+      var screen = h('div.container.screen', view)
+      var search = h('input.search.form-control', {placeholder: 'Search'})
 
       window.onhashchange = function (ev) {
         var _view = view
@@ -28,20 +29,29 @@ module.exports = {
         else document.body.appendChild(view)
       }
 
-      document.body.appendChild(screen)
+      document.body.appendChild(h('nav.navbar.navbar-expand-lg.navbar-light.bg-light.mb-1',
+        h('a.navbar-brand', {href: '#'}, "Decent"),
+        h('button.navbar-toggler',
+          {
+            type: "button",
+            'data-toggle': "collapse",
+            'data-target': "#navbarContent",
+            'aria-controls': "navbarSupportedContent",
+            'aria-expanded': "false",
+            'aria-label': "Toggle navigation"
+          },
+          h('span.navbar-toggler-icon')
+        ),
 
-      var search = h('input.search', {placeholder: 'Search'})
-
-      document.body.appendChild(h('div.navbar',
-        h('div.internal', 
-          h('li', h('a', {href: '#' + id}, api.avatar_image(id, 'tiny'))),
-          h('li', h('a', {href: '#' + id}, api.avatar_name(id))),
-          h('li', h('a', {href: '#'}, 'Public')),
-          h('li', h('a', {href: '#Private'}, 'Private')),
-          h('li', h('a', {href: '#Mentions'}, 'Mentions')),
-          h('li', h('a', {href: '#Key'}, 'Key')),
+        h('div.collapse.navbar-collapse#navbarContent',
+          h('ul.navbar-nav',
+            h('li.nav-item', h('a.nav-link', {href: '#' + id}, api.avatar_name(id))),
+            h('li.nav-item', h('a.nav-link', {href: '#Private'}, 'Private')),
+            h('li.nav-item', h('a.nav-link', {href: '#Mentions'}, 'Mentions')),
+            h('li.nav-item', h('a.nav-link', {href: '#Key'}, 'Key')),
+          ),
           h('form.search', { onsubmit: function (e) {
-              //if (err) throw err 
+              //if (err) throw err
               window.location.hash = '?' + search.value
               e.preventDefault()
             }},
@@ -50,8 +60,12 @@ module.exports = {
           )
         )
       ))
+
+      document.body.appendChild(screen)
+
+      var search = h('input.search', {placeholder: 'Search'})
+
+
     }
   }
 }
-
-

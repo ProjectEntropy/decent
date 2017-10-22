@@ -107,7 +107,7 @@ exports.create = function (api) {
                 || b.stateChange - a.stateChange
               )
             }).forEach(function (peer) {
-              ol.appendChild(h('div.message',
+              ol.appendChild(h('div.card.message',
                 api.avatar(peer.key, 'thumbnail'),
                 h('div',
                   peer.state || 'not connected',
@@ -136,7 +136,7 @@ exports.create = function (api) {
           }
         })
       })()
-      return h('div.column.scroller', h('div.column.scroll-y', h('div.column.scroller__wrapper', ol)))
+      return h('div.row.scroller', h('div.column.scroll-y', h('div.row.col-md-12', ol)))
     }
   }
 }

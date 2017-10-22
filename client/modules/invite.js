@@ -83,9 +83,9 @@ exports.create = function (api) {
       //request follow
       //post pub announce
       //post follow pub
-      var div = h('div.column.scroller', {style: 'overflow: auto;'},
-        h('div.column.scroller__wrapper',
-          h('div.column.scroller__content', {style: 'margin-top: 25%;'},
+      var div = h('div.row.scroller', {style: 'overflow: auto;'},
+        h('div.row.col-md-12',
+          h('div.row.scroller__content', {style: 'margin-top: 25%;'},
             h('h1', {innerHTML: 'Welcome to Decent'}),
             h('p', "You've been invited to join:"),
             h('p', h('code', data.invite))

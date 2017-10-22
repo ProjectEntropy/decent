@@ -41,7 +41,7 @@ exports.create = function (api) {
     }))
 
     return h('div.column',
-      h('div.message',
+      h('div.card.message',
         api.avatar_image(id, 'profile'), 
         api.avatar_name(id),
         loco,
@@ -49,7 +49,7 @@ exports.create = function (api) {
         h('pre', h('code', id)),
         edit
       )/*,
-      h('div.message',
+      h('div.card.message',
         api.avatar_action(id)
       )*/
     )

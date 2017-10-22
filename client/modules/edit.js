@@ -22,12 +22,12 @@ exports.create = function (api) {
 
         var locInput = h('input', {placeholder: 'New location'})
 
-        var descInput = h('textarea', {placeholder: 'New description', style: 'width: 97%;'})
+        var descInput = h('textarea.form-control', {placeholder: 'New description', style: 'width: 97%;'})
 
-        var div = h('div.column.scroller', {style: 'overflow: auto;'},
-          h('div.scroller__wrapper',
-            h('div.column.scroller__content',
-              h('div.message',
+        var div = h('div.row.scroller', {style: 'overflow: auto;'},
+          h('div.col-md-12',
+            h('div.row.scroller__content',
+              h('div.card.message',
                 h('h1', 'Edit profile'),
                 nameInput,
                 h('button.btn.btn-primary', 'Preview', {onclick: function () {
@@ -57,12 +57,12 @@ exports.create = function (api) {
                     api.message_confirm({
                       type: 'about',
                       about: id,
-                      description: descInput.value || undefined      
+                      description: descInput.value || undefined
                     })
                   }
                 }}),
                 h('hr'),
-                api.avatar_edit 
+                api.avatar_edit
               )
             )
           )
@@ -72,4 +72,3 @@ exports.create = function (api) {
     }
   }
 }
-

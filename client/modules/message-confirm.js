@@ -44,12 +44,12 @@ exports.create = function (api) {
     })
 
     lb.show(h('div.column.message-confirm',
-      h('div.message', 
+      h('div.card.message', 
         h('div.title.row',
           h('div.avatar', api.avatar(msg.value.author, 'thumbnail')),
-          h('div.message_meta.row', api.message_meta(msg))
+          h('div.card.message_meta.row', api.message_meta(msg))
         ),
-        h('div.message_content', 
+        h('div.card.message_content', 
           api.message_content(msg) || h('pre', JSON.stringify(msg, null, 2))), 
         h('div.row.message-confirm__controls', okay, cancel)
       )

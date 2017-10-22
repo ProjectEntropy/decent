@@ -16,6 +16,8 @@ exports.gives = {
   message_action: true
 }
 
+var class_name = 'emoji';
+
 exports.create = function (api) {
   var exports = {}
 
@@ -26,9 +28,9 @@ exports.create = function (api) {
     if(msg.value.content.type !== 'vote') return
     var link = msg.value.content.vote.link
     return [
-        msg.value.content.vote.value > 0 
-        ? h('img', {className: 'emoji', src: star}) 
-        : h('img', {className: 'emoji', src: stars}),
+        msg.value.content.vote.value > 0
+        ? h('img', {className: class_name, src: star})
+        : h('img', {className: class_name, src: stars}),
         ' ', api.message_link(link)
       ]
   }
@@ -49,7 +51,7 @@ exports.create = function (api) {
     }
     var digs
     for (i = 0; i < votes.length; i++) {
-      digs = '<img src="' + star + '" class="emoji">' + digs
+      digs = '<img src="' + star + '" class="' + class_name + '">' + digs
     }
     return h('span', {innerHTML: digs})
   }
@@ -57,7 +59,7 @@ exports.create = function (api) {
   exports.message_action = function (msg, sbot) {
     var star = api.emoji_url('star')
     if(msg.value.content.type !== 'vote')
-      return h('a.dig', {href: '#', onclick: function (e) {
+      return h('a.dig.btn.btn-link', {href: '#', onclick: function (e) {
         e.preventDefault()
         var dig = {
           type: 'vote',
@@ -70,7 +72,7 @@ exports.create = function (api) {
           dig.private = true
         }
         api.message_confirm(dig)
-      }}, h('img', {className: 'emoji', src: star}))
+      }}, h('img', {className: class_name, src: star}))
 
   }
   return exports

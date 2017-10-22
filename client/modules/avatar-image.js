@@ -80,8 +80,7 @@ exports.create = function (api) {
     },
     avatar_image: function (author, classes) {
       classes = classes || ''
-      if(classes && 'string' === typeof classes) classes = '.avatar--'+classes
-
+      
       function gen (id) {
         if(cache[id]) return h('img', {src: cache[id]})
         var img = visualize(new Buffer(author.substring(1), 'base64'), 256)
@@ -104,4 +103,3 @@ exports.create = function (api) {
     }
   }
 }
-

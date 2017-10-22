@@ -14,12 +14,12 @@ exports.create = function (api) {
         if(process.title === 'browser') {
           var importKey = h('textarea.import', {placeholder: 'Import your Decent public/private key', name: 'textarea', style: 'width: 97%; height: 100px;'})
           var importRemote = h('textarea.import', {placeholder: 'Import a new Decent websocket remote', name: 'textarea', style: 'width: 97%;'})
-          var content = h('div.column.scroller__content')
-          var div = h('div.column.scroller',
+          var content = h('div.row.scroller__content')
+          var div = h('div.row.scroller',
             {style: {'overflow':'auto'}},
-            h('div.scroller__wrapper',
-              h('div.column.scroller__content',
-                h('div.message',
+            h('div.col-md-12',
+              h('div.row.scroller__content',
+                h('div.card.message',
                   h('h1', 'Your Key'),
                   h('p', {innerHTML: 'Your Decent public/private key is: <pre><code>' + localStorage['browser/.decent/secret'] + '</code></pre>'},
                     h('button.btn.btn-danger', {onclick: function (e){

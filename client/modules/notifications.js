@@ -126,10 +126,10 @@ exports.create = function (api) {
           }
         })
 
-        var content = h('div.column.scroller__content')
-        var div = h('div.column.scroller',
+        var content = h('div.row.scroller__content')
+        var div = h('div.row.scroller',
           {style: {'overflow':'auto'}},
-          h('div.scroller__wrapper',
+          h('div.col-md-12',
             content
           )
         )

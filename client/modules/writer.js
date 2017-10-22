@@ -16,10 +16,10 @@ exports.create = function (api) {
     screen_view: function (path, sbot) {
       if(path === 'Compose') {
 
-        var content = h('div.column.scroller__content')
-        var div = h('div.column.scroller',
+        var content = h('div.row.scroller__content')
+        var div = h('div.row.scroller',
           {style: {'overflow':'auto'}},
-          h('div.scroller__wrapper',
+          h('div.col-md-12',
             api.message_compose({type: 'post'}, {placeholder: 'Write here... '})
           )
         )

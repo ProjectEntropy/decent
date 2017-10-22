@@ -5,13 +5,15 @@ var suggest = require('suggest-box')
 var mentions = require('ssb-mentions')
 var lightbox = require('hyperlightbox')
 var cont = require('cont')
+var id = require('../keys').id
 
 exports.needs = {
   suggest_mentions: 'map',
   publish: 'first',
   message_content: 'first',
   message_confirm: 'first',
-  file_input: 'first'
+  file_input: 'first',
+  avatar_image_link: 'first'
 }
 
 exports.gives = 'message_compose'
@@ -43,12 +45,14 @@ exports.create = function (api) {
 
     var publishBtn = h('button.btn.btn-success.right', 'Preview', {onclick: publish})
 
-    var ta = h('textarea', {
+    var ta = h('textarea.form-control.col-sm-10', {
       placeholder: opts.placeholder || 'Write a message',
       style: {height: opts.shrink === false ? '200px' : ''}
     })
 
-    accessories = h('div.row.compose__controls',
+    var pic = h('div.col-sm-2', api.avatar_image_link(id, 'img-fluid'))
+
+    accessories = h('div.col-sm-12.compose__controls',
       publishBtn,
       {style: {display: 'none'}},
       api.file_input(function (file) {
@@ -119,11 +123,10 @@ exports.create = function (api) {
 
 
     var composer =
-      h('div.compose', 
-        h('div.column', 
-          ta, 
-          accessories 
-        )
+      h('div.compose.row.mb-2',
+        pic,
+        ta,
+        accessories
       )
 
     suggest(ta, function (name, cb) {
@@ -140,5 +143,3 @@ exports.create = function (api) {
   }
 
 }
-
-
