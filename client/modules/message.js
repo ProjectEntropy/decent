@@ -23,9 +23,9 @@ function message_content_mini_fallback(msg)  {
 exports.create = function (api) {
 
   function mini(msg, el) {
-    var div = h('div.media.message.message--mini',
+    var div = h('div.media.message.message--mini.col-sm-12',
       h('div.media-body.w-100',
-        h('h6.mt-0', api.avatar_link(msg.value.author, api.avatar_name(msg.value.author)),
+        h('h6.mt-0.col-sm-3', api.avatar_link(msg.value.author, api.avatar_name(msg.value.author)),
         h('span.font-weight-light.text-muted.float-right', api.message_meta(msg))),
         el
 
@@ -62,8 +62,8 @@ exports.create = function (api) {
       ))
 
     var msg = h('div.media.w-100',
-      h('div.col-sm-2.rounded', api.avatar_image_link(msg.value.author, 'img-fluid.thumbnail')),
-      h('div.media-body.col-sm-10',
+      h('div.col-sm-1.rounded', api.avatar_image_link(msg.value.author, 'img-fluid.thumbnail')),
+      h('div.media-body.col-sm-11',
         h('h6.mt-0', api.avatar_link(msg.value.author, api.avatar_name(msg.value.author)),
         h('small.font-weight-light.text-muted.float-right', api.message_meta(msg))),
 

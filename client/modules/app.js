@@ -20,7 +20,7 @@ module.exports = {
       var view = api.screen_view(hash() || 'Public')
 
       var screen = h('div.container.screen', view)
-      var search = h('input.search.form-control', {placeholder: 'Search'})
+      var search_thing = h('input.search.form-control')
 
       window.onhashchange = function (ev) {
         var _view = view
@@ -28,6 +28,7 @@ module.exports = {
         if(_view) screen.replaceChild(view, _view)
         else document.body.appendChild(view)
       }
+
 
       document.body.appendChild(h('nav.navbar.navbar-expand-lg.navbar-light.bg-light.mb-1',
         h('a.navbar-brand', {href: '#'}, "Decent"),
@@ -43,28 +44,25 @@ module.exports = {
           h('span.navbar-toggler-icon')
         ),
 
-        h('div.collapse.navbar-collapse#navbarContent',
+        h('div.collapse.navbar-collapse.justify-content-between#navbarContent',
           h('ul.navbar-nav',
             h('li.nav-item', h('a.nav-link', {href: '#' + id}, api.avatar_name(id))),
             h('li.nav-item', h('a.nav-link', {href: '#Private'}, 'Private')),
             h('li.nav-item', h('a.nav-link', {href: '#Mentions'}, 'Mentions')),
             h('li.nav-item', h('a.nav-link', {href: '#Key'}, 'Key')),
           ),
-          h('form.search', { onsubmit: function (e) {
+          h('form.search.form-inline', { onsubmit: function (e) {
               //if (err) throw err
-              window.location.hash = '?' + search.value
+              window.location.hash = '?' + search_thing.value
               e.preventDefault()
             }},
-            search,
-            h('button.btn.btn-primary.btn-search', 'Search')
+            search_thing,
+            h('button.btn.btn-outline-success.my-2.my-sm-0', 'Search')
           )
         )
       ))
 
       document.body.appendChild(screen)
-
-      var search = h('input.search', {placeholder: 'Search'})
-
 
     }
   }

@@ -45,12 +45,12 @@ exports.create = function (api) {
 
     var publishBtn = h('button.btn.btn-success.right', 'Preview', {onclick: publish})
 
-    var ta = h('textarea.form-control.col-sm-10', {
+    var ta = h('textarea.form-control.col-sm-11', {
       placeholder: opts.placeholder || 'Write a message',
       style: {height: opts.shrink === false ? '200px' : ''}
     })
 
-    var pic = h('div.col-sm-2', api.avatar_image_link(id, 'img-fluid'))
+    var pic = h('div.col-sm-1', api.avatar_image_link(id, 'img-fluid'))
 
     accessories = h('div.col-sm-12.compose__controls',
       publishBtn,
